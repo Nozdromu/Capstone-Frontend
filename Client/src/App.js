@@ -1,5 +1,5 @@
 import './App.css';
-import MyNavbar from './Components/Navbar';
+import Homepage from './Components/Homepage';
 
 function App() {
 
@@ -24,7 +24,7 @@ function App() {
     //     </form>
     //   </header>
     // </div>
-    <MyNavbar></MyNavbar>
+    <Homepage></Homepage>
   );
 }
 
