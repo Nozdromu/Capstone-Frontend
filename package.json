@@ -10,12 +10,13 @@
     "installall": "concurrently \"npm run serverInstall\" \"npm run clientInstall\"",
     "server": "node server.js",
     "client": "cd Client && npm start",
-    "serverInstall":"npm i",
-    "clientInstall":"cd Client && npm i"
+    "serverInstall": "npm i",
+    "clientInstall": "cd Client && npm i"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.2.2",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20"
