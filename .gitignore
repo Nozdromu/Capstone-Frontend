@@ -6,6 +6,8 @@
 /node_modules
 /.pnp
 .pnp.js
+sqlconfig.json
+src/.jpg
 
 # testing
 /coverage
