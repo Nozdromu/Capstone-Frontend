@@ -1,8 +1,8 @@
 import './App.css';
 import Homepage from './Components/Homepage';
+import axios from 'axios';
 
 function App() {
-
   return (
     // <div className="App">
     //   <header className="App-header">
