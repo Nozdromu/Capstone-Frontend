@@ -6,6 +6,7 @@
 var path = require('path');
 var express = require('express');
 var mysql = require('mysql');
+var sqlconfig=require('./sqlconfig.json');
 
 
 
@@ -15,12 +16,7 @@ var app = express();
 
 ////////////////////////////////////////////////////////////////////////////
 // mysql connection script
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root" ,
-    password: "20160402dD!",
-    database:"test"
-  });
+var con = mysql.createConnection(sqlconfig);
   con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -33,7 +29,8 @@ var allitem;
 ////////////////////////////////////////////////////////////////////////////
 
 
-var staticPath = path.join(__dirname, '/Client/build');
+//var staticPath = path.join(__dirname, '/Client/build');
+var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
   
 app.set('port', process.env.PORT || 8080);

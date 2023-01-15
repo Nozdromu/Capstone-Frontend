@@ -18,7 +18,7 @@ class Itemgrid extends Component {
         this.setState({ data: res.data[0] }, () => {
           console.log(this.state);
           var x=this.state.data.map((val) => {
-              return <Itemcard data={val} />
+              return <Col><Itemcard data={val} key={"item"+val.itid} /></Col>
             })
           this.setState({
             list: (x)
@@ -33,7 +33,7 @@ class Itemgrid extends Component {
   render() {
     this.getdata();
     return (<Container>
-      <Row key={1}>
+      <Row style={{gap:"1em"}} justify-content="space-evenly">
         {this.state.list}
       </Row>
     </Container>)

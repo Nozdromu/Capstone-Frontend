@@ -10,9 +10,12 @@ class Itemcard extends Component {
     render() {
         return (
             <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={this.props.data.image} />
+                <div className="rect-img-container">
+                    <Card.Img className='rect-img' variant="top" src={this.props.data.src} />
+                </div>
+            
             <Card.Body>
-                <Card.Title>{this.props.data.description}</Card.Title>
+                <Card.Title className="text-over">{this.props.data.description}</Card.Title>
                 <Card.Text>
                     {this.props.data.price}
                 </Card.Text>
