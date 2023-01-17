@@ -11,7 +11,8 @@
     "server": "node server.js",
     "client": "cd Client && npm start",
     "serverInstall":"npm i",
-    "clientInstall":"cd Client && npm i"
+    "clientInstall":"cd Client && npm i",
+    "importwindows":"cmd /c \"mysql -u root -p test < sql.sql\""
   },
   "author": "",
   "license": "ISC",
