@@ -7,12 +7,14 @@ var path = require('path');
 var express = require('express');
 var mysql = require('mysql');
 var sqlconfig=require('./sqlconfig.json');
+const { config } = require('process');
 
 
 
 ////////////////////////////////////////////////////////////////////////////
 
 var app = express();
+
 
 ////////////////////////////////////////////////////////////////////////////
 // mysql connection script
@@ -22,9 +24,15 @@ var con = mysql.createConnection(sqlconfig);
     console.log("Connected!");
   });
 var allitem;
-  con.query("call getitemlist",function(err,result,fields){
+  con.query("call Alldata",function(err,result,fields){
     if(err)throw err;
+    
     allitem=result;
+    allitem[0].forEach(element => {
+      element.list=result[1].filter(e=>e.itid==element.itid);
+    });
+    
+    console.log(allitem);
   })
 ////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +53,16 @@ app.post("/post", (req, res) => {
   
 app.get('/getdata',(req,res)=>{
   res.send(allitem)
+})
+var getimgcount=0;
+app.get('/getimagelist',(req,res)=>{
+  con.query("call getitemimage(?)",[req.query.itid],function(err,result,fields){
+    if(err)throw err;
+    getimgcount++;
+    console.log(getimgcount);
+    res.send(result);
+  })
+
 })
 ///////////////////////////////////////////////////////////////////////////
 
