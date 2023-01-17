@@ -7,7 +7,6 @@ var path = require('path');
 var express = require('express');
 var mysql = require('mysql');
 var sqlconfig=require('./sqlconfig.json');
-const { config } = require('process');
 
 
 
@@ -37,8 +36,8 @@ var allitem;
 ////////////////////////////////////////////////////////////////////////////
 
 
-//var staticPath = path.join(__dirname, '/Client/build');
-var staticPath = path.join(__dirname, './');
+var staticPath = path.join(__dirname, '/Client/build');
+// var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
   
 app.set('port', process.env.PORT || 8080);
