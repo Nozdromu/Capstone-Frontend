@@ -10,15 +10,16 @@
     "installall": "concurrently \"npm run serverInstall\" \"npm run clientInstall\"",
     "server": "node server.js",
     "client": "cd Client && npm start",
-    "serverInstall":"npm i",
-    "clientInstall":"cd Client && npm i",
-    "importwindows":"cmd /c \"mysql -u root -p test < sql.sql\"",
-    "build":"cd Client && npm run build"
+    "serverInstall": "npm i",
+    "clientInstall": "cd Client && npm i",
+    "importwindows": "cmd /c \"mysql -u root -p test < sql.sql\"",
+    "build": "cd Client && npm run build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20"
   },

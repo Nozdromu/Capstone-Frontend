@@ -7,6 +7,7 @@ var path = require('path');
 var express = require('express');
 var mysql = require('mysql');
 var sqlconfig=require('./sqlconfig.json');
+var session = require('express-session')
 
 
 
@@ -51,6 +52,14 @@ app.post("/post", (req, res) => {
 app.get('/getdata',(req,res)=>{
   res.send(allitem)
 })
+
+app.get('/signup',(req,res)=>{
+  console.log(req);
+  // con.query("call adduser(?,?)",[],(err,result,fields)=>{
+  //   res.send(result[0]);
+  // })
+})
+
 var getimgcount=0;
 app.get('/getimagelist',(req,res)=>{
   con.query("call getitemimage(?)",[req.query.itid],function(err,result,fields){
@@ -59,8 +68,9 @@ app.get('/getimagelist',(req,res)=>{
     console.log(getimgcount);
     res.send(result);
   })
-
 })
+
+
 ///////////////////////////////////////////////////////////////////////////
 
 var server = app.listen(app.get('port'), function () {
