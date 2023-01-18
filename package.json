@@ -16,10 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@googlemaps/react-wrapper": "^1.1.35",
     "axios": "^1.2.2",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "react-router": "^6.7.0",
+    "react-router-dom": "^6.7.0"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
