@@ -54,7 +54,8 @@ app.get('/getdata',(req,res)=>{
 })
 
 app.get('/signup',(req,res)=>{
-  console.log(req);
+  console.log(req.query);
+  res.send(req.query)
   // con.query("call adduser(?,?)",[],(err,result,fields)=>{
   //   res.send(result[0]);
   // })

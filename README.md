@@ -1,4 +1,6 @@
 # Reactfront
+need install mysql 
+run npm run "importforwindows" to create mysql database and import data from dump file
 install nodejs
 type "npm i" in terminal
 then type "npm run installall"

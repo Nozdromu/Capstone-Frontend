@@ -12,7 +12,7 @@
     "client": "cd Client && npm start",
     "serverInstall": "npm i",
     "clientInstall": "cd Client && npm i",
-    "importwindows": "cmd /c \"mysql -u root -p test < sql.sql\"",
+    "importforwindows": "cmd /c \"mysql -u root -p test < sql.sql\"",
     "build": "cd Client && npm run build"
   },
   "author": "",

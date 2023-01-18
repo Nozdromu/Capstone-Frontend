@@ -5,14 +5,19 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
 function Signup(props) {
-    const textInput = useRef(null);
-    const _email = (<Form.Control ref={textInput} type="email" placeholder="Enter email" />);
+    const emailInput = useRef(null);
+    const psdInput=useRef(null);
+    const _email = (<Form.Control ref={emailInput} type="email" placeholder="Enter email" />);
+    const _psd=(<Form.Control ref={psdInput} type="password" placeholder="Password" />);
     const handlesignup = () => {
         var account = {
-            email:textInput.current.value
+            email:emailInput.current.value,
+            password:psdInput.current.value
         }
         console.log(account);
-        //axios.get()
+        axios.get('/signup',{ params: account}).then(res=>{
+            console.log(res);
+        })
     }
 
 
@@ -42,7 +47,7 @@ function Signup(props) {
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
+                            {_psd}
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="Check me out" />
