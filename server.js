@@ -30,14 +30,12 @@ var allitem;
     allitem[0].forEach(element => {
       element.list=result[1].filter(e=>e.itid==element.itid);
     });
-    
-    console.log(allitem);
   })
 ////////////////////////////////////////////////////////////////////////////
 
 
-var staticPath = path.join(__dirname, '/Client/build');
-// var staticPath = path.join(__dirname, './');
+// var staticPath = path.join(__dirname, '/Client/build');
+var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
   
 app.set('port', process.env.PORT || 8080);
