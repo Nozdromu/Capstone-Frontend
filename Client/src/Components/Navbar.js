@@ -28,20 +28,16 @@ function MyNavbar() {
                             style={{ maxHeight: '100px' }}
                             navbarScroll
                         >
-                            <Nav.Link href="#action1">SaleNearYou</Nav.Link>
-                            {/* <Nav.Link href="#action2">Account</Nav.Link> */}
-                            <NavDropdown title="Account" id="navbarScrollingDropdown">
+                            <Nav.Link >SaleNearYou</Nav.Link>
+                            <Nav.Link onClick={handleShow}>Login</Nav.Link>
+                            {/* <NavDropdown title="Account" id="navbarScrollingDropdown">
                                 <NavDropdown.Item href="#action3">
                                     login
                                 </NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleShow}>
                                     register
                                 </NavDropdown.Item>
-                                {/* <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Something else here
-                            </NavDropdown.Item> */}
-                            </NavDropdown>
+                            </NavDropdown> */}
                         </Nav>
                         <Form className="d-flex">
                             <Form.Control

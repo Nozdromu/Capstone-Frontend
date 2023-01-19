@@ -38,10 +38,16 @@ var allitem;
 // var staticPath = path.join(__dirname, '/Client/build');
 var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
-  
+app.set('trust proxy', 1)
 app.set('port', process.env.PORT || 8080);
-
-
+var sess = {
+  secret: 'keyboard cat',
+  credentials: true,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}
+app.use(session(sess))
 ///////////////////////////////////////////////////////////////////////////
 // api write here
 
@@ -55,6 +61,7 @@ app.get('/getdata',(req,res)=>{
 
 app.get('/signup',(req,res)=>{
   console.log(req.query);
+  console.log(req.session);
   res.send(req.query)
   // con.query("call adduser(?,?)",[],(err,result,fields)=>{
   //   res.send(result[0]);
