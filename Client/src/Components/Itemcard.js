@@ -1,7 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import React, { Component } from 'react'
-import { render } from '@testing-library/react';
 import Itemdetial from './Itemdetial';
 
 

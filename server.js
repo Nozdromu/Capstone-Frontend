@@ -7,6 +7,7 @@ var path = require('path');
 var express = require('express');
 var mysql = require('mysql');
 var sqlconfig=require('./sqlconfig.json');
+var cookieSession = require('cookie-session')
 var session = require('express-session')
 
 
@@ -40,14 +41,21 @@ var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
 app.set('trust proxy', 1)
 app.set('port', process.env.PORT || 8080);
-var sess = {
-  secret: 'keyboard cat',
-  credentials: true,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {}
-}
-app.use(session(sess))
+// var sess = {
+//   secret: 'keyboard cat',
+//   credentials: true,
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {}
+// }
+// app.use(session(sess))
+app.use(cookieSession({
+  name: 'session',
+  keys: ['aaa'],
+
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 ///////////////////////////////////////////////////////////////////////////
 // api write here
 
@@ -66,6 +74,17 @@ app.get('/signup',(req,res)=>{
   // con.query("call adduser(?,?)",[],(err,result,fields)=>{
   //   res.send(result[0]);
   // })
+})
+
+app.get('/login',(req,res)=>{
+  var result={result:false};
+  allitem[3].forEach(val=>{
+    if(val.email==req.query.email&&val.password==req.query.password){
+      result.result=true;
+      result.user=val;
+    }
+  })
+  res.send(result);
 })
 
 var getimgcount=0;

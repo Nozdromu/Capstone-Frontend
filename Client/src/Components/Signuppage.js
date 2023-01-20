@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import Cookies from 'js-cookie'
+import User from './User';
 
 function Signup(props) {
   const emailInput = useRef(null);
@@ -14,11 +16,29 @@ function Signup(props) {
       email: emailInput.current.value,
       password: psdInput.current.value
     }
-    console.log(account);
-  
-    axios.get('/signup', { params: account,withCredentials: true }).then(res => {
-      console.log(res);
-      console.log(sessionStorage);
+    console.log(User._getuser());
+    // console.log(account);
+
+    // axios.get('/signup', { params: account, withCredentials: true }).then(res => {
+    //   console.log(res);
+    //   console.log(sessionStorage);
+    // })
+  }
+
+  const handlelogin = () => {
+    var account = {
+      email: emailInput.current.value,
+      password: psdInput.current.value
+    }
+    axios.get('/login', { params: account, withCredentials: true }).then(res => {
+      if (res.data.result){
+        User._login(res.data.user);
+        props.signin();
+        props.onHide();
+      }else{
+
+      }
+
     })
   }
 
@@ -61,7 +81,7 @@ function Signup(props) {
           <Button variant="primary" onClick={handlesignup}>
             Regist now
           </Button>
-          <Button variant="primary" onClick={handlesignup}>
+          <Button variant="primary" onClick={handlelogin}>
             Submit
           </Button>
           <Button variant="secondary" onClick={props.onHide}>
