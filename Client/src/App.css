@@ -62,7 +62,7 @@ img {
 .rect-img-container::after {
   content: "";
   display: block;
-  padding-bottom: 100%;
+  /* padding-bottom: 100%; */
 }a
 
 .rect-img {
@@ -83,7 +83,7 @@ img {
   margin-bottom: 1em;
 }
 /* /////////////////////////////////// */
-.tran-container {
+.container {
   position: relative;
 }
 
@@ -115,3 +115,12 @@ img {
   transition: opacity 300ms, transform 300ms;
 }
 /* //////////////////////////////////// */
+
+
+#map-canvas{
+  position: absolute;
+  top: 100px;
+  left: 0;
+  bottom: 100px;
+  right: 0;
+}
