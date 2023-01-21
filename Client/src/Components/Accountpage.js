@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { CardImg, Container } from 'react-bootstrap';
+import { Button, CardImg, Container } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import User from './User'
@@ -31,7 +31,7 @@ function Accountpage() {
                                     <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
                                 </Col>
                             </Row>
-                            <Form.Control type="input" placeholder="Enter Frist name" />
+                            <Form.Control type="input" placeholder="Enter Frist name" value={User._getuser().firstname}/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Row className='d-flex justify-content-between'>
@@ -42,7 +42,7 @@ function Accountpage() {
                                     <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
                                 </Col>
                             </Row>
-                            <Form.Control type="input" placeholder="Enter Last name" />
+                            <Form.Control type="input" placeholder="Enter Last name" value={User._getuser().lastname}/>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -54,7 +54,7 @@ function Accountpage() {
                                     <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
                                 </Col>
                             </Row>
-                            <Form.Control type="input" placeholder="Enter email" />
+                            <Form.Control type="input" placeholder="Enter email" value={User._getuser().email}/>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -66,12 +66,12 @@ function Accountpage() {
                                     <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
                                 </Col>
                             </Row>
-                            <Form.Control type="input" placeholder="Enter Phone number" />
+                            <Form.Control type="input" placeholder="Enter Phone number" value={User._getuser().phone}/>
                         </Form.Group>
 
                     </Card.Body>
                     <Card.Footer>
-
+                    <Button>log out</Button>
                     </Card.Footer>
                 </Card>
             </Row>
