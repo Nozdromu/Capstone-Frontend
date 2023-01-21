@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Itemcard from './Itemcard';
 import axios from 'axios';
+import AllData from './Data';
 
 class Itemgrid extends Component {
   _isMounted = false;
@@ -19,6 +20,9 @@ class Itemgrid extends Component {
     this._isMounted = true;
     axios.get('/getdata').then(res => {
       if (this._isMounted) {
+        AllData.load(res);
+        console.log('AllData：')
+        console.log(AllData.list());
         var x = res.data[0].map((val) => {
           return <Col key={val.itid}><Itemcard data={val} key={val.itid} /></Col>
         })
