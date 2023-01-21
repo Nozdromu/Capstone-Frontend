@@ -13,6 +13,7 @@
     "serverInstall": "npm i",
     "clientInstall": "cd Client && npm i",
     "importforwindows": "cmd /c \"mysql -u root -p test < sql.sql\"",
+    "dumpforwindows": "cmd /c \"mysqldump -u root -p test --routines > sql.sql\"",
     "build": "cd Client && npm run build"
   },
   "author": "",
