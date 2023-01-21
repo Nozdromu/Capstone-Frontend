@@ -40,7 +40,7 @@ if (usemysql) {
     });
   })
 }else{
-  allitem=require('./alldata.json')
+  allitem=require('./alldata.json');
 }
 
 
