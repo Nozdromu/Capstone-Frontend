@@ -12,23 +12,7 @@ class Itemdetial extends Component {
         super();
         // this.state = { imagelist: [] }
     }
-    // componentWillUnmount() {
-    //     this._isMounted = false;
-    // }
-    // componentDidMount() {
-    //     this._isMounted = true
-    //     axios.get('/getimagelist', { params: { itid: this.props.data.itid } }).then(res => {
-    //         var x = res.data[0].map((val,INDEX) => {
-    //             return (
-    //                 <Carousel.Item KEY={INDEX}>
-    //                     <Image className="d-block w-100" src={val.src}></Image>
-    //                 </Carousel.Item>
-    //             )
-    //         })
 
-    //         this.setState({ imagelist: x })
-    //     })
-    // }
     render() {
 
         return (

@@ -14,25 +14,16 @@ class Itemgrid extends Component {
     this.state = { data: [], list: [] };
   }
 
-
+  createItemCard = () => {
+    var _list = AllData.item().map((val) => {
+      return <Col key={val.itid}><Itemcard data={val} key={val.itid} /></Col>
+    })
+    this.setState({list:_list,data:AllData.item()});
+  }
 
   componentDidMount() {
     this._isMounted = true;
-    axios.get('/getdata').then(res => {
-      if (this._isMounted) {
-        AllData.load(res);
-        console.log('AllData：')
-        console.log(AllData.list());
-        var x = res.data[0].map((val) => {
-          return <Col key={val.itid}><Itemcard data={val} key={val.itid} /></Col>
-        })
-        this.setState({
-          list: (x), data: res.data[0]
-        }, () => {
-          console.log(this.state);
-        })
-      }
-    })
+    AllData.addhook(this.createItemCard);
   }
 
   componentWillUnmount() {
