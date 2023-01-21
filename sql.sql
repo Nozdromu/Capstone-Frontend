@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `test`;
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: test
@@ -9,7 +7,7 @@ USE `test`;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -46,7 +44,7 @@ CREATE TABLE `addresstable` (
 
 LOCK TABLES `addresstable` WRITE;
 /*!40000 ALTER TABLE `addresstable` DISABLE KEYS */;
-INSERT INTO `addresstable` VALUES (1,'3000 Landerholm Cir SE','','Bellevue','WA','98006',1,1,'47.5839952','-122.1476725'),(2,'6835 SE COUGAR MOUTIAN WAY',NULL,'Bellevue','WA','98006',1,NULL,'47.5413731','-122.1270583'),(3,'13630 SE Allen Rd',NULL,'Bellevue','WA','98006',1,NULL,NULL,NULL);
+INSERT INTO `addresstable` VALUES (1,'3000 Landerholm Cir SE','','Bellevue','WA','98006',1,1,'47.5839952','-122.1476725'),(2,'6835 SE COUGAR MOUTIAN WAY',NULL,'Bellevue','WA','98006',1,NULL,'47.5413731','-122.1270583'),(3,'13630 SE Allen Rd',NULL,'Bellevue','WA','98006',1,NULL,'47.5736942','-122.160635');
 /*!40000 ALTER TABLE `addresstable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,7 +356,7 @@ CREATE TABLE `garagesaletable` (
 
 LOCK TABLES `garagesaletable` WRITE;
 /*!40000 ALTER TABLE `garagesaletable` DISABLE KEYS */;
-INSERT INTO `garagesaletable` VALUES (1,1,1,'2022-11-15 02:50:36','2022-11-15 02:50:36',1,'a new sale',1),(2,1,NULL,'2022-11-23 08:00:00','2022-11-24 08:00:00',2,'',NULL),(3,1,NULL,'2022-11-30 08:00:00','2022-12-02 08:00:00',3,'other test',NULL);
+INSERT INTO `garagesaletable` VALUES (1,1,1,'2022-11-15 02:50:36','2022-11-15 02:50:36',1,'a new sale',1),(2,1,2,'2022-11-23 08:00:00','2022-11-24 08:00:00',2,'',NULL),(3,1,3,'2022-11-30 08:00:00','2022-12-02 08:00:00',3,'other test',NULL);
 /*!40000 ALTER TABLE `garagesaletable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -529,7 +527,7 @@ CREATE TABLE `usertable` (
   PRIMARY KEY (`uid`),
   UNIQUE KEY `uid_UNIQUE` (`uid`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,7 +536,7 @@ CREATE TABLE `usertable` (
 
 LOCK TABLES `usertable` WRITE;
 /*!40000 ALTER TABLE `usertable` DISABLE KEYS */;
-INSERT INTO `usertable` VALUES (1,'Cary','Doe','Cary.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user123',''),(2,'Jason','Davis','Jason.Davis@gamil.com','4254254225','123456','2022-11-15 02:50:36','user124',''),(3,'Corey','Reese','Corey.Reese@gamil.com','4254254225','123456','2022-11-15 02:50:36','user125',''),(4,'Dominique','Aguirre','Dominique.Aguirre@gamil.com','4254254225','123456','2022-11-15 02:50:36','user126',''),(5,'Melissa','Rodriguez','Melissa.Rodriguez@gamil.com','4254254225','123456','2022-11-15 02:50:36','user127',''),(6,'Whitney','Green','Whitney.Green@gamil.com','4254254225','123456','2022-11-15 02:50:36','user128',''),(7,'Chase','Franklin','Franklin.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user129',''),(8,'Lauren','Tucker','Lauren.Tucker@gamil.com','4254254225','123456','2022-11-15 02:50:36','user130','');
+INSERT INTO `usertable` VALUES (1,'Cary','Doe','Cary.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user123',''),(2,'Jason','Davis','Jason.Davis@gamil.com','4254254225','123456','2022-11-15 02:50:36','user124',''),(3,'Corey','Reese','Corey.Reese@gamil.com','4254254225','123456','2022-11-15 02:50:36','user125',''),(4,'Dominique','Aguirre','Dominique.Aguirre@gamil.com','4254254225','123456','2022-11-15 02:50:36','user126',''),(5,'Melissa','Rodriguez','Melissa.Rodriguez@gamil.com','4254254225','123456','2022-11-15 02:50:36','user127',''),(6,'Whitney','Green','Whitney.Green@gamil.com','4254254225','123456','2022-11-15 02:50:36','user128',''),(7,'Chase','Franklin','Franklin.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user129',''),(8,'Lauren','Tucker','Lauren.Tucker@gamil.com','4254254225','123456','2022-11-15 02:50:36','user130',''),(9,'yilei','ding','yileiding1990@gmail.com','1234567890','123456',NULL,'yilei8888','static/src/1.jpg');
 /*!40000 ALTER TABLE `usertable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -605,13 +603,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Alldata`()
 BEGIN
-	select *  from ( select * from itemtable where itemtable.display=1) as item  left join (select itid,src,main from imagetable where main=1) as itable on item.itid=itable.itid order by item.itid desc;
+	select *  from ( select * from itemtable where itemtable.display=1) as item  left join (select itid as id,src,main from imagetable where main=1) as itable on item.itid=itable.id order by item.itid desc;
     select * from imagetable;
     select * from garagesaletable as garage left join (select*from addresstable) as address on garage.aid=address.aid;
+    select * from usertable;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -631,7 +630,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create database`()
 BEGIN
 
--- create usertable
+
 
 drop table if exists usertable;
 
@@ -658,7 +657,7 @@ insert into usertable (firstname,lastname,email,phone,password,registertime,user
 insert into usertable (firstname,lastname,email,phone,password,registertime,username,profilepicture) values ("Whitney","Green","Whitney.Green@gamil.com","4254254225","123456",NOW(),"user128","");
 insert into usertable (firstname,lastname,email,phone,password,registertime,username,profilepicture) values ("Chase","Franklin","Franklin.doe@gamil.com","4254254225","123456",NOW(),"user129","");
 insert into usertable (firstname,lastname,email,phone,password,registertime,username,profilepicture) values ("Lauren","Tucker","Lauren.Tucker@gamil.com","4254254225","123456",NOW(),"user130","");
---
+
 
 drop table if exists itemtable;
 
@@ -922,4 +921,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-16 19:57:02
+-- Dump completed on 2023-01-20 19:08:31
