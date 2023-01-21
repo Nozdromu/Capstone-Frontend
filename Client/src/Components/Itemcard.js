@@ -16,7 +16,7 @@ class Itemcard extends Component {
     render() {
         return (
             <>
-                <Card style={{ width: '18rem' }} onClick={() => this.setState({modalShow:true})}>
+                <Card  style={{ minWidth: '16rem' }} onClick={() => this.setState({modalShow:true})}>
                     <div className="rect-img-container">
                         <Card.Img className='rect-img' variant="top" src={this.props.data.src} />
                     </div>

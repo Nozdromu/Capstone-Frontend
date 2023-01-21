@@ -124,3 +124,7 @@ img {
   bottom: 100px;
   right: 0;
 }
+
+.cardbox{
+  box-sizing:content-box !important
+}
