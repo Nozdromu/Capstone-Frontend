@@ -9,6 +9,8 @@ var mysql = require('mysql');
 var sqlconfig = require('./sqlconfig.json');
 var cookieSession = require('cookie-session')
 var session = require('express-session')
+var httpProxy =require('htt')
+const { Server } = require("socket.io");
 const fs = require('fs')
 
 
@@ -54,6 +56,7 @@ var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
 app.set('trust proxy', 1)
 app.set('port', process.env.PORT || 8080);
+// app.use(cors({ origin: true , credentials :  true}));
 // var sess = {
 //   secret: 'keyboard cat',
 //   credentials: true,
@@ -126,3 +129,14 @@ app.get('/getimagelist', (req, res) => {
 var server = app.listen(app.get('port'), function () {
   console.log('listening');
 });
+
+// const socket = new Server(server);
+// socket.on('connection', (socket) => {
+//   console.log('a user connected');
+//   console.log(socket);
+//   socket.sockets.emit("connection",'success');
+// });
+// socket.sockets.emit("hi",'hello');
+// socket.on('success',(socket)=>{
+//   console.log(socket);
+// })
