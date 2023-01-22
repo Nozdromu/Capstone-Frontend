@@ -9,11 +9,15 @@ var mysql = require('mysql');
 var sqlconfig = require('./sqlconfig.json');
 var cookieSession = require('cookie-session')
 var session = require('express-session')
-var httpProxy =require('htt')
-const { Server } = require("socket.io");
+var cors = require('cors')
+var httpProxy =require('http-proxy')
+
+var proxy = require('express-http-proxy');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require('fs')
 
-
+const httpserver = require('http').createServer(app);
+const io = require("socket.io")(httpserver,{path:'/chat/'});
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -54,9 +58,13 @@ if (usemysql) {
 // var staticPath = path.join(__dirname, '/Client/build');
 var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
-app.set('trust proxy', 1)
+// app.set('trust proxy', 1)
 app.set('port', process.env.PORT || 8080);
-// app.use(cors({ origin: true , credentials :  true}));
+app.use(cors());
+// app.use('/api', createProxyMiddleware({ target: 'http://localhost:8080', changeOrigin: true,ws:true,logLevel:'debug' }));
+
+// app.use('/localhost:3000',proxy('/localhost:8080'));
+// 
 // var sess = {
 //   secret: 'keyboard cat',
 //   credentials: true,
@@ -126,17 +134,22 @@ app.get('/getimagelist', (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////
 
+
+
+// const socket = new Server(io,{cors: {
+//   // origin: ['*'],
+//   path:'/chat/'
+// }});
+io.on('connection', socket => {
+  console.log('a user connected');
+  console.log(socket);
+  // socket.sockets.emit("connection",'success');
+});
+io.sockets.emit("hi",'hello');
+io.on('success',(socket)=>{
+  console.log(socket);
+})
+
 var server = app.listen(app.get('port'), function () {
   console.log('listening');
 });
-
-// const socket = new Server(server);
-// socket.on('connection', (socket) => {
-//   console.log('a user connected');
-//   console.log(socket);
-//   socket.sockets.emit("connection",'success');
-// });
-// socket.sockets.emit("hi",'hello');
-// socket.on('success',(socket)=>{
-//   console.log(socket);
-// })
