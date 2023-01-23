@@ -5,23 +5,39 @@
 
 var path = require('path');
 var express = require('express');
+const socketIo = require("socket.io")
+const http = require('http')
 var mysql = require('mysql');
 var sqlconfig = require('./sqlconfig.json');
-var cookieSession = require('cookie-session')
-var session = require('express-session')
-var cors = require('cors')
-var httpProxy =require('http-proxy')
-
-var proxy = require('express-http-proxy');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require('fs')
 
-const httpserver = require('http').createServer(app);
-const io = require("socket.io")(httpserver,{path:'/chat/'});
+// var httpProxy =require('http-proxy')
+var cors = require('cors')
+// var proxy = require('express-http-proxy');
+// const { createProxyMiddleware } = require('http-proxy-middleware');
 
 ////////////////////////////////////////////////////////////////////////////
 
 var app = express();
+var server = http.createServer(app);
+app.use(cors())
+var io = socketIo(server, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+})
+var client;
+io.on('connection', (socket) => {
+  console.log("connected");
+  client=socket;
+  socket.emit('success','a')
+  client.on('success',(data)=>{
+  console.log('data from success');
+  console.log(data);
+})
+});
+
+io.sockets.emit("hi", 'hello');
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -45,8 +61,8 @@ if (usemysql) {
       element.list = result[1].filter(e => e.itid == element.itid);
     });
   })
-}else{
-  allitem=require('./alldata.json');
+} else {
+  allitem = require('./alldata.json');
 }
 
 
@@ -55,31 +71,17 @@ if (usemysql) {
 ////////////////////////////////////////////////////////////////////////////
 
 
-// var staticPath = path.join(__dirname, '/Client/build');
+ //var staticPath = path.join(__dirname, '/Client/build');
 var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
 // app.set('trust proxy', 1)
 app.set('port', process.env.PORT || 8080);
-app.use(cors());
+// app.use(cors());
 // app.use('/api', createProxyMiddleware({ target: 'http://localhost:8080', changeOrigin: true,ws:true,logLevel:'debug' }));
 
 // app.use('/localhost:3000',proxy('/localhost:8080'));
 // 
-// var sess = {
-//   secret: 'keyboard cat',
-//   credentials: true,
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {}
-// }
-// app.use(session(sess))
-app.use(cookieSession({
-  name: 'session',
-  keys: ['aaa'],
 
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
 ///////////////////////////////////////////////////////////////////////////
 // api write here
 
@@ -140,16 +142,8 @@ app.get('/getimagelist', (req, res) => {
 //   // origin: ['*'],
 //   path:'/chat/'
 // }});
-io.on('connection', socket => {
-  console.log('a user connected');
-  console.log(socket);
-  // socket.sockets.emit("connection",'success');
-});
-io.sockets.emit("hi",'hello');
-io.on('success',(socket)=>{
-  console.log(socket);
-})
 
-var server = app.listen(app.get('port'), function () {
+
+server.listen(app.get('port'), function () {
   console.log('listening');
 });

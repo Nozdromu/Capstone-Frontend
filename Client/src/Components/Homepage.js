@@ -11,6 +11,7 @@ import Home from './Itemgrid'
 import About from './Accountpage'
 import Navbar from './Navbar'
 import Map from './Map'
+import Chat from './Chat'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
@@ -18,7 +19,8 @@ import '../App.css'
 const routes = [
     { path: '/', name: 'Home', element: <Home />, nodeRef: createRef() },
     { path: '/account', name: 'Account', element: <About />, nodeRef: createRef() },
-    { path: '/map', name: 'Map', element: <Map />, nodeRef: createRef() }
+    { path: '/map', name: 'Map', element: <Map />, nodeRef: createRef() },
+    { path: '/chat', name: 'Chat', element: <Chat />, nodeRef: createRef() }
 ]
 
 const router = createBrowserRouter([

@@ -56,6 +56,12 @@ function MyNavbar(props) {
                         to={props.routes[2].path}
                         className={({ isActive }) => (isActive ? 'active' : undefined)}
                         end>Map</Nav.Link>
+                        <Nav.Link
+                        key={props.routes[3].path}
+                        as={NavLink}
+                        to={props.routes[3].path}
+                        className={({ isActive }) => (isActive ? 'active' : undefined)}
+                        end>Chat</Nav.Link>
 
                             {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + sessionStorage.getItem('firstname')} id="navbarScrollingDropdown"><NavDropdown.Item ><Nav.Link
                         key={props.routes[1].path}
