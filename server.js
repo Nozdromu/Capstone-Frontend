@@ -28,13 +28,14 @@ var io = socketIo(server, {
 })
 var client;
 io.on('connection', (socket) => {
-  console.log("connected");
-  client=socket;
-  socket.emit('success','a')
-  client.on('chat',(data)=>{
+  console.log("connected: " + socket.id);
+  socket.join('room1');
+  socket.on('chat', (data) => {
     console.log(data);
-    socket.emit('chatback','from server'+data);
-})
+    socket.to('room1').emit('chat', data);
+  })
+
+
 });
 
 io.sockets.emit("hi", 'hello');
@@ -71,7 +72,7 @@ if (usemysql) {
 ////////////////////////////////////////////////////////////////////////////
 
 
- //var staticPath = path.join(__dirname, '/Client/build');
+//var staticPath = path.join(__dirname, '/Client/build');
 var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
 // app.set('trust proxy', 1)

@@ -1,33 +1,43 @@
 import { io, Manager, Socket } from "socket.io-client"
-import { useCallback,useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 var BasicIO = (() => {
-    var hookcount=0;
+    var hookcount = 0;
     var done = false;
     const socket = io('http://localhost:8080', {
         autoConnect: true
     });
     const bundled = [];
+
     const setup = (hook) => {
+        if (bundled.length > 10)
+            bundled = [];
         bundled.push(hook);
+        hookcount = bundled.length - 1;
+        console.log(bundled.length);
     }
-    socket.on('chatback', (data) => {
+
+    const proseecHook = (data) => {
+
+        bundled[hookcount].call(null, data);
+
+    }
+    socket.on('chat', (data) => {
         console.log(data);
-        bundled[hookcount].apply();
-        hookcount++;
+        proseecHook(data);
     })
 
     var send = (message) => {
         socket.emit('chat', message);
-    }   
-    var getdone=()=>{
+    }
+    var getdone = () => {
         return done;
     }
 
     return {
         issetup: getdone,
         sendMessage: send,
-        setrecive: setup
+        setrecive: setup,
     }
 })()
 
