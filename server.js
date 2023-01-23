@@ -31,9 +31,9 @@ io.on('connection', (socket) => {
   console.log("connected");
   client=socket;
   socket.emit('success','a')
-  client.on('success',(data)=>{
-  console.log('data from success');
-  console.log(data);
+  client.on('chat',(data)=>{
+    console.log(data);
+    socket.emit('chatback','from server'+data);
 })
 });
 
