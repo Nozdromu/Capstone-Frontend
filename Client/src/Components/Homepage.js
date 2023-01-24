@@ -6,21 +6,25 @@ import {
     useOutlet,
 } from 'react-router-dom'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
-import { Container} from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import Home from './Itemgrid'
-import About from './Accountpage'
+import Account from './Accountpage'
 import Navbar from './Navbar'
 import Map from './Map'
 import Chat from './Chat'
+import Staticpage from './StaticPage'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
 
+const pages=Staticpage.pages()
+    
+
 const routes = [
-    { path: '/', name: 'Home', element: <Home />, nodeRef: createRef() },
-    { path: '/account', name: 'Account', element: <About />, nodeRef: createRef() },
-    { path: '/map', name: 'Map', element: <Map />, nodeRef: createRef() },
-    { path: '/chat', name: 'Chat', element: <Chat />, nodeRef: createRef() }
+    { path: '/', name: 'Home', element: pages.home, nodeRef: createRef() },
+    { path: '/account', name: 'Account', element: pages.account, nodeRef: createRef() },
+    { path: '/map', name: 'Map', element: pages.map, nodeRef: createRef() },
+    { path: '/chat', name: 'Chat', element: pages.chat, nodeRef: createRef() }
 ]
 
 const router = createBrowserRouter([
