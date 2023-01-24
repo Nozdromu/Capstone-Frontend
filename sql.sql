@@ -44,7 +44,7 @@ CREATE TABLE `addresstable` (
 
 LOCK TABLES `addresstable` WRITE;
 /*!40000 ALTER TABLE `addresstable` DISABLE KEYS */;
-INSERT INTO `addresstable` VALUES (1,'3000 Landerholm Cir SE','','Bellevue','WA','98006',1,1,'47.5839952','-122.1476725'),(2,'6835 SE COUGAR MOUTIAN WAY',NULL,'Bellevue','WA','98006',1,NULL,'47.5413731','-122.1270583'),(3,'13630 SE Allen Rd',NULL,'Bellevue','WA','98006',1,NULL,'47.5736942','-122.160635');
+INSERT INTO `addresstable` VALUES (1,'3000 Landerholm Cir SE','','Bellevue','WA','98006',9,1,'47.5839952','-122.1476725'),(2,'6835 SE COUGAR MOUTIAN WAY',NULL,'Bellevue','WA','98006',9,NULL,'47.5413731','-122.1270583'),(3,'13630 SE Allen Rd',NULL,'Bellevue','WA','98006',9,NULL,'47.5736942','-122.160635');
 /*!40000 ALTER TABLE `addresstable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +356,7 @@ CREATE TABLE `garagesaletable` (
 
 LOCK TABLES `garagesaletable` WRITE;
 /*!40000 ALTER TABLE `garagesaletable` DISABLE KEYS */;
-INSERT INTO `garagesaletable` VALUES (1,1,1,'2022-11-15 02:50:36','2022-11-15 02:50:36',1,'a new sale',1),(2,1,2,'2022-11-23 08:00:00','2022-11-24 08:00:00',2,'',NULL),(3,1,3,'2022-11-30 08:00:00','2022-12-02 08:00:00',3,'other test',NULL);
+INSERT INTO `garagesaletable` VALUES (1,9,1,'2022-11-15 02:50:36','2022-11-15 02:50:36',1,'a new sale',1),(2,9,2,'2022-11-23 08:00:00','2022-11-24 08:00:00',2,'',NULL),(3,9,3,'2022-11-30 08:00:00','2022-12-02 08:00:00',3,'other test',NULL);
 /*!40000 ALTER TABLE `garagesaletable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -921,4 +921,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-20 19:08:31
+-- Dump completed on 2023-01-24 12:20:16
