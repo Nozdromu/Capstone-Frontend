@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import axios from 'axios'
+import User from './User'
 
 var AllData = (function () {
 
@@ -18,8 +19,14 @@ var AllData = (function () {
 
 
     var _load = (val) => {
-        item = val.data[0];
-        list = val.data[2];
+        item = val.data.data[0];
+        list = val.data.data[2];
+        if(val.data.islogin){
+            User._login(val.data.user);
+        }else{
+            User._setguest(val.data.guestuser);
+        }
+        
         _isLoaded = true;
         proseecHook();
     }

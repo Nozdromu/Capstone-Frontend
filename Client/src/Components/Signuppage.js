@@ -30,7 +30,7 @@ function Signup(props) {
       email: emailInput.current.value,
       password: psdInput.current.value
     }
-    axios.get('/login', { params: account, withCredentials: true }).then(res => {
+    axios.get('/login', { params: account}).then(res => {
       if (res.data.result){
         User._login(res.data.user);
         props.signin();

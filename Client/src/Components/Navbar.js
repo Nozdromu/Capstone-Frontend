@@ -9,11 +9,12 @@ import Signup from './Signuppage'
 import User from './User';
 import {
     NavLink
-  } from 'react-router-dom'
-  import 'bootstrap/dist/css/bootstrap.min.css'
+} from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import axios from 'axios';
 
 function MyNavbar(props) {
-    const [login, setlogin] = useState(sessionStorage.getItem('islogin') == 'true' ? true : false);
+    const [login, setlogin] = useState(User._islogin);
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
@@ -24,14 +25,23 @@ function MyNavbar(props) {
     }
     const handleShow = () => setShow(true);
     const logout = () => {
-        User._logout();
-        setlogin(false);
+        console.log('start logout');
+        axios.get('/logout').then((data) => {
+            console.log(data)
+            if (data.data.result) {
+                User._logout();
+                setlogin(false);
+            } else {
+                console.log('something wrong')
+            }
+
+        })
+
     }
 
-    var display;
-    (function () {
-        User._load();
-    })()
+    // (function () {
+    //     User._load();
+    // })()
     return (
 
         <>
@@ -51,24 +61,28 @@ function MyNavbar(props) {
                             navbarScroll
                         >
                             <Nav.Link
-                        key={props.routes[2].path}
-                        as={NavLink}
-                        to={props.routes[2].path}
-                        className={({ isActive }) => (isActive ? 'active' : undefined)}
-                        end>Map</Nav.Link>
-                        <Nav.Link
-                        key={props.routes[3].path}
-                        as={NavLink}
-                        to={props.routes[3].path}
-                        className={({ isActive }) => (isActive ? 'active' : undefined)}
-                        end>Chat</Nav.Link>
+                                key={props.routes[2].path}
+                                as={NavLink}
+                                to={props.routes[2].path}
+                                className={({ isActive }) => (isActive ? 'active' : undefined)}
+                                end>Map</Nav.Link>
 
-                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + sessionStorage.getItem('firstname')} id="navbarScrollingDropdown"><NavDropdown.Item ><Nav.Link
-                        key={props.routes[1].path}
-                        as={NavLink}
-                        to={props.routes[1].path}
-                        className={({ isActive }) => (isActive ? 'active' : undefined)}
-                        end>View Account</Nav.Link></NavDropdown.Item><NavDropdown.Item onClick={logout}>Log out</NavDropdown.Item></NavDropdown>}
+                            <Nav.Link
+                                key={props.routes[3].path}
+                                as={NavLink}
+                                to={props.routes[3].path}
+                                className={({ isActive }) => (isActive ? 'active' : undefined)}
+                                end>Chat</Nav.Link>
+
+                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + User._getuser().firstname} id="navbarScrollingDropdown"><NavDropdown.Item ><Nav.Link
+                                key={props.routes[1].path}
+                                as={NavLink}
+                                to={props.routes[1].path}
+                                className={({ isActive }) => (isActive ? 'active' : undefined)}
+                                end>View Account</Nav.Link>
+                            </NavDropdown.Item>
+                                <NavDropdown.Item onClick={logout}>Log out</NavDropdown.Item>
+                            </NavDropdown>}
 
                         </Nav>
                         <Form className="d-flex">

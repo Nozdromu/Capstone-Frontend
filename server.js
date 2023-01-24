@@ -3,39 +3,55 @@
 ///////////////////////////////////////////////////////////////////////////
 // requires
 
-var path = require('path');
-var express = require('express');
+const path = require('path');
+const express = require('express');
 const socketIo = require("socket.io")
 const http = require('http')
-var mysql = require('mysql');
-var sqlconfig = require('./sqlconfig.json');
+const mysql = require('mysql');
+const cors = require('cors')
 const fs = require('fs')
+const session = require('express-session')
 
-// var httpProxy =require('http-proxy')
-var cors = require('cors')
-// var proxy = require('express-http-proxy');
-// const { createProxyMiddleware } = require('http-proxy-middleware');
+const sqlconfig = require('./sqlconfig.json');
+
+
+////////////////////////////////////////////////////////////////////////////
+
+var sessionsecret = '12345678';
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 
 var app = express();
 var server = http.createServer(app);
 app.use(cors())
+app.use(session({
+  secret: sessionsecret,
+  saveUninitialized: true,
+  resave: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 60 * 60 * 1000,
+  }
+}))
+
+
+
+////////////////////////////////////////////////////////////////////////////
 var io = socketIo(server, {
   cors: {
     origin: 'http://localhost:3000'
   }
 })
-var client;
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
+  console.log(socket);
   socket.join('room1');
   socket.on('chat', (data) => {
     console.log(data);
     socket.to('room1').emit('chat', data);
   })
-
-
 });
 
 io.sockets.emit("hi", 'hello');
@@ -46,7 +62,7 @@ io.sockets.emit("hi", 'hello');
 var allitem;
 var con;
 
-var usemysql = false;
+var usemysql = true;
 
 if (usemysql) {
   con = mysql.createConnection(sqlconfig);
@@ -75,13 +91,16 @@ if (usemysql) {
 //var staticPath = path.join(__dirname, '/Client/build');
 var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
-// app.set('trust proxy', 1)
 app.set('port', process.env.PORT || 8080);
-// app.use(cors());
-// app.use('/api', createProxyMiddleware({ target: 'http://localhost:8080', changeOrigin: true,ws:true,logLevel:'debug' }));
+app.use((req, res, next) => {
+  console.log(req.session);
+  next();
+})
 
-// app.use('/localhost:3000',proxy('/localhost:8080'));
-// 
+/////////////////////////////////////////////////////////////////////////
+
+var user = [];
+
 
 ///////////////////////////////////////////////////////////////////////////
 // api write here
@@ -96,13 +115,45 @@ app.get('/savedatatojson', (req, res) => {
   })
 })
 
-app.post("/post", (req, res) => {
-  console.log("Connected to React");
-});
 
 app.get('/getdata', (req, res) => {
-  res.send(allitem)
+  var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
+  var x;
+  if (req.session.user == undefined) {
+    x = { id: user.length, username: 'guest' + user.length, type: 0, socketid: '' };
+    result.guestuser = x;
+    user.push(x);
+  } else {
+    result.islogin = true;
+    result.user = req.session.user;
+  }
+  res.send(result)
 })
+
+app.get('/login', (req, res) => {
+  var result = { result: false, user: {} };
+  allitem[3].forEach(user => {
+    if (user.email == req.query.email && user.password == req.query.password) {
+      req.session.user = user;
+      result.result = true;
+      result.user = {
+        uid: user.uid,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        phone: user.phone,
+        img: user.profilepicture
+      }
+    }
+  })
+  res.send(result);
+})
+
+app.get('/socketid', (req, res) => {
+  req.session.user.socketid = req.query.socketid;
+  res.send({ result: true });
+})
+
 
 app.get('/signup', (req, res) => {
   console.log(req.query);
@@ -113,16 +164,12 @@ app.get('/signup', (req, res) => {
   // })
 })
 
-app.get('/login', (req, res) => {
-  var result = { result: false };
-  allitem[3].forEach(val => {
-    if (val.email == req.query.email && val.password == req.query.password) {
-      result.result = true;
-      result.user = val;
-    }
-  })
-  res.send(result);
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.send({ result: true });
 })
+
+
 
 var getimgcount = 0;
 app.get('/getimagelist', (req, res) => {
