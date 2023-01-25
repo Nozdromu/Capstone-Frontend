@@ -1,5 +1,6 @@
 import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "react-bootstrap";
 import { useState, useRef, useEffect, useCallback } from 'react'
+import Chatlobby from './Chatlobby'
 import myio from './socketIO'
 import Chat from './Chat';
 import User from './User'
@@ -17,13 +18,16 @@ function ChatApp(props) {
     var [right, setright] = useState(0);
     var textbox = useRef(null);
     var Socket = myio.socket();
-
+    var room='room1';
     // Socket.on('connect',()=>{
     //     console.log(Socket);
     //     Socket.emit('passuser',User._islogin()?User._getuser():User._getguest());
     // })
+    Socket.on('login',(data)=>{
+        console.log(data);
+    })
     Socket.on('chat', (data) => {
-        var x = [<Row key={right}><a style={{ 'textAlign': 'left', float: 'left' }} className=' text-start'>{data.user + ': ' + data.msg}</a></Row>]
+        var x = [<Row key={right}><a style={{ 'textAlign': 'left', float: 'left' }} className=' text-start'>{data.user + ': ' + data.message}</a></Row>]
         setChatlist(chatlist.concat(x))
         setright(right + 1);
     })
@@ -32,7 +36,7 @@ function ChatApp(props) {
         var x = [<Row key={right}><a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>{'You: ' + textbox.current.value}</a></Row>]
         setChatlist(chatlist.concat(x))
         setright(right + 1);
-        Socket.emit('chat', { user: User._getguest().username, msg: textbox.current.value });
+        Socket.emit('chat', { user: User._getguest().username,room:room, message: textbox.current.value });
     }
 
 
@@ -78,6 +82,7 @@ function ChatApp(props) {
                     <FormGroup><Row><Col><Form.Control type="input" placeholder="Enter Here" ref={textbox} /></Col><Col xs md lg="2"><Button onClick={handleRightchat}>submit</Button></Col></Row></FormGroup>
                 </Card.Footer>
             </Card>
+            <Chatlobby></Chatlobby>
         </Container>
 
     )

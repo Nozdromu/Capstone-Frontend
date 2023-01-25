@@ -44,26 +44,38 @@ var io = socketIo(server, {
     origin: 'http://localhost:3000'
   }
 })
+var _user=[];
+
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
-  console.log(socket);
   // socket.on('createroom',())
   socket.on('passuser',(data)=>{
+    
     if(data.type==0){
       loginUser.guest[data.username].socketid=socket;
+      _user.push(loginUser.guest[data.username]);
+      socket.to('lobby').emit('login',{type:0,username:data.username})
     }else if(data.type==1){
       loginUser.user[data.uid].socketid=socket;
+      _user.push(loginUser.guest[data.username]);
+      socket.to('lobby').emit('login',{type:1,username:data.uid})
     }
     console.log(loginUser);
   })
+  socket.join('lobby');
   socket.join('room1');
   socket.on('chat', (data) => {
     console.log(data);
-    socket.to('room1').emit('chat', data);
+    socket.to(data.room).emit('chat', data);
   })
 });
 
-io.sockets.emit("hi", 'hello');
+var joinroom=(main_socket,guest_socket)=>{
+  var room=main_socket.id+guest_socket.id;
+  main_socket.join(room);
+  guest_socket.join(room);
+  return room;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -188,7 +200,10 @@ app.get('/logout', (req, res) => {
   res.send({ result: true });
 })
 
-
+app.get('/startchat',(req,res)=>{
+    result={result:false,room:''};
+    
+})
 
 var getimgcount = 0;
 app.get('/getimagelist', (req, res) => {
