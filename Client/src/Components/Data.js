@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios'
 import User from './User'
+import socket from './socketIO'
 
 var AllData = (function () {
 
@@ -26,7 +27,7 @@ var AllData = (function () {
         }else{
             User._setguest(val.data.guestuser);
         }
-        
+        socket.socket().emit('passuser',User._islogin()?User._getuser():User._getguest());
         _isLoaded = true;
         proseecHook();
     }

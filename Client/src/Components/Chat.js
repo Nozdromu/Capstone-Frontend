@@ -18,6 +18,10 @@ function ChatApp(props) {
     var textbox = useRef(null);
     var Socket = myio.socket();
 
+    // Socket.on('connect',()=>{
+    //     console.log(Socket);
+    //     Socket.emit('passuser',User._islogin()?User._getuser():User._getguest());
+    // })
     Socket.on('chat', (data) => {
         var x = [<Row key={right}><a style={{ 'textAlign': 'left', float: 'left' }} className=' text-start'>{data.user + ': ' + data.msg}</a></Row>]
         setChatlist(chatlist.concat(x))

@@ -56,7 +56,7 @@ var User = (function () {
     //     sessionStorage.setItem('img', img);
     // }
     var logout = (val) => {
-        sessionStorage.setItem('islogin', false)
+        islogin=false;
     }
     var getuser = () => {
         return {
@@ -66,7 +66,8 @@ var User = (function () {
             email: email,
             phone: phone,
             img: img,
-            list: list
+            list: list,
+            type:1
         }
     }
     var setguest = (data) => {

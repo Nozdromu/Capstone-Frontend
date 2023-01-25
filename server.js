@@ -47,6 +47,15 @@ var io = socketIo(server, {
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   console.log(socket);
+  // socket.on('createroom',())
+  socket.on('passuser',(data)=>{
+    if(data.type==0){
+      loginUser.guest[data.username].socketid=socket;
+    }else if(data.type==1){
+      loginUser.user[data.uid].socketid=socket;
+    }
+    console.log(loginUser);
+  })
   socket.join('room1');
   socket.on('chat', (data) => {
     console.log(data);
@@ -93,13 +102,20 @@ var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
 app.set('port', process.env.PORT || 8080);
 app.use((req, res, next) => {
-  console.log(req.session);
+  if(req.session.user==undefined){
+
+  }
   next();
 })
 
 /////////////////////////////////////////////////////////////////////////
 
 var user = [];
+
+var loginUser={
+  guest:{},
+  user:{}
+}
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -123,6 +139,7 @@ app.get('/getdata', (req, res) => {
     x = { id: user.length, username: 'guest' + user.length, type: 0, socketid: '' };
     result.guestuser = x;
     user.push(x);
+    loginUser.guest[x.username]=x;
   } else {
     result.islogin = true;
     result.user = req.session.user;
@@ -144,6 +161,8 @@ app.get('/login', (req, res) => {
         phone: user.phone,
         img: user.profilepicture
       }
+      loginUser.user[result.user.uid]=result.user;
+      console.log(loginUser);
     }
   })
   res.send(result);
