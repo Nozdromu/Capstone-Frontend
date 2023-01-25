@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react'
-import { GoogleMap, useJsApiLoader, useGoogleMap, Marker } from '@react-google-maps/api';
+import { useState, useCallback } from 'react'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import AllData from './Data';
 
 
@@ -38,10 +38,8 @@ function MyComponent() {
         var markelocation={};
         var markerlist = salelist.map((val) => {
             markelocation={ lat: parseFloat(val.lat), lng: parseFloat(val.lng) }
-            console.log(markelocation);
             return <Marker position={markelocation} key={val.gsid}>{val.gsid}</Marker>
         })
-        console.log(markerlist);
         setMarkers(markerlist);
     }
 
