@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import AllData from './Data';
 
-var User = (function () {
+var User = function () {
     var islogin = false;
     var guest = '';
     var uid = 0;
@@ -22,7 +22,6 @@ var User = (function () {
         img = val.profilepicture;
         islogin=true;
         getlist();
-        // setsession();
 
         console.log(list);
     }
@@ -34,27 +33,6 @@ var User = (function () {
             }
         })
     }
-    // var loadsession = () => {
-    //     if (sessionStorage.islogin) {
-    //         uid = parseInt(sessionStorage.getItem('uid'));
-    //         firstname = sessionStorage.getItem('firstname');
-    //         lastname = sessionStorage.getItem('lastname');
-    //         email = sessionStorage.getItem('email');
-    //         phone = sessionStorage.getItem('phone');
-    //         img = sessionStorage.getItem('img')
-    //         getlist();
-    //     }
-
-    // }
-    // var setsession = () => {
-    //     sessionStorage.setItem('islogin', true)
-    //     sessionStorage.setItem('uid', uid);
-    //     sessionStorage.setItem('firstname', firstname);
-    //     sessionStorage.setItem('lastname', lastname);
-    //     sessionStorage.setItem('email', email);
-    //     sessionStorage.setItem('phone', phone);
-    //     sessionStorage.setItem('img', img);
-    // }
     var logout = (val) => {
         islogin=false;
     }
@@ -80,7 +58,6 @@ var User = (function () {
     var getislogin=()=>{
         return islogin;
     }
-
     return {
         _login: login,
         _logout: logout,
@@ -89,6 +66,6 @@ var User = (function () {
         _getguest: getguest,
         _islogin: getislogin
     };
-})()
+}
 
 export default User;

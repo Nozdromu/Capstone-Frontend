@@ -44,21 +44,43 @@ var io = socketIo(server, {
     origin: 'http://localhost:3000'
   }
 })
-var _user=[];
+var _user = [];
+
+var _u = () => {
+  var id = 0
+  var ulist = [];
+  var uobject = {}
+  var u = {
+    type: 0,
+    username: '',
+    userinfo: {
+      firstname: '',
+      lastname: '',
+      email: '',
+      phone: '',
+      pic: ''
+    },
+    socket: {},
+  }
+  var greateuser = (type, info) => {
+
+  }
+}
+
+
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   // socket.on('createroom',())
-  socket.on('passuser',(data)=>{
-    
-    if(data.type==0){
-      loginUser.guest[data.username].socketid=socket;
+  socket.on('passuser', (data) => {
+    if (data.type == 0) {
+      loginUser.guest[data.username].socketid = socket;
       _user.push(loginUser.guest[data.username]);
-      socket.to('lobby').emit('login',{type:0,username:data.username})
-    }else if(data.type==1){
-      loginUser.user[data.uid].socketid=socket;
+      socket.to('lobby').emit('login', { type: 0, username: data.username })
+    } else if (data.type == 1) {
+      loginUser.user[data.uid].socketid = socket;
       _user.push(loginUser.guest[data.username]);
-      socket.to('lobby').emit('login',{type:1,username:data.uid})
+      socket.to('lobby').emit('login', { type: 1, username: data.uid })
     }
     console.log(loginUser);
   })
@@ -70,8 +92,8 @@ io.on('connection', (socket) => {
   })
 });
 
-var joinroom=(main_socket,guest_socket)=>{
-  var room=main_socket.id+guest_socket.id;
+var joinroom = (main_socket, guest_socket) => {
+  var room = main_socket.id + guest_socket.id;
   main_socket.join(room);
   guest_socket.join(room);
   return room;
@@ -114,7 +136,7 @@ var staticPath = path.join(__dirname, './');
 app.use(express.static(staticPath));
 app.set('port', process.env.PORT || 8080);
 app.use((req, res, next) => {
-  if(req.session.user==undefined){
+  if (req.session.user == undefined) {
 
   }
   next();
@@ -124,9 +146,9 @@ app.use((req, res, next) => {
 
 var user = [];
 
-var loginUser={
-  guest:{},
-  user:{}
+var loginUser = {
+  guest: {},
+  user: {}
 }
 
 
@@ -151,7 +173,7 @@ app.get('/getdata', (req, res) => {
     x = { id: user.length, username: 'guest' + user.length, type: 0, socketid: '' };
     result.guestuser = x;
     user.push(x);
-    loginUser.guest[x.username]=x;
+    loginUser.guest[x.username] = x;
   } else {
     result.islogin = true;
     result.user = req.session.user;
@@ -173,7 +195,7 @@ app.get('/login', (req, res) => {
         phone: user.phone,
         img: user.profilepicture
       }
-      loginUser.user[result.user.uid]=result.user;
+      loginUser.user[result.user.uid] = result.user;
       console.log(loginUser);
     }
   })
@@ -200,9 +222,9 @@ app.get('/logout', (req, res) => {
   res.send({ result: true });
 })
 
-app.get('/startchat',(req,res)=>{
-    result={result:false,room:''};
-    
+app.get('/startchat', (req, res) => {
+  result = { result: false, room: '' };
+
 })
 
 var getimgcount = 0;

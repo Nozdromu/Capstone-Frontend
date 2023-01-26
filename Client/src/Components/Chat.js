@@ -1,14 +1,8 @@
 import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "react-bootstrap";
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef } from 'react'
 import Chatlobby from './Chatlobby'
-import myio from './socketIO'
-import Chat from './Chat';
-import User from './User'
+import AllData from './Data';
 
-
-var chatHistory = [];
-var keycount = 0;
-var ismount = false;
 
 
 
@@ -17,12 +11,10 @@ function ChatApp(props) {
     var [chatlist, setChatlist] = useState([]);
     var [right, setright] = useState(0);
     var textbox = useRef(null);
-    var Socket = myio.socket();
+    var Socket = AllData.getsocket();
     var room='room1';
-    // Socket.on('connect',()=>{
-    //     console.log(Socket);
-    //     Socket.emit('passuser',User._islogin()?User._getuser():User._getguest());
-    // })
+    var User=AllData.getUser();
+
     Socket.on('login',(data)=>{
         console.log(data);
     })

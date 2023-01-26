@@ -1,15 +1,16 @@
 
-import { useState } from 'react';
 import axios from 'axios'
 import User from './User'
-import socket from './socketIO'
+import Socket from './socketIO'
 
 var AllData = (function () {
 
     var _isLoaded = false;
     var item = {};
     var list = {};
-    var t = []
+    var t = [];
+    var user={};
+    var socket={};
     var hook = 0;
 
     if (!_isLoaded) {
@@ -22,12 +23,14 @@ var AllData = (function () {
     var _load = (val) => {
         item = val.data.data[0];
         list = val.data.data[2];
+        user=new User();
         if(val.data.islogin){
-            User._login(val.data.user);
+            user._login(val.data.user);
         }else{
-            User._setguest(val.data.guestuser);
+            user._setguest(val.data.guestuser);
         }
-        socket.socket().emit('passuser',User._islogin()?User._getuser():User._getguest());
+        socket=(new Socket()).socket();
+        socket.emit('passuser',user._islogin()?user._getuser():user._getguest());
         _isLoaded = true;
         proseecHook();
     }
@@ -56,13 +59,20 @@ var AllData = (function () {
     var isLoaded = () => {
         return _isLoaded;
     }
-
+    var getuser=()=>{
+        return user;
+    }
+    var getsocket=()=>{
+        return socket;
+    }
     return {
         item: getitem,
         list: getlist,
         load: _load,
         isLoaded: isLoaded,
-        addhook: afterupdata
+        addhook: afterupdata,
+        getUser:getuser,
+        getsocket:getsocket
     };
 })()
 

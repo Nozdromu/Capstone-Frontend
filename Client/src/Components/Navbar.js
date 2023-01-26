@@ -6,14 +6,15 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Signup from './Signuppage'
-import User from './User';
 import {
     NavLink
 } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios';
+import AllData from './Data';
 
 function MyNavbar(props) {
+    var User=AllData.getUser();
     const [login, setlogin] = useState(User._islogin);
     const [show, setShow] = useState(false);
 

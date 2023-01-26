@@ -1,12 +1,13 @@
 import { Container, Row } from "react-bootstrap";
 import { useState } from 'react'
-import socketio from './socketIO'
+import AllData from './Data';
+
 
 
 
 
 function Chatlobby() {
-    var socket = socketio.socket();
+    var socket = AllData.getsocket();
     const [userlist, setUserlist] = useState([<Row>You</Row>])
     socket.on('login', (data) => {
         var newlogin = [<Row>{data.username}</Row>];

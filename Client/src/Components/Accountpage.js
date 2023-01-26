@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Container, Tab, Tabs, Accordion } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import User from './User'
 import { Row, Col } from 'react-bootstrap';
+import AllData from './Data';
 
 
 var ListInfo = (props) => {
@@ -59,7 +59,7 @@ var ListInfo = (props) => {
                     <Form.Control type="input" placeholder="Enter Zip Code" value={props.data.zip} disabled />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Button style={{width:'100%'}}>Remove List</Button>
+                    <Button style={{ width: '100%' }}>Remove List</Button>
                 </Form.Group>
             </Accordion.Body>
         </Accordion.Item>
@@ -69,7 +69,7 @@ var ListInfo = (props) => {
 
 function Accountpage() {
     var ismount = false
-    var user = User._getuser();
+    var user =AllData.getUser()._getuser();
     const [list, setList] = useState([]);
     console.log(user);
     useEffect(() => {
@@ -161,7 +161,7 @@ function Accountpage() {
                                             </Accordion>
                                         </Col>
                                         <Col className='col-12'>
-                                            <Button style={{width:'100%'}}>Add new list</Button>
+                                            <Button style={{ width: '100%' }}>Add new list</Button>
                                         </Col>
                                     </Row>
                                 </Tab>
