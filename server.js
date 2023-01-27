@@ -106,19 +106,20 @@ var _u = function () {
 
   var load = (data) => {
     data.forEach(val => {
-      usertabel[val.uid] = val;
+      usertabel[val.email] = val;
     })
   }
   var userlogin = (_email, _password) => {
-    result = {
+    var result = {
       result: false,
       userinfo: {}
     }
     if (usertabel[_email] != undefined && usertabel[_email].password == _password) {
+      result.result=true;
       var newuser = new u();
       newuser.load(usertabel[_email]);
-      uobject[usertabel.email] = newuser;
-      result.userinfo = uobject[usertabel.email];
+      uobject[newuser.getinfo().email] = newuser;
+      result.userinfo = uobject[newuser.getinfo().email];
     }
     return result;
   }
@@ -276,7 +277,7 @@ app.get('/getdata', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  var result = { result: false, user: {} };
+  //var result = { result: false, user: {} };
   var user = alluser.userlogin(req.query.email, req.query.password);
   if (user.result) {
     var _user=user.userlogin;
@@ -301,7 +302,7 @@ app.get('/login', (req, res) => {
   //     console.log(loginUser);
   //   }
   // })
-  res.send(result);
+  res.send(user);
 })
 
 app.get('/socketid', (req, res) => {

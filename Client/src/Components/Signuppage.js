@@ -32,13 +32,14 @@ function Signup(props) {
       password: psdInput.current.value
     }
     axios.get('/login', { params: account}).then(res => {
-      if (res.data.result){
-        User._login(res.data.user);
-        props.signin();
-        props.onHide();
-      }else{
+      console.log(res.data);
+      // if (res.data.result){
+      //   User._login(res.data.user);
+      //   props.signin();
+      //   props.onHide();
+      // }else{
 
-      }
+      // }
 
     })
   }
