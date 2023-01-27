@@ -15,6 +15,7 @@ const session = require('express-session')
 const sqlconfig = require('./sqlconfig.json');
 
 
+
 ////////////////////////////////////////////////////////////////////////////
 
 var sessionsecret = '12345678';
@@ -45,25 +46,109 @@ var io = socketIo(server, {
   }
 })
 var _user = [];
-
-var _u = () => {
-  var id = 0
+//var xxx={};
+// var y='ww@www.com'
+// xxx[y]=1;
+// console.log(xxx);
+// console.log(xxx[y]);
+var _u = function () {
+  var guestid = 0;
   var ulist = [];
-  var uobject = {}
-  var u = {
-    type: 0,
-    username: '',
-    userinfo: {
-      firstname: '',
-      lastname: '',
-      email: '',
-      phone: '',
-      pic: ''
-    },
-    socket: {},
-  }
-  var greateuser = (type, info) => {
+  var uobject = {};
+  var usertabel = {};
+  var u = function () {
+    var type = 0;
+    var username = '';
+    var firstname = '';
+    var lastname = '';
+    var email = '';
+    var phone = '';
+    var pic = '';
+    var socket = {};
+    var load = (_type, data) => {
+      type = _type;
+      if (type == 1) {
+        username = data.username
+        firstname = data.firstname
+        lastname = data.lastname
+        email = data.email
+        phone = data.phone
+        pic = data.pic
+      } else {
+        username = data;
+      }
 
+    }
+
+    var setsocket=(_socket)=>{
+      socket=_socket;
+    }
+
+    var getuser = () => {
+      return {
+        type: type,
+        username: username,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        phone: phone,
+        pic: pic,
+        socket: socket,
+      }
+    }
+
+    return {
+      getinfo: getuser,
+      load: load,
+      setsocket:setsocket
+    }
+  }
+
+  var load = (data) => {
+    data.forEach(val => {
+      usertabel[val.uid] = val;
+    })
+  }
+  var userlogin = (_email, _password) => {
+    result = {
+      result: false,
+      userinfo: {}
+    }
+    if (usertabel[_email] != undefined && usertabel[_email].password == _password) {
+      var newuser = new u();
+      newuser.load(usertabel[_email]);
+      uobject[usertabel.email] = newuser;
+      result.userinfo = uobject[usertabel.email];
+    }
+    return result;
+  }
+
+  var guestlogin = () => {
+    var newuser = new u();
+    newuser.load(0, 'guest_' + guestid++);
+    uobject[newuser.getinfo().username] = newuser;
+    return uobject[newuser.getinfo().username];
+  }
+
+  var logout = (login_id) => {
+    delete uobject[login_id];
+    return true;
+  }
+
+  var getuser = () => {
+    return uobject;
+  }
+
+  var setsocket=(key,socket)=>{
+    uobject[key].setsocket(socket);
+  }
+  return {
+    load: load,
+    userlogin: userlogin,
+    guestlogin: guestlogin,
+    logout: logout,
+    getuser: getuser,
+    setsocket:setsocket
   }
 }
 
@@ -73,16 +158,18 @@ io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
-    if (data.type == 0) {
-      loginUser.guest[data.username].socketid = socket;
-      _user.push(loginUser.guest[data.username]);
-      socket.to('lobby').emit('login', { type: 0, username: data.username })
-    } else if (data.type == 1) {
-      loginUser.user[data.uid].socketid = socket;
-      _user.push(loginUser.guest[data.username]);
-      socket.to('lobby').emit('login', { type: 1, username: data.uid })
-    }
-    console.log(loginUser);
+    alluser.setsocket(data.username,socket);
+    socket.to('lobby').emit('login', { type: 0, username: data.username })
+    // if (data.type == 0) {
+    //   loginUser.guest[data.username].socketid = socket;
+    //   _user.push(loginUser.guest[data.username]);
+    //   socket.to('lobby').emit('login', { type: 0, username: data.username })
+    // } else if (data.type == 1) {
+    //   loginUser.user[data.uid].socketid = socket;
+    //   _user.push(loginUser.guest[data.username]);
+    //   socket.to('lobby').emit('login', { type: 1, username: data.uid })
+    // }
+    // console.log(loginUser);
   })
   socket.join('lobby');
   socket.join('room1');
@@ -120,6 +207,7 @@ if (usemysql) {
     allitem[0].forEach(element => {
       element.list = result[1].filter(e => e.itid == element.itid);
     });
+    alluser.load(allitem[3]);
   })
 } else {
   allitem = require('./alldata.json');
@@ -155,6 +243,10 @@ var loginUser = {
 ///////////////////////////////////////////////////////////////////////////
 // api write here
 
+var checkguest=()=>{
+
+}
+
 app.get('/savedatatojson', (req, res) => {
   fs.writeFile('alldata.json', JSON.stringify(allitem), err => {
     if (err) {
@@ -165,40 +257,50 @@ app.get('/savedatatojson', (req, res) => {
   })
 })
 
+var alluser = new _u()
+var _alluser = alluser.getuser();
 
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
   var x;
   if (req.session.user == undefined) {
-    x = { id: user.length, username: 'guest' + user.length, type: 0, socketid: '' };
+    var newguest = alluser.guestlogin()
+    x = newguest.getinfo();
     result.guestuser = x;
-    user.push(x);
-    loginUser.guest[x.username] = x;
+    req.session.guestuser=x;
   } else {
     result.islogin = true;
-    result.user = req.session.user;
+    //result.user = req.session.user;
   }
   res.send(result)
 })
 
 app.get('/login', (req, res) => {
   var result = { result: false, user: {} };
-  allitem[3].forEach(user => {
-    if (user.email == req.query.email && user.password == req.query.password) {
-      req.session.user = user;
-      result.result = true;
-      result.user = {
-        uid: user.uid,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        phone: user.phone,
-        img: user.profilepicture
-      }
-      loginUser.user[result.user.uid] = result.user;
-      console.log(loginUser);
+  var user = alluser.userlogin(req.query.email, req.query.password);
+  if (user.result) {
+    var _user=user.userlogin;
+    req.session.user=_user;
+    if(req.session.guest!=undefined){
+      alluser.logout(req.session.guest.username);
     }
-  })
+  }
+  // allitem[3].forEach(user => {
+  //   if (user.email == req.query.email && user.password == req.query.password) {
+  //     req.session.user = user;
+  //     result.result = true;
+  //     result.user = {
+  //       uid: user.uid,
+  //       firstname: user.firstname,
+  //       lastname: user.lastname,
+  //       email: user.email,
+  //       phone: user.phone,
+  //       img: user.profilepicture
+  //     }
+  //     loginUser.user[result.user.uid] = result.user;
+  //     console.log(loginUser);
+  //   }
+  // })
   res.send(result);
 })
 
