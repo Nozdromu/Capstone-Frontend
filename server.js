@@ -57,6 +57,7 @@ var _u = function () {
   var uobject = {};
   var usertabel = {};
   var u = function () {
+    var uid=-1;
     var type = 0;
     var username = '';
     var firstname = '';
@@ -84,8 +85,10 @@ var _u = function () {
       socket = _socket;
     }
 
+
     var getuser = () => {
       return {
+        uid: uid,
         type: type,
         username: username,
         firstname: firstname,
@@ -98,7 +101,8 @@ var _u = function () {
     }
 
     return {
-      data:{
+      data: {
+        uid: this.uid,
         type: this.type,
         username: this.username,
         firstname: this.firstname,
@@ -110,7 +114,8 @@ var _u = function () {
       },
       getinfo: getuser,
       load: load,
-      setsocket: setsocket
+      setsocket: setsocket,
+      socket: this.socket
     }
   }
 
@@ -127,7 +132,7 @@ var _u = function () {
     if (usertabel[_email] != undefined && usertabel[_email].password == _password) {
       result.result = true;
       var newuser = new u();
-      newuser.load(1,usertabel[_email]);
+      newuser.load(1, usertabel[_email]);
       uobject[newuser.getinfo().email] = newuser;
       result.userinfo = uobject[newuser.getinfo().email].getinfo();
     }
@@ -153,13 +158,19 @@ var _u = function () {
   var setsocket = (key, socket) => {
     uobject[key].setsocket(socket);
   }
+
+  var socket_switch = (user_key, guest_key) => {
+    uobject[user_key].setsocket(uobject[guest_key].socket);
+  }
+
   return {
     load: load,
     userlogin: userlogin,
     guestlogin: guestlogin,
     logout: logout,
     getuser: getuser,
-    setsocket: setsocket
+    setsocket: setsocket,
+    socket_switch, socket_switch
   }
 }
 
@@ -169,7 +180,8 @@ io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
-    alluser.setsocket(data.username, socket);
+    console.log()
+    alluser.setsocket(data.type == 1 ? data.email : data.chatname, socket);
     socket.to('lobby').emit('login', { type: 0, username: data.username })
     // if (data.type == 0) {
     //   loginUser.guest[data.username].socketid = socket;
@@ -281,7 +293,7 @@ app.get('/getdata', (req, res) => {
     req.session.guestuser = x;
   } else {
     result.islogin = true;
-    //result.user = req.session.user;
+    result.user = req.session.user;
   }
   res.send(result)
 })
@@ -292,8 +304,10 @@ app.get('/login', (req, res) => {
   if (user.result) {
     var _user = user.userinfo;
     req.session.user = _user;
-    if (req.session.guest != undefined) {
-      alluser.logout(req.session.guest.username);
+    if (req.session.guestuser != undefined) {
+      alluser.socket_switch(_user.email, req.session.guestuser.username)
+      alluser.logout(req.session.guestuser.username);
+      delete req.session.guestuser;
     }
   }
   // allitem[3].forEach(user => {

@@ -28,7 +28,9 @@ function ChatApp(props) {
         var x = [<Row key={right}><a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>{'You: ' + textbox.current.value}</a></Row>]
         setChatlist(chatlist.concat(x))
         setright(right + 1);
-        Socket.emit('chat', { user: User._getguest().username,room:room, message: textbox.current.value });
+        var _user=User._getuser();
+        console.log(_user)
+        Socket.emit('chat', { user: _user.chatname,room:room, message: textbox.current.value });
     }
 
 

@@ -14,7 +14,7 @@ var User = function () {
     var list = [];
 
     var login = (val) => {
-        uid = parseInt(val.uid);
+        uid = val.uid;
         firstname = val.firstname;
         lastname = val.lastname;
         email = val.email;
@@ -22,8 +22,6 @@ var User = function () {
         img = val.profilepicture;
         islogin=true;
         getlist();
-
-        console.log(list);
     }
     var getlist = () => {
         list = []
@@ -39,16 +37,19 @@ var User = function () {
     var getuser = () => {
         return {
             uid: uid,
+            chatname:firstname,
             firstname: firstname,
             lastname: lastname,
             email: email,
             phone: phone,
             img: img,
             list: list,
-            type:1
+            type:islogin?1:0
         }
     }
     var setguest = (data) => {
+        uid=-1;
+        firstname=data.username;
         guest = data;
     }
     var getguest = () => {
@@ -61,9 +62,8 @@ var User = function () {
     return {
         _login: login,
         _logout: logout,
-        _getuser: getuser,
+        _getuser: uid==-1?getguest:getuser,
         _setguest: setguest,
-        _getguest: getguest,
         _islogin: getislogin
     };
 }

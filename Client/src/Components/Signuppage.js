@@ -11,7 +11,7 @@ function Signup(props) {
   const psdInput = useRef(null);
   const _email = (<Form.Control ref={emailInput} type="email" placeholder="Enter email" />);
   const _psd = (<Form.Control ref={psdInput} type="password" placeholder="Password" />);
-  var User=AllData.getUser();
+  var User = AllData.getUser();
   const handlesignup = () => {
     var account = {
       email: emailInput.current.value,
@@ -31,15 +31,15 @@ function Signup(props) {
       email: emailInput.current.value,
       password: psdInput.current.value
     }
-    axios.get('/login', { params: account}).then(res => {
+    axios.get('/login', { params: account }).then(res => {
       console.log(res.data);
-      // if (res.data.result){
-      //   User._login(res.data.user);
-      //   props.signin();
-      //   props.onHide();
-      // }else{
+      if (res.data.result) {
+        User._login(res.data.userinfo);
+        props.signin();
+        props.onHide();
+      } else {
 
-      // }
+      }
 
     })
   }

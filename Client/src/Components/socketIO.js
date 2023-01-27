@@ -2,7 +2,7 @@ import { io } from "socket.io-client"
 
 
 var BasicIO = function(){
-    const socket = io('http://localhost:8080', {
+    const socket = io('/', {
         autoConnect: true
     });
     var getsocket=()=>{

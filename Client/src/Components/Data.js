@@ -30,7 +30,7 @@ var AllData = (function () {
             user._setguest(val.data.guestuser);
         }
         socket=(new Socket()).socket();
-        socket.emit('passuser',user._islogin()?user._getuser():user._getguest());
+        socket.emit('passuser',user._getuser());
         _isLoaded = true;
         proseecHook();
     }
