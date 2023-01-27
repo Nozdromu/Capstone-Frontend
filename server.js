@@ -80,8 +80,8 @@ var _u = function () {
 
     }
 
-    var setsocket=(_socket)=>{
-      socket=_socket;
+    var setsocket = (_socket) => {
+      socket = _socket;
     }
 
     var getuser = () => {
@@ -98,9 +98,19 @@ var _u = function () {
     }
 
     return {
+      data:{
+        type: this.type,
+        username: this.username,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        email: this.email,
+        phone: this.phone,
+        pic: this.pic,
+        socket: this.socket,
+      },
       getinfo: getuser,
       load: load,
-      setsocket:setsocket
+      setsocket: setsocket
     }
   }
 
@@ -115,11 +125,11 @@ var _u = function () {
       userinfo: {}
     }
     if (usertabel[_email] != undefined && usertabel[_email].password == _password) {
-      result.result=true;
+      result.result = true;
       var newuser = new u();
-      newuser.load(usertabel[_email]);
+      newuser.load(1,usertabel[_email]);
       uobject[newuser.getinfo().email] = newuser;
-      result.userinfo = uobject[newuser.getinfo().email];
+      result.userinfo = uobject[newuser.getinfo().email].getinfo();
     }
     return result;
   }
@@ -140,7 +150,7 @@ var _u = function () {
     return uobject;
   }
 
-  var setsocket=(key,socket)=>{
+  var setsocket = (key, socket) => {
     uobject[key].setsocket(socket);
   }
   return {
@@ -149,7 +159,7 @@ var _u = function () {
     guestlogin: guestlogin,
     logout: logout,
     getuser: getuser,
-    setsocket:setsocket
+    setsocket: setsocket
   }
 }
 
@@ -159,7 +169,7 @@ io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
-    alluser.setsocket(data.username,socket);
+    alluser.setsocket(data.username, socket);
     socket.to('lobby').emit('login', { type: 0, username: data.username })
     // if (data.type == 0) {
     //   loginUser.guest[data.username].socketid = socket;
@@ -244,7 +254,7 @@ var loginUser = {
 ///////////////////////////////////////////////////////////////////////////
 // api write here
 
-var checkguest=()=>{
+var checkguest = () => {
 
 }
 
@@ -268,7 +278,7 @@ app.get('/getdata', (req, res) => {
     var newguest = alluser.guestlogin()
     x = newguest.getinfo();
     result.guestuser = x;
-    req.session.guestuser=x;
+    req.session.guestuser = x;
   } else {
     result.islogin = true;
     //result.user = req.session.user;
@@ -280,9 +290,9 @@ app.get('/login', (req, res) => {
   //var result = { result: false, user: {} };
   var user = alluser.userlogin(req.query.email, req.query.password);
   if (user.result) {
-    var _user=user.userlogin;
-    req.session.user=_user;
-    if(req.session.guest!=undefined){
+    var _user = user.userinfo;
+    req.session.user = _user;
+    if (req.session.guest != undefined) {
       alluser.logout(req.session.guest.username);
     }
   }
