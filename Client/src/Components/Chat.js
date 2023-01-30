@@ -11,26 +11,26 @@ function ChatApp(props) {
     var [chatlist, setChatlist] = useState([]);
     var [right, setright] = useState(0);
     var textbox = useRef(null);
-    var Socket = AllData.getsocket();
     var room='room1';
     var User=AllData.getUser();
 
-    Socket.on('login',(data)=>{
+    AllData.getsocket().on('login',(data)=>{
         console.log(data);
     })
-    Socket.on('chat', (data) => {
+    AllData.getsocket().on('chat', (data) => {
         var x = [<Row key={right}><a style={{ 'textAlign': 'left', float: 'left' }} className=' text-start'>{data.user + ': ' + data.message}</a></Row>]
         setChatlist(chatlist.concat(x))
         setright(right + 1);
     })
 
     var handleRightchat = () => {
-        var x = [<Row key={right}><a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>{'You: ' + textbox.current.value}</a></Row>]
+        var _user=User._getuser();
+        var x = [<Row key={right}><a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>{'You:'+_user.chatname + textbox.current.value}</a></Row>]
         setChatlist(chatlist.concat(x))
         setright(right + 1);
-        var _user=User._getuser();
+        
         console.log(_user)
-        Socket.emit('chat', { user: _user.chatname,room:room, message: textbox.current.value });
+        AllData.getsocket().emit('chat', { user: _user.chatname,room:room, message: textbox.current.value });
     }
 
 

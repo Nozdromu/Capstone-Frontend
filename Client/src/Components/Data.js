@@ -1,7 +1,6 @@
-
+import { io } from "socket.io-client"
 import axios from 'axios'
 import User from './User'
-import Socket from './socketIO'
 
 var AllData = (function () {
 
@@ -9,8 +8,11 @@ var AllData = (function () {
     var item = {};
     var list = {};
     var t = [];
-    var user={};
-    var socket={};
+    var user=User;
+    var socket=io('/', {
+        autoConnect: true,
+    });
+    var socket_user=[];
     var hook = 0;
 
     if (!_isLoaded) {
@@ -23,13 +25,11 @@ var AllData = (function () {
     var _load = (val) => {
         item = val.data.data[0];
         list = val.data.data[2];
-        user=new User();
         if(val.data.islogin){
             user._login(val.data.user);
         }else{
             user._setguest(val.data.guestuser);
         }
-        socket=(new Socket()).socket();
         socket.emit('passuser',user._getuser());
         _isLoaded = true;
         proseecHook();
@@ -65,6 +65,9 @@ var AllData = (function () {
     var getsocket=()=>{
         return socket;
     }
+    var getchatname=()=>{
+        return user._getuser().chatname;
+    }
     return {
         item: getitem,
         list: getlist,
@@ -72,7 +75,8 @@ var AllData = (function () {
         isLoaded: isLoaded,
         addhook: afterupdata,
         getUser:getuser,
-        getsocket:getsocket
+        getsocket:getsocket,
+        getchatname:getchatname
     };
 })()
 

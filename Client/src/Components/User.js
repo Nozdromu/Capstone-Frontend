@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import AllData from './Data';
 
-var User = function () {
+var User = (function () {
     var islogin = false;
     var guest = '';
     var uid = 0;
@@ -49,7 +49,7 @@ var User = function () {
     }
     var setguest = (data) => {
         uid=-1;
-        firstname=data.username;
+        firstname=data.chatname;
         guest = data;
     }
     var getguest = () => {
@@ -66,6 +66,6 @@ var User = function () {
         _setguest: setguest,
         _islogin: getislogin
     };
-}
+})()
 
 export default User;

@@ -57,8 +57,9 @@ var _u = function () {
   var uobject = {};
   var usertabel = {};
   var u = function () {
-    var uid=-1;
+    var uid = -1;
     var type = 0;
+    var chatname = '';
     var username = '';
     var firstname = '';
     var lastname = '';
@@ -70,13 +71,14 @@ var _u = function () {
       type = _type;
       if (type == 1) {
         username = data.username
+        chatname = data.firstname
         firstname = data.firstname
         lastname = data.lastname
         email = data.email
         phone = data.phone
         pic = data.pic
       } else {
-        username = data;
+        chatname = data;
       }
 
     }
@@ -90,6 +92,7 @@ var _u = function () {
       return {
         uid: uid,
         type: type,
+        chatname: chatname,
         username: username,
         firstname: firstname,
         lastname: lastname,
@@ -100,24 +103,15 @@ var _u = function () {
       }
     }
 
+
     return {
-      data: {
-        uid: this.uid,
-        type: this.type,
-        username: this.username,
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email,
-        phone: this.phone,
-        pic: this.pic,
-        socket: this.socket,
-      },
       getinfo: getuser,
       load: load,
       setsocket: setsocket,
       socket: this.socket
     }
   }
+
 
   var load = (data) => {
     data.forEach(val => {
@@ -142,8 +136,8 @@ var _u = function () {
   var guestlogin = () => {
     var newuser = new u();
     newuser.load(0, 'guest_' + guestid++);
-    uobject[newuser.getinfo().username] = newuser;
-    return uobject[newuser.getinfo().username];
+    uobject[newuser.getinfo().chatname] = newuser;
+    return uobject[newuser.getinfo().chatname];
   }
 
   var logout = (login_id) => {
@@ -151,24 +145,50 @@ var _u = function () {
     return true;
   }
 
-  var getuser = () => {
+  var getalluser = () => {
     return uobject;
+  }
+  var getalluserinfo = () => {
+    var x = (Object.values(uobject)).map((val) => {
+      return val.getinfo();
+    })
+    return x;
+  }
+
+  var getallchatname = () => {
+    var x = (Object.values(uobject)).map((val) => {
+      return val.getinfo().chatname;
+    })
+    return x;
+  }
+
+  var getuser = (key) => {
+    return uobject[key];
+  }
+
+  var getuser_info_by_key = (key) => {
+    return getuser(key).getinfo();
   }
 
   var setsocket = (key, socket) => {
-    uobject[key].setsocket(socket);
+    getuser(key).setsocket(socket);
   }
 
   var socket_switch = (user_key, guest_key) => {
-    uobject[user_key].setsocket(uobject[guest_key].socket);
+    getuser(user_key).setsocket(getuser(guest_key).socket);
   }
+
+
 
   return {
     load: load,
     userlogin: userlogin,
     guestlogin: guestlogin,
     logout: logout,
-    getuser: getuser,
+    getalluser: getalluser,
+    getalluserinfo: getalluserinfo,
+    getallchatname: getallchatname,
+    getuserinfobykey: getuser_info_by_key,
     setsocket: setsocket,
     socket_switch, socket_switch
   }
@@ -180,19 +200,11 @@ io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
-    console.log()
     alluser.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-    socket.to('lobby').emit('login', { type: 0, username: data.username })
-    // if (data.type == 0) {
-    //   loginUser.guest[data.username].socketid = socket;
-    //   _user.push(loginUser.guest[data.username]);
-    //   socket.to('lobby').emit('login', { type: 0, username: data.username })
-    // } else if (data.type == 1) {
-    //   loginUser.user[data.uid].socketid = socket;
-    //   _user.push(loginUser.guest[data.username]);
-    //   socket.to('lobby').emit('login', { type: 1, username: data.uid })
-    // }
-    // console.log(loginUser);
+    console.log(alluser.getallchatname());
+    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname })
+    socket['user']=data.chatname;
+    console.log(socket);
   })
   socket.join('lobby');
   socket.join('room1');
@@ -200,7 +212,16 @@ io.on('connection', (socket) => {
     console.log(data);
     socket.to(data.room).emit('chat', data);
   })
+  socket.on("disconnect", (reason) => {
+    console.log(socket.id + ' is disconnected!');
+    console.log(socket);
+  });
+  socket.on('reconnect',(socket)=>{
+    console.log(socket.id+'_reconnected!');
+  })
 });
+
+
 
 var joinroom = (main_socket, guest_socket) => {
   var room = main_socket.id + guest_socket.id;
@@ -208,6 +229,7 @@ var joinroom = (main_socket, guest_socket) => {
   guest_socket.join(room);
   return room;
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -255,12 +277,7 @@ app.use((req, res, next) => {
 
 /////////////////////////////////////////////////////////////////////////
 
-var user = [];
 
-var loginUser = {
-  guest: {},
-  user: {}
-}
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -281,21 +298,31 @@ app.get('/savedatatojson', (req, res) => {
 })
 
 var alluser = new _u()
-var _alluser = alluser.getuser();
+var _alluser = alluser.getalluser();
 
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
   var x;
   if (req.session.user == undefined) {
-    var newguest = alluser.guestlogin()
-    x = newguest.getinfo();
-    result.guestuser = x;
-    req.session.guestuser = x;
+    if (req.session.guestuser == undefined) {
+      var newguest = alluser.guestlogin()
+      x = newguest.getinfo();
+      result.guestuser = x;
+      req.session.guestuser = x;
+    }else{
+      result.guestuser=req.session.guestuser
+    }
+
   } else {
     result.islogin = true;
     result.user = req.session.user;
   }
   res.send(result)
+})
+
+app.get('/getchatuser', (req, res) => {
+  console.log('in')
+  res.send({ alluser: alluser.getallchatname() });
 })
 
 app.get('/login', (req, res) => {
@@ -305,27 +332,11 @@ app.get('/login', (req, res) => {
     var _user = user.userinfo;
     req.session.user = _user;
     if (req.session.guestuser != undefined) {
-      alluser.socket_switch(_user.email, req.session.guestuser.username)
-      alluser.logout(req.session.guestuser.username);
+      alluser.socket_switch(_user.email, req.session.guestuser.chatname)
+      alluser.logout(req.session.guestuser.chatname);
       delete req.session.guestuser;
     }
   }
-  // allitem[3].forEach(user => {
-  //   if (user.email == req.query.email && user.password == req.query.password) {
-  //     req.session.user = user;
-  //     result.result = true;
-  //     result.user = {
-  //       uid: user.uid,
-  //       firstname: user.firstname,
-  //       lastname: user.lastname,
-  //       email: user.email,
-  //       phone: user.phone,
-  //       img: user.profilepicture
-  //     }
-  //     loginUser.user[result.user.uid] = result.user;
-  //     console.log(loginUser);
-  //   }
-  // })
   res.send(user);
 })
 
