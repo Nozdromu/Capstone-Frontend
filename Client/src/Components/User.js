@@ -5,6 +5,7 @@ import AllData from './Data';
 var User = (function () {
     var islogin = false;
     var guest = '';
+    var chatname='';
     var uid = 0;
     var firstname = '';
     var lastname = '';
@@ -20,8 +21,9 @@ var User = (function () {
         email = val.email;
         phone = val.phone;
         img = val.profilepicture;
-        islogin=true;
+        islogin = true;
         getlist();
+        AllData.opensocket();
     }
     var getlist = () => {
         list = []
@@ -32,39 +34,57 @@ var User = (function () {
         })
     }
     var logout = (val) => {
-        islogin=false;
+        islogin = false;
     }
     var getuser = () => {
         return {
             uid: uid,
-            chatname:firstname,
+            chatname: firstname,
             firstname: firstname,
             lastname: lastname,
             email: email,
             phone: phone,
             img: img,
             list: list,
-            type:islogin?1:0
+            type: islogin ? 1 : 0
         }
     }
     var setguest = (data) => {
-        uid=-1;
-        firstname=data.chatname;
+        uid = -1;
+        firstname = data.chatname;
+        email = data.chatname;
+        chatname = data.chatname;
         guest = data;
     }
     var getguest = () => {
         return guest;
     }
 
-    var getislogin=()=>{
+    var getislogin = () => {
         return islogin;
+    }
+    var getchetname = () => {
+        var result = { key: '', chatname: '' }
+        if (islogin) {
+            result.key = email;
+            chatname = chatname;
+        } else {
+            if (chatname == '') {
+
+            } else {
+                result.key = chatname;
+                result.chatname = chatname;
+            }
+
+        }
     }
     return {
         _login: login,
         _logout: logout,
-        _getuser: uid==-1?getguest:getuser,
+        _getuser: uid == -1 ? getguest : getuser,
         _setguest: setguest,
-        _islogin: getislogin
+        _islogin: getislogin,
+        _getchetname:getchetname
     };
 })()
 

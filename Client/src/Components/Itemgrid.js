@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Itemcard from './Itemcard';
-import axios from 'axios';
 import AllData from './Data';
 
 class Itemgrid extends Component {
@@ -16,7 +15,7 @@ class Itemgrid extends Component {
 
   createItemCard = () => {
     var _list = AllData.item().map((val) => {
-      return <Col key={val.itid}><Itemcard data={val} key={val.itid} /></Col>
+      return <Col lg={3} key={val.itid} style={{'margin-bottom':'1em'} } ><Itemcard data={val} key={val.itid} /></Col>
     })
     this.setState({list:_list,data:AllData.item()});
   }
@@ -32,7 +31,7 @@ class Itemgrid extends Component {
 
   render() {
     return (<Container>
-      <Row style={{ gap: "1em" }} justify-content="space-evenly">
+      <Row  justify-content="space-evenly">
         {this.state.list}
       </Row>
     </Container>)

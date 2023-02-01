@@ -128,3 +128,8 @@ img {
 .cardbox{
   box-sizing:content-box !important
 }
+
+.popover{
+  max-width: 50em !important; /* Max Width of the popover (depending on the container!) */
+  min-width: 30em !important;
+}

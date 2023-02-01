@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Row, Col, Image, Carousel } from 'react-bootstrap';
-import axios from 'axios';
 
 
 

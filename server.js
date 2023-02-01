@@ -70,6 +70,7 @@ var _u = function () {
     var load = (_type, data) => {
       type = _type;
       if (type == 1) {
+        uid = data.uid;
         username = data.username
         chatname = data.firstname
         firstname = data.firstname
@@ -157,7 +158,7 @@ var _u = function () {
 
   var getallchatname = () => {
     var x = (Object.values(uobject)).map((val) => {
-      return val.getinfo().chatname;
+      return {chatname:val.getinfo().chatname,email:val.getinfo().email};
     })
     return x;
   }
@@ -178,7 +179,10 @@ var _u = function () {
     getuser(user_key).setsocket(getuser(guest_key).socket);
   }
 
-
+  var getsocket=(key)=>{
+    var user=getuser(key).getinfo();
+    return user.socket;
+  }
 
   return {
     load: load,
@@ -190,34 +194,45 @@ var _u = function () {
     getallchatname: getallchatname,
     getuserinfobykey: getuser_info_by_key,
     setsocket: setsocket,
-    socket_switch, socket_switch
+    socket_switch, socket_switch,
+    getsocket:getsocket
   }
+}
+
+
+var _server = () => {
+
 }
 
 
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
+  //console.log(socket);
+  if (socket.handshake.user != undefined)
+    alluser.setsocket(socket.handshake.user, socket);
+  console.log('///////////////////////////')
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
     alluser.setsocket(data.type == 1 ? data.email : data.chatname, socket);
     console.log(alluser.getallchatname());
-    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname })
-    socket['user']=data.chatname;
-    console.log(socket);
+    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname,email:data.email })
+    socket['user'] = data.chatname;
+    //console.log(socket);
   })
   socket.join('lobby');
-  socket.join('room1');
+   socket.join('publicroom');
   socket.on('chat', (data) => {
     console.log(data);
     socket.to(data.room).emit('chat', data);
   })
   socket.on("disconnect", (reason) => {
-    console.log(socket.id + ' is disconnected!');
-    console.log(socket);
+    //console.log(socket.id + ' is disconnected!');
   });
-  socket.on('reconnect',(socket)=>{
-    console.log(socket.id+'_reconnected!');
+  socket.on('reconnect', (socket) => {
+    //console.log(socket.id + '_reconnected!');
+    //console.log(socket);
+    //console.log('////////////////////////////')
   })
 });
 
@@ -302,16 +317,16 @@ var _alluser = alluser.getalluser();
 
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
-  var x;
+  // var x;
   if (req.session.user == undefined) {
-    if (req.session.guestuser == undefined) {
-      var newguest = alluser.guestlogin()
-      x = newguest.getinfo();
-      result.guestuser = x;
-      req.session.guestuser = x;
-    }else{
-      result.guestuser=req.session.guestuser
-    }
+    // if (req.session.guestuser == undefined) {
+    //   var newguest = alluser.guestlogin()
+    //   x = newguest.getinfo();
+    //   result.guestuser = x;
+    //   req.session.guestuser = x;
+    // } else {
+    //   result.guestuser = req.session.guestuser
+    // }
 
   } else {
     result.islogin = true;
@@ -331,11 +346,11 @@ app.get('/login', (req, res) => {
   if (user.result) {
     var _user = user.userinfo;
     req.session.user = _user;
-    if (req.session.guestuser != undefined) {
-      alluser.socket_switch(_user.email, req.session.guestuser.chatname)
-      alluser.logout(req.session.guestuser.chatname);
-      delete req.session.guestuser;
-    }
+    // if (req.session.guestuser != undefined) {
+    //   alluser.socket_switch(_user.email, req.session.guestuser.chatname)
+    //   alluser.logout(req.session.guestuser.chatname);
+    //   delete req.session.guestuser;
+    // }
   }
   res.send(user);
 })
@@ -365,6 +380,16 @@ app.get('/startchat', (req, res) => {
 
 })
 
+app.get('/testsigup', (req, res) => {
+  var result = {
+    result: true, user: {
+      user: req.query.signupinfo
+    }
+  }
+  console.log(req.query);
+  res.send(result);
+})
+
 var getimgcount = 0;
 app.get('/getimagelist', (req, res) => {
   con.query("call getitemimage(?)", [req.query.itid], function (err, result, fields) {
@@ -375,6 +400,16 @@ app.get('/getimagelist', (req, res) => {
   })
 })
 
+app.get('/create_room',(req,res)=>{
+  console.log(req.query);
+  var user1=alluser.getsocket(req.session.user.email);
+  var user2=alluser.getsocket(req.query.email);
+  user1.join(user1.id+user2.id);
+  user2.join(user1.id+user2.id);
+  var result={room:user1.id+user2.id,chatname:req.query.chatname}
+  
+  res.send(result);
+})
 
 ///////////////////////////////////////////////////////////////////////////
 

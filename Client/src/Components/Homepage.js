@@ -1,4 +1,4 @@
-import { createRef } from 'react'
+import { createRef, useState, useEffect } from 'react'
 import {
     createBrowserRouter,
     RouterProvider,
@@ -7,24 +7,23 @@ import {
 } from 'react-router-dom'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { Container } from 'react-bootstrap'
-import Home from './Itemgrid'
-import Account from './Accountpage'
 import Navbar from './Navbar'
-import Map from './Map'
-import Chat from './Chat'
 import Staticpage from './StaticPage'
+import axios from 'axios'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
+import AllData from './Data';
 
-const pages=Staticpage.pages()
-    
+
+const pages = Staticpage.pages()
+
 
 const routes = [
-    { path: '/', name: 'Home', element: pages.home, nodeRef: createRef() },
+    { path: '/', name: 'Home', element: AllData.getitemgrid(), nodeRef: createRef() },
     { path: '/account', name: 'Account', element: pages.account, nodeRef: createRef() },
     { path: '/map', name: 'Map', element: pages.map, nodeRef: createRef() },
-    { path: '/chat', name: 'Chat', element: pages.chat, nodeRef: createRef() }
+    { path: '/chat', name: 'Chat', element: AllData.getchatpage(), nodeRef: createRef() }
 ]
 
 const router = createBrowserRouter([
@@ -40,9 +39,17 @@ const router = createBrowserRouter([
 ])
 
 function Example() {
+    const [pageload, setpageload] = useState(false)
     const location = useLocation()
     const currentOutlet = useOutlet()
     const { nodeRef } = routes.find((route) => route.path === location.pathname) ?? {}
+
+
+    useEffect(() => {
+
+    })
+
+
     return (
         <>
             <Navbar routes={routes}></Navbar>

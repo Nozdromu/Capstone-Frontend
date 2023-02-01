@@ -1,6 +1,8 @@
-import { io } from "socket.io-client"
+import { io, Manager } from "socket.io-client"
 import axios from 'axios'
 import User from './User'
+import Chat from './Chat'
+import Itemgrid from './Itemgrid';
 
 var AllData = (function () {
 
@@ -8,11 +10,14 @@ var AllData = (function () {
     var item = {};
     var list = {};
     var t = [];
-    var user=User;
-    var socket=io('/', {
-        autoConnect: true,
-    });
-    var socket_user=[];
+    var user = User;
+    var socket = new io('/', {
+        autoConnect: false,
+        user: user._getuser().email
+    })
+    var socket_user = [];
+    var chatpage = <Chat socket={socket} />
+    var homepage = <Itemgrid></Itemgrid>
     var hook = 0;
 
     if (!_isLoaded) {
@@ -21,18 +26,20 @@ var AllData = (function () {
         })
     }
 
-
     var _load = (val) => {
         item = val.data.data[0];
         list = val.data.data[2];
-        if(val.data.islogin){
+        if (val.data.islogin) {
             user._login(val.data.user);
-        }else{
-            user._setguest(val.data.guestuser);
+            opensocket();
         }
-        socket.emit('passuser',user._getuser());
         _isLoaded = true;
         proseecHook();
+    }
+
+    var opensocket = () => {
+        socket.connect();
+        socket.emit('passuser', user._getuser());
     }
 
 
@@ -41,12 +48,16 @@ var AllData = (function () {
         proseecHook();
     }
 
-    var proseecHook=()=>{
+    var proseecHook = () => {
         if (_isLoaded)
             for (var i = hook; i < t.length; i++) {
                 t[i].apply();
                 hook++;
             }
+    }
+
+    var getchatpage = () => {
+        return <Chat socket={socket} />;
     }
 
     var getitem = () => {
@@ -59,14 +70,17 @@ var AllData = (function () {
     var isLoaded = () => {
         return _isLoaded;
     }
-    var getuser=()=>{
+    var getuser = () => {
         return user;
     }
-    var getsocket=()=>{
+    var getsocket = () => {
         return socket;
     }
-    var getchatname=()=>{
+    var getchatname = () => {
         return user._getuser().chatname;
+    }
+    var getitemgrid = () => {
+        return homepage;
     }
     return {
         item: getitem,
@@ -74,9 +88,12 @@ var AllData = (function () {
         load: _load,
         isLoaded: isLoaded,
         addhook: afterupdata,
-        getUser:getuser,
-        getsocket:getsocket,
-        getchatname:getchatname
+        getUser: getuser,
+        getsocket: getsocket,
+        getchatname: getchatname,
+        getchatpage, getchatpage,
+        getitemgrid, getitemgrid,
+        opensocket,opensocket
     };
 })()
 
