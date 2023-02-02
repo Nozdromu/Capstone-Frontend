@@ -1,10 +1,9 @@
-import { io, Manager } from "socket.io-client"
+import { io } from "socket.io-client"
 import axios from 'axios'
 import User from './User'
 import Chat from './Chat'
 import Itemgrid from './Itemgrid';
-
-var AllData = (function () {
+var Core = (function () {
 
     var _isLoaded = false;
     var item = {};
@@ -16,8 +15,13 @@ var AllData = (function () {
         user: user._getuser().email
     })
     var socket_user = [];
-    var chatpage = <Chat socket={socket} />
-    var homepage = <Itemgrid></Itemgrid>
+    var pages = {
+        Homepage: {path:'/',name:'Spiffo-Slist',page:<Itemgrid />},
+        Accountpage:{path:'/account',name:'Account',page:<></>} ,
+        Mappage: {path:'/map',name:'Map',page:<></>},
+        Chatpage: {path:'/chat',name:'Chat',page:<Chat socket={socket} />},
+    }
+
     var hook = 0;
 
     if (!_isLoaded) {
@@ -79,8 +83,8 @@ var AllData = (function () {
     var getchatname = () => {
         return user._getuser().chatname;
     }
-    var getitemgrid = () => {
-        return homepage;
+    var getpages = () => {
+        return pages;
     }
     return {
         item: getitem,
@@ -91,10 +95,9 @@ var AllData = (function () {
         getUser: getuser,
         getsocket: getsocket,
         getchatname: getchatname,
-        getchatpage, getchatpage,
-        getitemgrid, getitemgrid,
-        opensocket,opensocket
+        getpages:getpages,
+        opensocket, opensocket
     };
 })()
 
-export default AllData;
+export default Core;

@@ -3,15 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import Cookies from 'js-cookie'
-import AllData from './Data';
+import Core from './Core';
 
 function Signup(props) {
   const emailInput = useRef(null);
   const psdInput = useRef(null);
   const _email = (<Form.Control ref={emailInput} type="email" placeholder="Enter email" />);
   const _psd = (<Form.Control ref={psdInput} type="password" placeholder="Password" />);
-  var User = AllData.getUser();
+  var User = Core.getUser();
   const handlesignup = () => {
     var account = {
       email: emailInput.current.value,

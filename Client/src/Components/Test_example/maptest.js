@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Button, Container, Form, FormGroup } from "react-bootstrap";
 import { useRef, useState } from 'react'
-import JsonFile from './address.json'
+import JsonFile from '../address.json'
 
 function Testmap() {
     const [lat, setlat] = useState(0);

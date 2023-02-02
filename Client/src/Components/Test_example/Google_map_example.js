@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
-import { GoogleMap, useJsApiLoader, Marker,Autocomplete } from '@react-google-maps/api';
-import AllData from './Data';
+import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
+import Core from '../Data';
+import { Container } from 'react-bootstrap';
 
 
 const containerStyle = {
@@ -12,7 +13,7 @@ const containerStyle = {
 function MyComponent() {
     var [center, setCenter] = useState({ lat: -3.745, lng: -38.523 });
     var [markers, setMarkers] = useState([]);
-    var [zoom,setZoom]=useState(15);
+    var [zoom, setZoom] = useState(15);
 
     var fristime = true;
     const { isLoaded } = useJsApiLoader({
@@ -34,10 +35,10 @@ function MyComponent() {
 
 
     var updatemark = () => {
-        var salelist = AllData.list();
-        var markelocation={};
+        var salelist = Core.list();
+        var markelocation = {};
         var markerlist = salelist.map((val) => {
-            markelocation={ lat: parseFloat(val.lat), lng: parseFloat(val.lng) }
+            markelocation = { lat: parseFloat(val.lat), lng: parseFloat(val.lng) }
             return <Marker position={markelocation} key={val.gsid}>{val.gsid}</Marker>
         })
         setMarkers(markerlist);
@@ -45,11 +46,11 @@ function MyComponent() {
 
     const onLoad = useCallback(function callback(map) {
         // This is just an example of getting and using the map instance!!! don't just blindly copy!
-        
+
         setMap(map)
         navigator.geolocation.getCurrentPosition(success);
-        if (!AllData.isLoaded())
-            AllData.addhook(updatemark);
+        if (!Core.isLoaded())
+            Core.addhook(updatemark);
         else
             updatemark()
 
@@ -62,18 +63,20 @@ function MyComponent() {
 
 
     return isLoaded ? (
+        <Container>
+            <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={zoom}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+            >
+                { /* Child components, such as markers, info windows, etc. */}
+                {markers}
+                <></>
+            </GoogleMap>
+        </Container>
 
-        <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={zoom}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
-        >
-            { /* Child components, such as markers, info windows, etc. */}
-            {markers}
-            <></>
-        </GoogleMap>
     ) : <></>
 }
 

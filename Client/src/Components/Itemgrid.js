@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Itemcard from './Itemcard';
-import AllData from './Data';
+import Core from './Core';
 
 class Itemgrid extends Component {
   _isMounted = false;
@@ -14,15 +14,15 @@ class Itemgrid extends Component {
   }
 
   createItemCard = () => {
-    var _list = AllData.item().map((val) => {
-      return <Col lg={3} key={val.itid} style={{'margin-bottom':'1em'} } ><Itemcard data={val} key={val.itid} /></Col>
+    var _list = Core.item().map((val) => {
+      return <Col lg={3} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} /></Col>
     })
-    this.setState({list:_list,data:AllData.item()});
+    this.setState({ list: _list, data: Core.item() });
   }
 
   componentDidMount() {
     this._isMounted = true;
-    AllData.addhook(this.createItemCard);
+    Core.addhook(this.createItemCard);
   }
 
   componentWillUnmount() {
@@ -31,7 +31,7 @@ class Itemgrid extends Component {
 
   render() {
     return (<Container>
-      <Row  justify-content="space-evenly">
+      <Row justify-content="space-evenly">
         {this.state.list}
       </Row>
     </Container>)

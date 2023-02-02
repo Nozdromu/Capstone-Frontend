@@ -200,11 +200,6 @@ var _u = function () {
 }
 
 
-var _server = () => {
-
-}
-
-
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
@@ -252,7 +247,7 @@ var joinroom = (main_socket, guest_socket) => {
 var allitem;
 var con;
 
-var usemysql = true;
+var usemysql = false;
 
 if (usemysql) {
   con = mysql.createConnection(sqlconfig);

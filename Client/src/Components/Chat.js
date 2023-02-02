@@ -1,7 +1,7 @@
 import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "react-bootstrap";
 import { useState, useRef, useEffect } from 'react';
 import Chatlobby from "./Chatlobby";
-import AllData from './Data';
+import Core from './Core';
 import Chatwindow from './Chatwindow'
 import axios from 'axios'
 
@@ -82,7 +82,7 @@ function ChatApp(props) {
 
     var textbox = useRef(null);
     const [room, setroom] = useState('publicroom');
-    var User = AllData.getUser();
+    var User = Core.getUser();
 
 
     var changeroom = (_room) => {
@@ -121,7 +121,7 @@ function ChatApp(props) {
 
     // const onLoad = useCallback(function callback() {
     if (!User._islogin()) {
-        return (AllData.getitemgrid());
+        return (Core.getitemgrid());
     }
 
     // }, [])

@@ -7,23 +7,23 @@ import {
 } from 'react-router-dom'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { Container } from 'react-bootstrap'
-import Navbar from './Navbar'
+import Navbar from '../Navbar'
 import Staticpage from './StaticPage'
 import axios from 'axios'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
-import AllData from './Data';
+import Core from '../Data';
 
 
 const pages = Staticpage.pages()
 
 
 const routes = [
-    { path: '/', name: 'Home', element: AllData.getitemgrid(), nodeRef: createRef() },
+    { path: '/', name: 'Home', element: Core.getitemgrid(), nodeRef: createRef() },
     { path: '/account', name: 'Account', element: pages.account, nodeRef: createRef() },
     { path: '/map', name: 'Map', element: pages.map, nodeRef: createRef() },
-    { path: '/chat', name: 'Chat', element: AllData.getchatpage(), nodeRef: createRef() }
+    { path: '/chat', name: 'Chat', element: Core.getchatpage(), nodeRef: createRef() }
 ]
 
 const router = createBrowserRouter([

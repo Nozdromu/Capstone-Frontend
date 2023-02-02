@@ -4,7 +4,7 @@ import { Button, Container, Tab, Tabs, Accordion } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
-import AllData from './Data';
+import Core from '../Core';
 
 
 var ListInfo = (props) => {
@@ -69,7 +69,7 @@ var ListInfo = (props) => {
 
 function Accountpage() {
     var ismount = false
-    var user =AllData.getUser()._getuser();
+    var user =Core.getUser()._getuser();
     const [list, setList] = useState([]);
     console.log(user);
     useEffect(() => {

@@ -1,13 +1,13 @@
 import { Container, Row, ListGroup } from "react-bootstrap";
 import { useState, useEffect } from 'react'
-import AllData from './Data';
+import Core from './Core';
 import axios from "axios";
 
 
 var x = 0;
 function Chatlobby(props) {
     const [count,setcount]=useState(0);
-    const [userlist, setUserlist] = useState([<ListGroup.Item key={count}>{'You-' + AllData.getchatname()}</ListGroup.Item>])
+    const [userlist, setUserlist] = useState([<ListGroup.Item key={count}>{'You-' + Core.getchatname()}</ListGroup.Item>])
     const [ismound, setmound] = useState(false);
     const [list, setlist] = useState([]);
     
@@ -19,7 +19,7 @@ function Chatlobby(props) {
                 console.log(res);
                 setlist(res.data.alluser)
                 setUserlist(userlist.concat(res.data.alluser.map(val => {
-                    if (val.chatname != AllData.getchatname()) {
+                    if (val.chatname != Core.getchatname()) {
                         console.log(val);
                         let cc=count;
                         var c=[<ListGroup.Item  key={cc} action onClick={()=>{props.newchat({email:val.email,chatname:val.chatname})}}>{val.chatname}</ListGroup.Item>];

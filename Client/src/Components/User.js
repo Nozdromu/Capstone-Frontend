@@ -1,6 +1,4 @@
-
-import { useState } from 'react';
-import AllData from './Data';
+import Core from './Core';
 
 var User = (function () {
     var islogin = false;
@@ -23,11 +21,11 @@ var User = (function () {
         img = val.profilepicture;
         islogin = true;
         getlist();
-        AllData.opensocket();
+        Core.opensocket();
     }
     var getlist = () => {
         list = []
-        AllData.list().forEach(val => {
+        Core.list().forEach(val => {
             if (val.uid === uid) {
                 list.push(val)
             }
