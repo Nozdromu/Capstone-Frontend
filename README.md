@@ -44,6 +44,17 @@ write you component in Components folder
 
 server.js is node server. use to test api
 
+some test user account
+```
+{
+    "Cary.doe@gamil.com":"123456",
+    "Jason.Davis@gamil.com":"123456",
+    "Corey.Reese@gamil.com":"123456",
+    "Dominique.Aguirre@gamil.com":"123456",
+    "Whitney.Green@gamil.com":"123456"
+}
+```
+
 thats it.
 
 
