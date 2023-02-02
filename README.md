@@ -10,12 +10,14 @@ run npm run "importforwindows" to create mysql database and import data from dum
 7. type 'npm run installall' in the terminal when you are in the project folder.
 8. type 'npm run importforwindows' in the terminal when you are in the project folder. (if you installed mysql)
 9. create sqlconfig.json and add connection script. importforwindows commend will create a database name test
+```
 {
     "host": "localhost",
     "user": "your username example:root",
     "password": "password",
     "database": "test"
 }
+```
 10. type 'npm run test' in the terminal when you are in the project folder.
 11. the page should be run now 
 
