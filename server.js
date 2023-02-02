@@ -158,7 +158,7 @@ var _u = function () {
 
   var getallchatname = () => {
     var x = (Object.values(uobject)).map((val) => {
-      return {chatname:val.getinfo().chatname,email:val.getinfo().email};
+      return { chatname: val.getinfo().chatname, email: val.getinfo().email };
     })
     return x;
   }
@@ -179,8 +179,8 @@ var _u = function () {
     getuser(user_key).setsocket(getuser(guest_key).socket);
   }
 
-  var getsocket=(key)=>{
-    var user=getuser(key).getinfo();
+  var getsocket = (key) => {
+    var user = getuser(key).getinfo();
     return user.socket;
   }
 
@@ -195,7 +195,7 @@ var _u = function () {
     getuserinfobykey: getuser_info_by_key,
     setsocket: setsocket,
     socket_switch, socket_switch,
-    getsocket:getsocket
+    getsocket: getsocket
   }
 }
 
@@ -211,12 +211,12 @@ io.on('connection', (socket) => {
   socket.on('passuser', (data) => {
     alluser.setsocket(data.type == 1 ? data.email : data.chatname, socket);
     console.log(alluser.getallchatname());
-    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname,email:data.email })
+    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
     socket['user'] = data.chatname;
     //console.log(socket);
   })
   socket.join('lobby');
-   socket.join('publicroom');
+  socket.join('publicroom');
   socket.on('chat', (data) => {
     console.log(data);
     socket.to(data.room).emit('chat', data);
@@ -248,25 +248,29 @@ var allitem;
 var con;
 
 var usemysql = false;
+con = mysql.createConnection(sqlconfig);
 
-if (usemysql) {
-  con = mysql.createConnection(sqlconfig);
-  con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
-  con.query("call Alldata", function (err, result, fields) {
-    if (err) throw err;
-
-    allitem = result;
-    allitem[0].forEach(element => {
-      element.list = result[1].filter(e => e.itid == element.itid);
+var loaddata = () => {
+  if (usemysql) {
+    con.connect(function (err) {
+      if (err) throw err;
+      console.log("Connected!");
     });
-    alluser.load(allitem[3]);
-  })
-} else {
-  allitem = require('./alldata.json');
+    con.query("call Alldata", function (err, result, fields) {
+      if (err) throw err;
+      allitem = result;
+      allitem[0].forEach(element => {
+        element.list = result[1].filter(e => e.itid == element.itid);
+      });
+      alluser.load(allitem[3]);
+    })
+  } else {
+    allitem = require('./alldata.json');
+  }
 }
+
+loaddata();
+
 
 
 
@@ -305,6 +309,23 @@ app.get('/savedatatojson', (req, res) => {
     console.log('JSON data is saved.')
     res.send('JSON data is saved.');
   })
+})
+
+app.get('/switchdatasorces', (res, req) => {
+  var result='';
+  if (res.query.sorces == 'mysql') {
+    usemysql = true;
+    result='switched to mysql'
+    console.log(result)
+    loaddata();
+  } else if (res.query.sorces == 'json') {
+    usemysql = false;
+    result='switched to json'
+    loaddata();
+  }else{
+    result='error'
+  }
+  req.send(result)
 })
 
 var alluser = new _u()
@@ -395,14 +416,14 @@ app.get('/getimagelist', (req, res) => {
   })
 })
 
-app.get('/create_room',(req,res)=>{
+app.get('/create_room', (req, res) => {
   console.log(req.query);
-  var user1=alluser.getsocket(req.session.user.email);
-  var user2=alluser.getsocket(req.query.email);
-  user1.join(user1.id+user2.id);
-  user2.join(user1.id+user2.id);
-  var result={room:user1.id+user2.id,chatname:req.query.chatname}
-  
+  var user1 = alluser.getsocket(req.session.user.email);
+  var user2 = alluser.getsocket(req.query.email);
+  user1.join(user1.id + user2.id);
+  user2.join(user1.id + user2.id);
+  var result = { room: user1.id + user2.id, chatname: req.query.chatname }
+
   res.send(result);
 })
 

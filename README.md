@@ -9,9 +9,24 @@ run npm run "importforwindows" to create mysql database and import data from dum
 6. type 'npm i' in the terminal when you are in the project folder.
 7. type 'npm run installall' in the terminal when you are in the project folder.
 8. type 'npm run importforwindows' in the terminal when you are in the project folder. (if you installed mysql)
-9. type 'npm run test' in the terminal when you are in the project folder.
-10. the page should be run now 
-server will listen at localhost:3000.
+9. create sqlconfig.json and add connection script. importforwindows commend will create a database name test
+{
+    "host": "localhost",
+    "user": "your username example:root",
+    "password": "password",
+    "database": "test"
+}
+10. type 'npm run test' in the terminal when you are in the project folder.
+11. the page should be run now 
+
+if you get error, run 'npm run installall' to update packages.
+
+By default test server read alldata.json for test data.
+use http://localhost:8080/switchdatasorces?sorces=mysql switch to mysql
+use http://localhost:8080/switchdatasorces?sorces=json  switch back.
+
+server will listen at localhost:8080.
+dev client will server at localhost:3000.
 "ctrl+c" to stop debug
 
 front end entry is in Client/src/App.js
