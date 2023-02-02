@@ -1,49 +1,105 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import React, { useState, useRef } from 'react';
+import { Button, Popover, Container, Form, Nav, Navbar, NavDropdown, Overlay } from 'react-bootstrap';
+import Signin from './Signin'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import axios from 'axios';
+import Core from './Core';
 
-function NavScrollExample() {
+function MyNavbar(props) {
+    var User = Core.getUser();
+    const [login, setlogin] = useState(User._islogin());
+    const [show, setShow] = useState(false);
+    const [chatshow, setchatshow] = useState(false);
+    const toggleShow = () => setchatshow(!chatshow);
+    const [showpop, setShowpop] = useState(false);
+    const [target, setTarget] = useState(null);
+    const ref = useRef(null);
+
+    const handleClick = (event) => {
+        setShowpop(!showpop);
+        setTarget(event.target);
+    };
+
+    const handleClose = () => {
+        setShow(false);
+    }
+    const handleSignin = () => {
+        setlogin(true);
+    }
+    const handleShow = () => setShow(true);
+    const logout = () => {
+        console.log('start logout');
+        axios.get('/logout').then((data) => {
+            console.log(data)
+            if (data.data.result) {
+                User._logout();
+                setlogin(false);
+            } else {
+                console.log('something wrong')
+            }
+
+        })
+
+    }
+
+    // (function () {
+    //     User._load();
+    // })()
     return (
-            <Navbar bg="light" expand="lg">
+
+        <>
+            <Navbar bg="light" expand="lg" className='margin-bottom' sticky="top">
                 <Container>
-                    <Navbar.Brand href="#">Garage sale</Navbar.Brand>
+                    <Navbar.Brand>
+                        {props.routes.Homepage.navlink}
+                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav
-                            className="me-auto my-2 my-lg-0"
-                            style={{ maxHeight: '100px' }}
-                            navbarScroll
-                        >
-                            <Nav.Link href="#action1">SaleNearYou</Nav.Link>
-                            <Nav.Link href="#action2">Link1</Nav.Link>
-                            <NavDropdown title="Link" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">
-                                    Another action
+                        <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+                            {props.routes.Mappage.navlink}
+                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + User._getuser().firstname} id="navbarScrollingDropdown">
+                                <NavDropdown.Item >
+                                    {props.routes.Accountpage.navlink}
                                 </NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">
-                                    Something else here
+                                <NavDropdown.Item >
+                                    {props.routes.Chatpage.navlink}
                                 </NavDropdown.Item>
-                            </NavDropdown>
+                                <NavDropdown.Item onClick={logout}>Log out</NavDropdown.Item>
+                            </NavDropdown>}
                         </Nav>
                         <Form className="d-flex">
                             <Form.Control
                                 type="search"
                                 placeholder="Search"
                                 className="me-2"
-                                aria-label="Search"
-                            />
+                                aria-label="Search"/>
                             <Button variant="outline-success">Search</Button>
+                            {Core.getUser()._islogin() ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
+                                <Button onClick={handleClick}>Chat</Button>
+
+                                <Overlay
+                                    show={showpop}
+                                    target={target}
+                                    placement="bottom"
+                                    container={ref}
+                                    containerPadding={20}
+                                    popover-max-width={"100%"}
+                                    style={{ maxWidth: '100%' }}
+                                >
+                                    <Popover id="popover-contained">
+                                        {Core.getpages().chatpage}
+                                    </Popover>
+                                </Overlay>
+                            </div> : <></>}
                         </Form>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
+            <Signin show={show} onHide={handleClose} signin={handleSignin}></Signin>
+        </>
+
 
     );
 }
 
-export default NavScrollExample;
+export default MyNavbar;
