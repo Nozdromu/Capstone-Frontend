@@ -200,7 +200,6 @@ var _u = function () {
 }
 
 var alluser = new _u()
-var _alluser = alluser.getalluser();
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
