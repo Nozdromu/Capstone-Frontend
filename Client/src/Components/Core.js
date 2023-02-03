@@ -3,6 +3,7 @@ import axios from 'axios'
 import User from './User'
 import Chat from './Chat'
 import Itemgrid from './Itemgrid';
+
 var Core = (function () {
 
     var _isLoaded = false;
@@ -20,6 +21,7 @@ var Core = (function () {
         Accountpage:{path:'/account',name:'Account',page:<></>} ,
         Mappage: {path:'/map',name:'Map',page:<></>},
         Chatpage: {path:'/chat',name:'Chat',page:<Chat socket={socket} />},
+        Signup: {path:'/sigup',name:'Signup',page:<></>},
     }
 
     var hook = 0;
