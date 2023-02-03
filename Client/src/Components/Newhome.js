@@ -10,7 +10,7 @@ import { StrictMode } from "react";
 import Navbar from './Navbar'
 import Core from './Core'
 import Navlink from './Navlink';
-import Chatdot from "./Test_example/Chatdot";
+import Chatdot from "./Chatdot";
 
 const pages = Core.getpages()
 

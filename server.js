@@ -199,7 +199,8 @@ var _u = function () {
   }
 }
 
-
+var alluser = new _u()
+var _alluser = alluser.getalluser();
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
@@ -329,8 +330,6 @@ app.get('/switchdatasorces', (res, req) => {
   req.send(result)
 })
 
-var alluser = new _u()
-var _alluser = alluser.getalluser();
 
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };

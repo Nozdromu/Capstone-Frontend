@@ -156,7 +156,7 @@ function ChatApp(props) {
                     </Tab.Container>
                 </Card.Body>
                 <Card.Footer>
-                    <FormGroup><Row><Col><Form.Control type="input" placeholder="Enter Here" ref={textbox} /></Col><Col xs md lg="2"><Button onClick={handleRightchat}>submit</Button></Col></Row></FormGroup>
+                    <FormGroup><Row><Col><Form.Control type="input" placeholder="Enter Here" ref={textbox} /></Col><Col xs md lg="4"><Button onClick={handleRightchat}>submit</Button>{!props.btn?<></>:props.btn}</Col></Row></FormGroup>
                 </Card.Footer>
             </Card>
 
