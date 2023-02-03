@@ -266,6 +266,7 @@ var loaddata = () => {
     })
   } else {
     allitem = require('./alldata.json');
+    alluser.load(allitem[3]);
   }
 }
 

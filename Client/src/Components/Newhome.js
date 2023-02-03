@@ -10,6 +10,7 @@ import { StrictMode } from "react";
 import Navbar from './Navbar'
 import Core from './Core'
 import Navlink from './Navlink';
+import Chatdot from "./Test_example/Chatdot";
 
 const pages = Core.getpages()
 
@@ -23,12 +24,6 @@ if (!_routes) {
     })
     console.log(_routes)
 }
-// const _routes = {
-//     homepage: { path: '/', name: 'Home', element: pages.homepage, navlink: <Navlink routes={{path: '/', name: 'Home'}}></Navlink> },
-//     accountpage: { path: '/account', name: 'Account', element: pages.accountpage, navlink: <Navlink routes={{path: '/account', name: 'Account'}}></Navlink> },
-//     mappage: { path: '/map', name: 'Map', element: pages.mappage, navlink: <Navlink routes={{path: '/map', name: 'Map'}}></Navlink> },
-//     chatpage: { path: '/chat', name: 'Chat', element: pages.chatpage, navlink: <Navlink routes={{path: '/chat', name: 'Chat'}}></Navlink> }
-// }
 
 const PageLayout = ({ children }) => children;
 
@@ -82,6 +77,7 @@ export default function Newhome() {
                     </Route>
                 </Routes>
             </Router>
+            <Chatdot/>
         </StrictMode>
     );
 }
