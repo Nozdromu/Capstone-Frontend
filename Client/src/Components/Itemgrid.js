@@ -15,7 +15,7 @@ class Itemgrid extends Component {
 
   createItemCard = () => {
     var _list = Core.item().map((val) => {
-      return <Col lg={3} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} /></Col>
+      return <Col md={3} sm={6} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} /></Col>
     })
     this.setState({ list: _list, data: Core.item() });
   }
