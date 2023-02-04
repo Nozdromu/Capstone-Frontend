@@ -127,7 +127,7 @@ function ChatApp(props) {
     // }, [])
     return (
         <Container fluid="md">
-            <Card style={{ maxWidth: '50em',minWidth:'20em' }}>
+            <Card style={{ maxWidth: '50em',minWidth:'10em' }}>
                 <Card.Header>
                     {'Chat: ' + count + room}
                 </Card.Header>
