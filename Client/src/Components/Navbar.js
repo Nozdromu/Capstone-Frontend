@@ -29,7 +29,7 @@ function MyNavbar(props) {
     const handleShow = () => setShow(true);
     const logout = () => {
         console.log('start logout');
-        axios.get('/logout').then((data) => {
+        Core.api.test.logout().then((data) => {
             console.log(data)
             if (data.data.result) {
                 User._logout();
