@@ -30,7 +30,7 @@ function Signup(props) {
       email: emailInput.current.value,
       password: psdInput.current.value
     }
-    axios.get('/login', { params: account }).then(res => {
+    Core.api.test.login({ params: account }).then(res => {
       console.log(res.data);
       if (res.data.result) {
         User._login(res.data.userinfo);

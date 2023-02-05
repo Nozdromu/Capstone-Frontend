@@ -3,6 +3,7 @@ import axios from 'axios'
 import User from './User'
 import Chat from './Chat'
 import Itemgrid from './Itemgrid';
+import Appapi from './Api';
 
 var Core = (function () {
 
@@ -15,7 +16,7 @@ var Core = (function () {
         autoConnect: false,
         user: user._getuser().email
     })
-    var socket_user = [];
+    var Api=Appapi();
     var pages = {
         Homepage: {path:'/',name:'Spiffo-Slist',page:<Itemgrid />},
         Accountpage:{path:'/account',name:'Account',page:<></>} ,
@@ -27,7 +28,7 @@ var Core = (function () {
     var hook = 0;
 
     if (!_isLoaded) {
-        axios.get('/getdata').then(res => {
+        Api.test.getlodingdata().then(res=>{
             _load(res);
         })
     }
@@ -98,7 +99,8 @@ var Core = (function () {
         getsocket: getsocket,
         getchatname: getchatname,
         getpages:getpages,
-        opensocket, opensocket
+        opensocket, opensocket,
+        api:Api
     };
 })()
 
