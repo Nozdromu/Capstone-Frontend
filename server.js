@@ -313,18 +313,18 @@ app.get('/savedatatojson', (req, res) => {
 })
 
 app.get('/switchdatasorces', (res, req) => {
-  var result='';
+  var result = '';
   if (res.query.sorces == 'mysql') {
     usemysql = true;
-    result='switched to mysql'
+    result = 'switched to mysql'
     console.log(result)
     loaddata();
   } else if (res.query.sorces == 'json') {
     usemysql = false;
-    result='switched to json'
+    result = 'switched to json'
     loaddata();
-  }else{
-    result='error'
+  } else {
+    result = 'error'
   }
   req.send(result)
 })
@@ -333,19 +333,23 @@ app.get('/switchdatasorces', (res, req) => {
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
   // var x;
-  if (req.session.user == undefined) {
-    // if (req.session.guestuser == undefined) {
-    //   var newguest = alluser.guestlogin()
-    //   x = newguest.getinfo();
-    //   result.guestuser = x;
-    //   req.session.guestuser = x;
-    // } else {
-    //   result.guestuser = req.session.guestuser
-    // }
+  // if (req.session.user == undefined) {
+  //   // if (req.session.guestuser == undefined) {
+  //   //   var newguest = alluser.guestlogin()
+  //   //   x = newguest.getinfo();
+  //   //   result.guestuser = x;
+  //   //   req.session.guestuser = x;
+  //   // } else {
+  //   //   result.guestuser = req.session.guestuser
+  //   // }
 
-  } else {
+  // } else {
+  //   result.islogin = true;
+  //   result.user = req.session.user;
+  // }
+  if (req. session.user != undefined) {
     result.islogin = true;
-    result.user = req.session.user;
+    result.user = req.session.user
   }
   res.send(result)
 })
@@ -422,7 +426,21 @@ app.get('/create_room', (req, res) => {
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
   var result = { room: user1.id + user2.id, chatname: req.query.chatname }
+  res.send(result);
+})
 
+app.get('/create_room_chat', (req, res) => {
+  var u;
+  allitem[3].forEach(val=>{
+    if(val.uid==req.query.uid){
+      u=val;
+    }
+  })
+  var user1 = alluser.getsocket(req.session.user.email);
+  var user2 = alluser.getsocket(u.email);
+  user1.join(user1.id + user2.id);
+  user2.join(user1.id + user2.id);
+  var result = { room: user1.id + user2.id, chatname: u.firstname }
   res.send(result);
 })
 

@@ -1,45 +1,41 @@
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import React, { Component } from 'react'
+import { useState } from 'react'
 import Itemdetial from './Itemdetial';
+import axios from 'axios';
+import S_chat from './S_chat'
 
 
-class Itemcard extends Component {
+export default function Itemcard(props) {
+    const [modalShow, setmodalShow] = useState(false)
 
-    constructor() {
-        super();
-        this.state={
-            modalShow:false,
-        }
+
+    var start = () => {
+        axios.get('/create_room_chat', { params: { uid: props.data.uid } }).then(res => {
+            props.startchat(<S_chat room={res.data.room} chatname={res.data.chatname} ></S_chat>)
+        })
     }
 
-    render() {
-        return (
-            <>
-                <Card  style={{ maxWidth: '20rem'}} onClick={() => this.setState({modalShow:true})}>
-                    <div className="rect-img-container">
-                        <Card.Img className='rect-img' variant="top" src={this.props.data.src} />
-                    </div>
-
-                    <Card.Body>
-                        <Card.Title className="text-over">{this.props.data.itemname}</Card.Title>
-                        <Card.Text>
-                            {this.props.data.price}
-                        </Card.Text>
-                        <Card.Text className="text-over">
-                            {this.props.data.description}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-                <Itemdetial show={this.state.modalShow} onHide={() => this.setState({modalShow:false})} data={this.props.data}></Itemdetial>
-            </>
-
-        )
-    }
-
-
-
+    return (
+        <>
+            <Card onClick={() => {
+                setmodalShow(true)
+                console.log('done')
+            }
+            }>
+                <div className="rect-img-container">
+                    <Card.Img className='rect-img' variant="top" src={props.data.src} />
+                </div>
+                <Card.Body>
+                    <Card.Title className="text-over">{props.data.itemname}</Card.Title>
+                    <Card.Text>
+                        {props.data.price}
+                    </Card.Text>
+                    <Card.Text className="text-over">
+                        {props.data.description}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+            <Itemdetial show={modalShow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial>
+        </>
+    )
 }
-
-
-export default Itemcard;

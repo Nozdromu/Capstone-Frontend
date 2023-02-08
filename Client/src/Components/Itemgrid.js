@@ -1,42 +1,37 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Itemcard from './Itemcard';
 import Core from './Core';
+import S_chat from './S_chat'
 
-class Itemgrid extends Component {
-  _isMounted = false;
+export default function Itemgrid() {
+  const [list, setlist] = useState();
+  const [isload, setload] = useState(false)
+  const [schat, setschat] = useState(<></>);
 
-  constructor() {
-    super();
-    this.state = { data: [], list: [] };
+  var startchat = (chat) => {
+    setschat(chat)
   }
 
-  createItemCard = () => {
+  var createItemCard = () => {
     var _list = Core.item().map((val) => {
-      return <Col md={3} sm={6} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} /></Col>
+      console.log(val);
+      return <Col md={3} sm={6} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} startchat={startchat} /></Col>
     })
-    this.setState({ list: _list, data: Core.item() });
+    // this.setState({ list: _list, data: Core.item() });
+    setlist(list => _list);
+    setload(true);
   }
+  if (!list)
+    Core.addhook(createItemCard);
 
-  componentDidMount() {
-    this._isMounted = true;
-    Core.addhook(this.createItemCard);
-  }
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  render() {
-    return (<Container>
-      <Row justify-content="space-evenly">
-        {this.state.list}
-      </Row>
-    </Container>)
-  };
+  return isload ? (<Container style={{ height: '90vh' }}>
+    <Row justify-content="space-evenly" >
+      {list}
+    </Row>
+    {schat}
+  </Container>) : (<></>)
 }
-
-
-export default Itemgrid;

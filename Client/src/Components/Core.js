@@ -8,6 +8,11 @@ import Appapi from './Api';
 var Core = (function () {
 
     var _isLoaded = false;
+    var chat_hook={
+        chat:false,
+        login:false,
+        s_chat:false
+    }
     var item = {};
     var list = {};
     var t = [];
@@ -16,19 +21,20 @@ var Core = (function () {
         autoConnect: false,
         user: user._getuser().email
     })
-    var Api=Appapi();
+    var chatupdate = {};
+    var Api = Appapi();
     var pages = {
-        Homepage: {path:'/',name:'Spiffo-Slist',page:<Itemgrid />},
-        Accountpage:{path:'/account',name:'Account',page:<></>} ,
-        Mappage: {path:'/map',name:'Map',page:<></>},
-        Chatpage: {path:'/chat',name:'Chat',page:<Chat socket={socket} />},
-        Signup: {path:'/sigup',name:'Signup',page:<></>},
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
+        Accountpage: { path: '/account', name: 'Account', page: <></> },
+        Mappage: { path: '/map', name: 'Map', page: <></> },
+        Chatpage: { path: '/chat', name: 'Chat', page: <Chat fullscreen={true} socket={socket} /> },
+        Signup: { path: '/sigup', name: 'Signup', page: <></> },
     }
 
     var hook = 0;
 
     if (!_isLoaded) {
-        Api.test.getlodingdata().then(res=>{
+        Api.test.getlodingdata().then(res => {
             _load(res);
         })
     }
@@ -98,9 +104,11 @@ var Core = (function () {
         getUser: getuser,
         getsocket: getsocket,
         getchatname: getchatname,
-        getpages:getpages,
+        getpages: getpages,
         opensocket, opensocket,
-        api:Api
+        setchat: chatupdate,
+        api: Api,
+        Chatload:chat_hook
     };
 })()
 

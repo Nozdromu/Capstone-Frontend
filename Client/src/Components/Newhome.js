@@ -6,11 +6,12 @@ import {
     useLocation,
 } from "react-router-dom";
 import { motion } from "framer-motion";
-import { StrictMode } from "react";
+import { StrictMode, useState } from "react";
 import Navbar from './Navbar'
 import Core from './Core'
 import Navlink from './Navlink';
 import Chatdot from "./Chatdot";
+import S_chat from './S_chat'
 
 const pages = Core.getpages()
 
@@ -63,7 +64,14 @@ const AnimationLayout = () => {
 };
 
 export default function Newhome() {
-    return (
+    const [isload, setload] = useState(false);
+    var printpage = () => {
+        setload(true);
+    }
+    if (!isload)
+        Core.addhook(printpage)
+
+    return (isload ?
         <StrictMode>
             <Router>
                 <Navbar routes={_routes}></Navbar>
@@ -77,7 +85,7 @@ export default function Newhome() {
                     </Route>
                 </Routes>
             </Router>
-            <Chatdot/>
-        </StrictMode>
+            {/* <Chatdot fullscreen={false}/> */}
+        </StrictMode> : <></>
     );
 }
