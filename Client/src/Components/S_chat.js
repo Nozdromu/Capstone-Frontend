@@ -8,6 +8,7 @@ export default function Smallchat(props) {
     const [message, setmessahe] = useState([]);
     const [count, setcount] = useState([]);
     const [show, setshow] = useState(true);
+    
     if (!isload) {
         setshow(props.show);
         setload(true);
