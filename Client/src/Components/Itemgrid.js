@@ -9,6 +9,7 @@ import S_chat from './S_chat'
 export default function Itemgrid() {
   const [list, setlist] = useState();
   const [isload, setload] = useState(false)
+  const [chatshow, setchatshow] = useState(false);
   const [schat, setschat] = useState(<></>);
 
   var startchat = (chat) => {

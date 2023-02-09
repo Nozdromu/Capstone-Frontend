@@ -4,6 +4,7 @@ import User from './User'
 import Chat from './Chat'
 import Itemgrid from './Itemgrid';
 import Appapi from './Api';
+import Map from './Test_example/Google_map_example'
 
 var Core = (function () {
 
@@ -26,7 +27,7 @@ var Core = (function () {
     var pages = {
         Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
         Accountpage: { path: '/account', name: 'Account', page: <></> },
-        Mappage: { path: '/map', name: 'Map', page: <></> },
+        Mappage: { path: '/map', name: 'Map', page: <Map/> },
         Chatpage: { path: '/chat', name: 'Chat', page: <Chat fullscreen={true} socket={socket} /> },
         Signup: { path: '/sigup', name: 'Signup', page: <></> },
     }
