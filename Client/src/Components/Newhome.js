@@ -10,10 +10,9 @@ import { StrictMode, useState } from "react";
 import Navbar from './Navbar'
 import Core from './Core'
 import Navlink from './Navlink';
-import Chatdot from "./Chatdot";
-import S_chat from './S_chat'
 
-const pages = Core.getpages()
+
+const pages = Core.getpages;
 
 /////////////////////////////////////////////////////////////////////
 var _routes;
@@ -79,13 +78,12 @@ export default function Newhome() {
                     <Route element={<AnimationLayout />}>
                         {
                             Object.values(_routes).map(val => {
-                                return <Route key={val.name} path={val.path} element={val.element} />
+                                return <Route key={val.name} path={val.path} element={val.element()}></Route>
                             })
                         }
                     </Route>
                 </Routes>
             </Router>
-            {/* <Chatdot fullscreen={false}/> */}
         </StrictMode> : <></>
     );
 }

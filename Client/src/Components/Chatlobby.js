@@ -18,7 +18,7 @@ function Chatlobby(props) {
             axios.get('/getchatuser').then((res) => {
                 console.log(res);
                 setlist(res.data.alluser)
-                setUserlist(userlist.concat(res.data.alluser.map(val => {
+                setUserlist(userlist.concat(res.data.Users.map(val => {
                     if (val.chatname != Core.getchatname()) {
                         console.log(val);
                         var c = [<ListGroup.Item key={val.chatname} action onClick={() => { props.newchat({ email: val.email, chatname: val.chatname }) }}>{val.chatname}</ListGroup.Item>];

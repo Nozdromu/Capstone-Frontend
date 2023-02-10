@@ -5,14 +5,15 @@ import Chat from './Chat'
 import Itemgrid from './Itemgrid';
 import Appapi from './Api';
 import Map from './Test_example/Google_map_example'
+import { Navigate } from 'react-router-dom'
 
 var Core = (function () {
 
     var _isLoaded = false;
-    var chat_hook={
-        chat:false,
-        login:false,
-        s_chat:false
+    var chat_hook = {
+        chat: false,
+        login: false,
+        s_chat: false
     }
     var item = {};
     var list = {};
@@ -24,12 +25,22 @@ var Core = (function () {
     })
     var chatupdate = {};
     var Api = Appapi();
-    var pages = {
-        Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
-        Accountpage: { path: '/account', name: 'Account', page: <></> },
-        Mappage: { path: '/map', name: 'Map', page: <Map/> },
-        Chatpage: { path: '/chat', name: 'Chat', page: <Chat fullscreen={true} socket={socket} /> },
-        Signup: { path: '/sigup', name: 'Signup', page: <></> },
+    var getpage = (key) => {
+        return page[key];
+    }
+    var page = {
+        Chatpage: ()=>user._islogin() ? <Chat fullscreen={true} socket={socket} /> : <Navigate replace to="/" />,
+        Accountpage: ()=>user._islogin() ? <></> : <Navigate replace to="/" />,
+        Mappage: <Map />,
+        Signup: <></>,
+        Homepage: <Itemgrid />
+    }
+    var route = {
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: ()=>getpage('Homepage') },
+        Accountpage: { path: '/account', name: 'Account', page: ()=>getpage('Accountpage') },
+        Mappage: { path: '/map', name: 'Map', page: ()=>getpage('Mappage') },
+        Chatpage: { path: '/chat', name: 'Chat', page: ()=>getpage('Chatpage') },
+        Signup: { path: '/sigup', name: 'Signup', page: ()=>getpage('Signup') },
     }
 
     var hook = 0;
@@ -70,10 +81,6 @@ var Core = (function () {
             }
     }
 
-    var getchatpage = () => {
-        return <Chat socket={socket} />;
-    }
-
     var getitem = () => {
         return item;
     }
@@ -93,9 +100,8 @@ var Core = (function () {
     var getchatname = () => {
         return user._getuser().chatname;
     }
-    var getpages = () => {
-        return pages;
-    }
+
+
     return {
         item: getitem,
         list: getlist,
@@ -105,11 +111,11 @@ var Core = (function () {
         getUser: getuser,
         getsocket: getsocket,
         getchatname: getchatname,
-        getpages: getpages,
+        getpages: route,
         opensocket, opensocket,
         setchat: chatupdate,
         api: Api,
-        Chatload:chat_hook
+        Chatload: chat_hook
     };
 })()
 

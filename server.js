@@ -1,5 +1,4 @@
 'use strict';
-
 ///////////////////////////////////////////////////////////////////////////
 // requires
 
@@ -13,6 +12,8 @@ const fs = require('fs')
 const session = require('express-session')
 
 const sqlconfig = require('./sqlconfig.json');
+
+const Usystem = require('./Usystem')
 
 
 
@@ -38,182 +39,29 @@ app.use(session({
 }))
 
 
-
+var USys = new Usystem()
 ////////////////////////////////////////////////////////////////////////////
 var io = socketIo(server, {
   cors: {
     origin: 'http://localhost:3000'
   }
 })
-var _user = [];
-//var xxx={};
-// var y='ww@www.com'
-// xxx[y]=1;
-// console.log(xxx);
-// console.log(xxx[y]);
-var _u = function () {
-  var guestid = 0;
-  var ulist = [];
-  var uobject = {};
-  var usertabel = {};
-  var u = function () {
-    var uid = -1;
-    var type = 0;
-    var chatname = '';
-    var username = '';
-    var firstname = '';
-    var lastname = '';
-    var email = '';
-    var phone = '';
-    var pic = '';
-    var socket = {};
-    var load = (_type, data) => {
-      type = _type;
-      if (type == 1) {
-        uid = data.uid;
-        username = data.username
-        chatname = data.firstname
-        firstname = data.firstname
-        lastname = data.lastname
-        email = data.email
-        phone = data.phone
-        pic = data.pic
-      } else {
-        chatname = data;
-      }
-
-    }
-
-    var setsocket = (_socket) => {
-      socket = _socket;
-    }
 
 
-    var getuser = () => {
-      return {
-        uid: uid,
-        type: type,
-        chatname: chatname,
-        username: username,
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        phone: phone,
-        pic: pic,
-        socket: socket,
-      }
-    }
 
-
-    return {
-      getinfo: getuser,
-      load: load,
-      setsocket: setsocket,
-      socket: this.socket
-    }
-  }
-
-
-  var load = (data) => {
-    data.forEach(val => {
-      usertabel[val.email] = val;
-    })
-  }
-  var userlogin = (_email, _password) => {
-    var result = {
-      result: false,
-      userinfo: {}
-    }
-    if (usertabel[_email] != undefined && usertabel[_email].password == _password) {
-      result.result = true;
-      var newuser = new u();
-      newuser.load(1, usertabel[_email]);
-      uobject[newuser.getinfo().email] = newuser;
-      result.userinfo = uobject[newuser.getinfo().email].getinfo();
-    }
-    return result;
-  }
-
-  var guestlogin = () => {
-    var newuser = new u();
-    newuser.load(0, 'guest_' + guestid++);
-    uobject[newuser.getinfo().chatname] = newuser;
-    return uobject[newuser.getinfo().chatname];
-  }
-
-  var logout = (login_id) => {
-    delete uobject[login_id];
-    return true;
-  }
-
-  var getalluser = () => {
-    return uobject;
-  }
-  var getalluserinfo = () => {
-    var x = (Object.values(uobject)).map((val) => {
-      return val.getinfo();
-    })
-    return x;
-  }
-
-  var getallchatname = () => {
-    var x = (Object.values(uobject)).map((val) => {
-      return { chatname: val.getinfo().chatname, email: val.getinfo().email };
-    })
-    return x;
-  }
-
-  var getuser = (key) => {
-    return uobject[key];
-  }
-
-  var getuser_info_by_key = (key) => {
-    return getuser(key).getinfo();
-  }
-
-  var setsocket = (key, socket) => {
-    getuser(key).setsocket(socket);
-  }
-
-  var socket_switch = (user_key, guest_key) => {
-    getuser(user_key).setsocket(getuser(guest_key).socket);
-  }
-
-  var getsocket = (key) => {
-    var user = getuser(key).getinfo();
-    return user.socket;
-  }
-
-  return {
-    load: load,
-    userlogin: userlogin,
-    guestlogin: guestlogin,
-    logout: logout,
-    getalluser: getalluser,
-    getalluserinfo: getalluserinfo,
-    getallchatname: getallchatname,
-    getuserinfobykey: getuser_info_by_key,
-    setsocket: setsocket,
-    socket_switch, socket_switch,
-    getsocket: getsocket
-  }
-}
-
-var alluser = new _u()
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   //console.log(socket);
   if (socket.handshake.user != undefined)
-    alluser.setsocket(socket.handshake.user, socket);
+    USys.setsocket(socket.handshake.user, socket);
   console.log('///////////////////////////')
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
-    alluser.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-    console.log(alluser.getallchatname());
+    USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
+    console.log(USys.getallchatname());
     socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
     socket['user'] = data.chatname;
-    //console.log(socket);
   })
   socket.join('lobby');
   socket.join('publicroom');
@@ -225,9 +73,7 @@ io.on('connection', (socket) => {
     //console.log(socket.id + ' is disconnected!');
   });
   socket.on('reconnect', (socket) => {
-    //console.log(socket.id + '_reconnected!');
-    //console.log(socket);
-    //console.log('////////////////////////////')
+
   })
 });
 
@@ -262,11 +108,11 @@ var loaddata = () => {
       allitem[0].forEach(element => {
         element.list = result[1].filter(e => e.itid == element.itid);
       });
-      alluser.load(allitem[3]);
+      USys.load(allitem[3]);
     })
   } else {
     allitem = require('./alldata.json');
-    alluser.load(allitem[3]);
+    USys.load(allitem[3]);
   }
 }
 
@@ -332,22 +178,7 @@ app.get('/switchdatasorces', (res, req) => {
 
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
-  // var x;
-  // if (req.session.user == undefined) {
-  //   // if (req.session.guestuser == undefined) {
-  //   //   var newguest = alluser.guestlogin()
-  //   //   x = newguest.getinfo();
-  //   //   result.guestuser = x;
-  //   //   req.session.guestuser = x;
-  //   // } else {
-  //   //   result.guestuser = req.session.guestuser
-  //   // }
-
-  // } else {
-  //   result.islogin = true;
-  //   result.user = req.session.user;
-  // }
-  if (req. session.user != undefined) {
+  if (req.session.user != undefined) {
     result.islogin = true;
     result.user = req.session.user
   }
@@ -356,20 +187,15 @@ app.get('/getdata', (req, res) => {
 
 app.get('/getchatuser', (req, res) => {
   console.log('in')
-  res.send({ alluser: alluser.getallchatname() });
+  res.send({ Users: USys.getallchatname() });
 })
 
 app.get('/login', (req, res) => {
   //var result = { result: false, user: {} };
-  var user = alluser.userlogin(req.query.email, req.query.password);
+  var user = USys.userlogin(req.query.email, req.query.password);
   if (user.result) {
     var _user = user.userinfo;
     req.session.user = _user;
-    // if (req.session.guestuser != undefined) {
-    //   alluser.socket_switch(_user.email, req.session.guestuser.chatname)
-    //   alluser.logout(req.session.guestuser.chatname);
-    //   delete req.session.guestuser;
-    // }
   }
   res.send(user);
 })
@@ -421,8 +247,8 @@ app.get('/getimagelist', (req, res) => {
 
 app.get('/create_room', (req, res) => {
   console.log(req.query);
-  var user1 = alluser.getsocket(req.session.user.email);
-  var user2 = alluser.getsocket(req.query.email);
+  var user1 = USys.getsocket(req.session.user.email);
+  var user2 = USys.getsocket(req.query.email);
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
   var result = { room: user1.id + user2.id, chatname: req.query.chatname }
@@ -431,13 +257,13 @@ app.get('/create_room', (req, res) => {
 
 app.get('/create_room_chat', (req, res) => {
   var u;
-  allitem[3].forEach(val=>{
-    if(val.uid==req.query.uid){
-      u=val;
+  allitem[3].forEach(val => {
+    if (val.uid == req.query.uid) {
+      u = val;
     }
   })
-  var user1 = alluser.getsocket(req.session.user.email);
-  var user2 = alluser.getsocket(u.email);
+  var user1 = USys.getsocket(req.session.user.email);
+  var user2 = USys.getsocket(u.email);
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
   var result = { room: user1.id + user2.id, chatname: u.firstname }

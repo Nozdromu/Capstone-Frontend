@@ -7,7 +7,7 @@ import Core from './Core';
 
 function MyNavbar(props) {
     var User = Core.getUser();
-    const [login, setlogin] = useState(User._islogin());
+    const [login, setlogin] = useState(User._islogin);
     const [show, setShow] = useState(false);
     const [chatshow, setchatshow] = useState(false);
     const toggleShow = () => setchatshow(!chatshow);
@@ -76,7 +76,7 @@ function MyNavbar(props) {
                                 aria-label="Search"/>
                             <Button variant="outline-success">Search</Button>
                             {Core.getUser()._islogin() ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
-                                <Button onClick={handleClick}>Chat</Button>
+                                {/* <Button onClick={handleClick}>Chat</Button>
 
                                 <Overlay
                                     show={showpop}
@@ -88,9 +88,9 @@ function MyNavbar(props) {
                                     style={{ maxWidth: '100%' }}
                                 >
                                     <Popover id="popover-contained">
-                                        {Core.getpages().chatpage}
+                                        {Core.getpages.Chatpage.}
                                     </Popover>
-                                </Overlay>
+                                </Overlay> */}
                             </div> : <></>}
                         </Form>
                     </Navbar.Collapse>

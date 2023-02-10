@@ -79,7 +79,7 @@ var User = (function () {
     return {
         _login: login,
         _logout: logout,
-        _getuser: uid == -1 ? getguest : getuser,
+        _getuser: getuser,
         _setguest: setguest,
         _islogin: getislogin,
         _getchetname:getchetname

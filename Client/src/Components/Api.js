@@ -68,7 +68,7 @@ export default function Api() {
     }
 
     var item_create = async (_item, listingspk) => {
-        data = {
+        var data = {
             name: _item.name,
             description: _item.description,
             quantity: _item.quantity,
@@ -81,7 +81,7 @@ export default function Api() {
         return axiosApi.delete('/listings/' + listingspk + '/' + itempk + '/delete')
     }
     var item_update = async (_item, listingspk, itempk) => {
-        data = {
+        var data = {
             name: _item.name,
             description: _item.description,
             quantity: _item.quantity,

@@ -7,12 +7,6 @@ export default function Smallchat(props) {
     const [isload, setload] = useState(false);
     const [message, setmessahe] = useState([]);
     const [count, setcount] = useState([]);
-    const [show, setshow] = useState(true);
-    
-    if (!isload) {
-        setshow(props.show);
-        setload(true);
-    }
 
 
     var input = useRef(null);
@@ -46,7 +40,7 @@ export default function Smallchat(props) {
         }
     }
 
-    return show ? (
+    return (
         <Card style={{
             position: 'fixed',
             bottom: '2em',
@@ -82,5 +76,5 @@ export default function Smallchat(props) {
 
             </Card.Footer>
         </ Card>
-    ) : (<></>)
+    )
 }

@@ -8,13 +8,12 @@ import S_chat from './S_chat'
 export default function Itemcard(props) {
     const [modalShow, setmodalShow] = useState(false)
     const [chatshow, setchatshow] = useState(true);
-    var hidechat = () => {
-        setchatshow(false);
-    }
+    var chat;
 
     var start = () => {
+
         axios.get('/create_room_chat', { params: { uid: props.data.uid } }).then(res => {
-            props.startchat(<S_chat show={chatshow} setshow={hidechat} room={res.data.room} chatname={res.data.chatname} ></S_chat>)
+            props.startchat(res.data);
         })
     }
 

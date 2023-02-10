@@ -1,4 +1,5 @@
 import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav, Tooltip, Overlay, OverlayTrigger } from "react-bootstrap";
+import { Navigate } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react';
 import Chatlobby from "./Chatlobby";
 import Core from './Core';
@@ -116,13 +117,10 @@ function ChatApp(props) {
         var data = { chatname: _user.chatname, room: room, message: textbox.current.value }
         props.socket.emit('chat', data);
     }
-    useEffect(() => {
-        textbox.current.focus();
-    }, []);
+    // useEffect(() => {
+    //     textbox.current.focus();
+    // }, []);
 
-    if (!User._islogin()) {
-        return (Core.getitemgrid());
-    }
 
     return (
         <Container fluid="md" style={{}}>
