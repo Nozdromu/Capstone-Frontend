@@ -4,6 +4,7 @@ import {
     Route,
     Outlet,
     useLocation,
+    Navigate,
 } from "react-router-dom";
 import { motion } from "framer-motion";
 import { StrictMode, useState } from "react";
@@ -12,7 +13,7 @@ import Core from './Core'
 import Navlink from './Navlink';
 
 
-const pages = Core.getpages;
+const pages = Core.getpages();
 
 /////////////////////////////////////////////////////////////////////
 var _routes;
@@ -64,8 +65,11 @@ const AnimationLayout = () => {
 
 export default function Newhome() {
     const [isload, setload] = useState(false);
+    const [login, setlogin] = useState(false);
+
     var printpage = () => {
         setload(true);
+        setlogin(Core.getUser()._islogin())
     }
     if (!isload)
         Core.addhook(printpage)
@@ -73,12 +77,12 @@ export default function Newhome() {
     return (isload ?
         <StrictMode>
             <Router>
-                <Navbar routes={_routes}></Navbar>
+                <Navbar router_login={setlogin} routes={_routes}></Navbar>
                 <Routes>
                     <Route element={<AnimationLayout />}>
                         {
                             Object.values(_routes).map(val => {
-                                return <Route key={val.name} path={val.path} element={val.element()}></Route>
+                                return <Route key={val.name} path={val.path} element={(val.name==='Chat'||val.name==='Account')?(login?val.element():<Navigate replace to={'/'}/>):val.element()}></Route>
                             })
                         }
                     </Route>

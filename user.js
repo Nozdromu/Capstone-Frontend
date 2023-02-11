@@ -5,18 +5,22 @@ function user(data) {
     var chatname = data.firstname;
     var firstname = data.firstname;
     var lastname = data.lastname;
-    var password=data.password
+    var password = data.password
     var email = data.email;
     var phone = data.phone;
     var pic = data.pic;
     var socket = {};
 
+    var getsocket = () => {
+        return socket;
+    }
+
     var setsocket = (_socket) => {
         socket = _socket;
     }
 
-    var checkpassword=(psd)=>{
-        return password==psd;
+    var checkpassword = (psd) => {
+        return password == psd;
     }
 
     return {
@@ -28,8 +32,8 @@ function user(data) {
         email: email,
         phone: phone,
         pic: pic,
-        socket: socket,
+        socket: getsocket,
         setsocket: setsocket,
-        checkpassword:checkpassword
+        checkpassword: checkpassword
     }
 }

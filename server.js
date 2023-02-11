@@ -247,8 +247,8 @@ app.get('/getimagelist', (req, res) => {
 
 app.get('/create_room', (req, res) => {
   console.log(req.query);
-  var user1 = USys.getsocket(req.session.user.email);
-  var user2 = USys.getsocket(req.query.email);
+  var user1 = USys.getuser(req.session.user.email).socket();
+  var user2 = USys.getuser(req.query.email).socket();
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
   var result = { room: user1.id + user2.id, chatname: req.query.chatname }
@@ -262,8 +262,8 @@ app.get('/create_room_chat', (req, res) => {
       u = val;
     }
   })
-  var user1 = USys.getsocket(req.session.user.email);
-  var user2 = USys.getsocket(u.email);
+  var user1 = USys.getuser(req.session.user.email);
+  var user2 = USys.getuser(u.email);
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
   var result = { room: user1.id + user2.id, chatname: u.firstname }

@@ -74,6 +74,7 @@ function Usystem() {
         getalluserinfo: getalluserinfo,
         getallchatname: getallchatname,
         setsocket: setsocket,
+        getuser: getuser,
         socket_switch, socket_switch,
         getsocket: getsocket
     }

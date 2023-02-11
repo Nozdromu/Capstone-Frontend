@@ -1,6 +1,5 @@
-import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav, Tooltip, Overlay, OverlayTrigger } from "react-bootstrap";
-import { Navigate } from 'react-router-dom'
-import { useState, useRef, useEffect } from 'react';
+import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "react-bootstrap";
+import { useState, useRef } from 'react';
 import Chatlobby from "./Chatlobby";
 import Core from './Core';
 import Chatwindow from './Chatwindow'
@@ -84,7 +83,7 @@ function ChatApp(props) {
 
         props.socket.on('chat', (data) => {
             console.log(data);
-            if (chathistory[data.room] == undefined) {
+            if (chathistory[data.room] === undefined) {
                 new_chat(data);
             }
             new_message(false, data.chatname, data.message, data.room);

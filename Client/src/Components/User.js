@@ -2,8 +2,6 @@ import Core from './Core';
 
 var User = (function () {
     var islogin = false;
-    var guest = '';
-    var chatname='';
     var uid = 0;
     var firstname = '';
     var lastname = '';
@@ -47,42 +45,16 @@ var User = (function () {
             type: islogin ? 1 : 0
         }
     }
-    var setguest = (data) => {
-        uid = -1;
-        firstname = data.chatname;
-        email = data.chatname;
-        chatname = data.chatname;
-        guest = data;
-    }
-    var getguest = () => {
-        return guest;
-    }
 
     var getislogin = () => {
         return islogin;
     }
-    var getchetname = () => {
-        var result = { key: '', chatname: '' }
-        if (islogin) {
-            result.key = email;
-            chatname = chatname;
-        } else {
-            if (chatname == '') {
 
-            } else {
-                result.key = chatname;
-                result.chatname = chatname;
-            }
-
-        }
-    }
     return {
         _login: login,
         _logout: logout,
         _getuser: getuser,
-        _setguest: setguest,
         _islogin: getislogin,
-        _getchetname:getchetname
     };
 })()
 

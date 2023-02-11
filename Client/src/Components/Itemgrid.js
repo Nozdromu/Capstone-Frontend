@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { Component, useState } from 'react'
+import React, {  useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -24,7 +24,6 @@ export default function Itemgrid() {
 
   var createItemCard = () => {
     var _list = Core.item().map((val) => {
-      console.log(val);
       return <Col md={3} sm={6} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} startchat={startchat} /></Col>
     })
     setlist(list => _list);

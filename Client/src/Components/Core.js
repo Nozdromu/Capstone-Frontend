@@ -1,5 +1,4 @@
 import { io } from "socket.io-client"
-import axios from 'axios'
 import User from './User'
 import Chat from './Chat'
 import Itemgrid from './Itemgrid';
@@ -28,19 +27,13 @@ var Core = (function () {
     var getpage = (key) => {
         return page[key];
     }
-    var page = {
-        Chatpage: ()=>user._islogin() ? <Chat fullscreen={true} socket={socket} /> : <Navigate replace to="/" />,
-        Accountpage: ()=>user._islogin() ? <></> : <Navigate replace to="/" />,
-        Mappage: <Map />,
-        Signup: <></>,
-        Homepage: <Itemgrid />
-    }
+    var page = {}
     var route = {
-        Homepage: { path: '/', name: 'Spiffo-Slist', page: ()=>getpage('Homepage') },
-        Accountpage: { path: '/account', name: 'Account', page: ()=>getpage('Accountpage') },
-        Mappage: { path: '/map', name: 'Map', page: ()=>getpage('Mappage') },
-        Chatpage: { path: '/chat', name: 'Chat', page: ()=>getpage('Chatpage') },
-        Signup: { path: '/sigup', name: 'Signup', page: ()=>getpage('Signup') },
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: () => getpage('Homepage') },
+        Accountpage: { path: '/account', name: 'Account', page: () => getpage('Accountpage') },
+        Mappage: { path: '/map', name: 'Map', page: () => getpage('Mappage') },
+        Chatpage: { path: '/chat', name: 'Chat', page: () => getpage('Chatpage') },
+        Signup: { path: '/sigup', name: 'Signup', page: () => getpage('Signup') },
     }
 
     var hook = 0;
@@ -56,13 +49,20 @@ var Core = (function () {
         list = val.data.data[2];
         if (val.data.islogin) {
             user._login(val.data.user);
-            opensocket();
+            _opensocket();
+        }
+        page = {
+            Chatpage:<Chat fullscreen={true} socket={socket} /> ,
+            Accountpage: <></>,
+            Mappage: <Map />,
+            Signup: <></>,
+            Homepage: <Itemgrid />
         }
         _isLoaded = true;
         proseecHook();
     }
 
-    var opensocket = () => {
+    var _opensocket = () => {
         socket.connect();
         socket.emit('passuser', user._getuser());
     }
@@ -101,7 +101,9 @@ var Core = (function () {
         return user._getuser().chatname;
     }
 
-
+    var getpages = () => {
+        return route;
+    }
     return {
         item: getitem,
         list: getlist,
@@ -111,8 +113,8 @@ var Core = (function () {
         getUser: getuser,
         getsocket: getsocket,
         getchatname: getchatname,
-        getpages: route,
-        opensocket, opensocket,
+        getpages: getpages,
+        opensocket: _opensocket,
         setchat: chatupdate,
         api: Api,
         Chatload: chat_hook
