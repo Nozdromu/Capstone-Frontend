@@ -60,14 +60,8 @@ io.on('connection', (socket) => {
       USys.setsocket(socket.handshake.query.user_email, socket);
       rejoinroom(socket.handshake.query.user_email);
     }
-
   }
-
-  //console.log(socket);
-  // if (socket.handshake.user != undefined)
-  //   USys.setsocket(socket.handshake.user, socket);
   console.log('///////////////////////////')
-  // socket.on('createroom',())
   socket.on('passuser', (data) => {
     USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
     socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
@@ -274,6 +268,8 @@ app.get('/create_room', (req, res) => {
   var id = Date.now();
   room[id] = {
     id: id,
+    user1: user1,
+    user2: user2,
     history: []
   }
   var r = room[id];

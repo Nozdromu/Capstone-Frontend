@@ -42,20 +42,7 @@ var Core = (function () {
     }
 
     var setSocket = () => {
-        socket = new io('/', {
-            autoConnect: false,
-            query: {
-                user_email: user._getuser().email,
-                user_uid: user._getuser().uid,
-            }
-        })
-    }
-
-    var _load = (val) => {
-        item = val.data.data[0];
-        list = val.data.data[2];
-        if (val.data.islogin) {
-            user._login(val.data.user);
+        if (socket.id === undefined)
             socket = new io('/', {
                 autoConnect: false,
                 query: {
@@ -63,7 +50,13 @@ var Core = (function () {
                     user_uid: user._getuser().uid,
                 }
             })
-            _opensocket();
+    }
+
+    var _load = (val) => {
+        item = val.data.data[0];
+        list = val.data.data[2];
+        if (val.data.islogin) {
+            user._login(val.data.user);
         }
         page = {
             Chatpage: <Chat fullscreen={true} socket={socket} />,
@@ -75,7 +68,9 @@ var Core = (function () {
         _isLoaded = true;
         proseecHook();
     }
-
+    var socketclose=()=>{
+        socket.disconnect();
+    }
     var _opensocket = () => {
         setSocket();
         socket.connect();
@@ -130,6 +125,7 @@ var Core = (function () {
         getchatname: getchatname,
         getpages: getpages,
         opensocket: _opensocket,
+        socketclose:socketclose,
         setchat: chatupdate,
         api: Api,
         Chatload: chat_hook

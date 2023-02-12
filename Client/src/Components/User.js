@@ -30,6 +30,7 @@ var User = (function () {
         })
     }
     var logout = (val) => {
+        Core.socketclose();
         islogin = false;
     }
     var getuser = () => {
