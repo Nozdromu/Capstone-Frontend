@@ -40,68 +40,6 @@ app.use(session({
 
 
 var USys = new Usystem()
-////////////////////////////////////////////////////////////////////////////
-var io = socketIo(server, {
-  cors: {
-    origin: 'http://localhost:3000'
-  }
-})
-
-var room = {};
-
-
-io.on('connection', (socket) => {
-  console.log("connected: " + socket.id);
-  console.log(socket);
-  if (socket.handshake.query.user_email !== undefined) {
-    var user = USys.getuser(socket.handshake.query.user_email);
-    if (user !== undefined) {
-      socket['user'] = user;
-      USys.setsocket(socket.handshake.query.user_email, socket);
-      rejoinroom(socket.handshake.query.user_email);
-    }
-  }
-  console.log('///////////////////////////')
-  socket.on('passuser', (data) => {
-    USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
-    socket['user'] = USys.getuser(data.email);
-  })
-  socket.join('lobby');
-  socket.join('publicroom');
-  socket.on('chat', (data) => {
-    if (data.room !== 'publicroom')
-      room[data.room].history.push({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() })
-    socket.to(data.room).emit('chat', data);
-    console.log(room);
-  })
-  socket.on("disconnect", (reason) => {
-    console.log(socket.id + ' is disconnected!');
-  });
-  socket.on('reconnect', (socket) => {
-    console.log(socket.id + ' is reconnected!');
-  })
-});
-
-var storechathistory = () => {
-
-}
-
-var rejoinroom = (email) => {
-  var user = USys.getuser(email);
-  var rooms = user.getroom();
-  Object.keys(rooms).forEach(val => {
-    user.socket().join(rooms[val].id)
-  })
-}
-
-var joinroom = (main_socket, guest_socket) => {
-  var room = main_socket.id + guest_socket.id;
-  main_socket.join(room);
-  guest_socket.join(room);
-  return room;
-}
-
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -133,6 +71,75 @@ var loaddata = () => {
 }
 
 loaddata();
+////////////////////////////////////////////////////////////////////////////
+var io = socketIo(server, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+})
+
+var room = {};
+
+
+io.on('connection', (socket) => {
+  console.log("connected: " + socket.id);
+  console.log(socket);
+  if (socket.handshake.query.user_email !== undefined) {
+    var user = USys.getuser(socket.handshake.query.user_email);
+    if (user !== undefined) {
+      socket['user'] = user;
+      USys.setsocket(socket.handshake.query.user_email, socket);
+      rejoinroom(socket.handshake.query.user_email);
+    }
+  }
+  console.log('///////////////////////////')
+  socket.on('passuser', (data) => {
+    USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
+    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
+    socket['user'] = USys.getuser(data.email);
+  })
+  socket.join('lobby');
+  socket.join('publicroom');
+  socket.on('chat', (data) => {
+    if (data.room !== 'publicroom') {
+      // room[data.room].history.push()
+      storechathistory({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() }, room[data.room]);
+    }
+
+    socket.to(data.room).emit('chat', data);
+    console.log(room);
+  })
+  socket.on("disconnect", (reason) => {
+    console.log(socket.id + ' is disconnected!');
+  });
+  socket.on('reconnect', (socket) => {
+    console.log(socket.id + ' is reconnected!');
+  })
+});
+
+var storechathistory = (data, room) => {
+  con.query('call addchathistory(?,?,?)', [data.sender, data.reciver, data.message], function (err, result, fields) {
+    if (err) throw err;
+    
+    room.history.push(result[0][0]);
+    console.log(room);
+  })
+}
+
+var rejoinroom = (email) => {
+  var user = USys.getuser(email);
+  var rooms = user.getroom();
+  Object.keys(rooms).forEach(val => {
+    user.socket().join(rooms[val].id)
+  })
+}
+
+var joinroom = (main_socket, guest_socket) => {
+  var room = main_socket.id + guest_socket.id;
+  main_socket.join(room);
+  guest_socket.join(room);
+  return room;
+}
 
 
 
