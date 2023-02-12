@@ -18,10 +18,7 @@ var Core = (function () {
     var list = {};
     var t = [];
     var user = User;
-    var socket = new io('/', {
-        autoConnect: false,
-        user: user._getuser().email
-    })
+    var socket = {};
     var chatupdate = {};
     var Api = Appapi();
     var getpage = (key) => {
@@ -44,15 +41,32 @@ var Core = (function () {
         })
     }
 
+    var setSocket = () => {
+        socket = new io('/', {
+            autoConnect: false,
+            query: {
+                user_email: user._getuser().email,
+                user_uid: user._getuser().uid,
+            }
+        })
+    }
+
     var _load = (val) => {
         item = val.data.data[0];
         list = val.data.data[2];
         if (val.data.islogin) {
             user._login(val.data.user);
+            socket = new io('/', {
+                autoConnect: false,
+                query: {
+                    user_email: user._getuser().email,
+                    user_uid: user._getuser().uid,
+                }
+            })
             _opensocket();
         }
         page = {
-            Chatpage:<Chat fullscreen={true} socket={socket} /> ,
+            Chatpage: <Chat fullscreen={true} socket={socket} />,
             Accountpage: <></>,
             Mappage: <Map />,
             Signup: <></>,
@@ -63,6 +77,7 @@ var Core = (function () {
     }
 
     var _opensocket = () => {
+        setSocket();
         socket.connect();
         socket.emit('passuser', user._getuser());
     }

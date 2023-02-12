@@ -16,7 +16,7 @@ function ChatApp(props) {
         })
     }
 
-    const [chatwindow, setchatwindow] = useState({ userlist: <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby socket={props.socket} newchat={create_chat}></Chatlobby></Tab.Pane> });
+    const [chatwindow, setchatwindow] = useState({ userlist: <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby socket={()=>Core.getsocket()} newchat={create_chat}></Chatlobby></Tab.Pane> });
     const [chattab, setchattab] = useState({ userlist: <Nav.Item key={'userlist'}><Nav.Link eventKey="Users">User List</Nav.Link></Nav.Item> });
     const [chathistory, setchathistory] = useState({})
     var [count, setcount] = useState(0);
@@ -81,7 +81,7 @@ function ChatApp(props) {
     if (!ismount) {
         new_chat({ chatname: "publicroom", room: "publicroom" });
 
-        props.socket.on('chat', (data) => {
+        Core.getsocket().on('chat', (data) => {
             console.log(data);
             if (chathistory[data.room] === undefined) {
                 new_chat(data);
@@ -114,7 +114,7 @@ function ChatApp(props) {
         chatwindow[room] = <Tab.Pane key={room} eventKey={room}><Chatwindow room={room} th={chathistory[room]} >{chathistory[room]}</Chatwindow></Tab.Pane>;
         setchatwindow(chatwindow);
         var data = { chatname: _user.chatname, room: room, message: textbox.current.value }
-        props.socket.emit('chat', data);
+        Core.getsocket().emit('chat', data);
     }
     // useEffect(() => {
     //     textbox.current.focus();

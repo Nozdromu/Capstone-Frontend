@@ -47,37 +47,59 @@ var io = socketIo(server, {
   }
 })
 
-
+var room = {};
 
 
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
+  console.log(socket);
+  if (socket.handshake.query.user_email !== undefined) {
+    var user = USys.getuser(socket.handshake.query.user_email);
+    if (user !== undefined) {
+      socket['user'] = user;
+      USys.setsocket(socket.handshake.query.user_email, socket);
+      rejoinroom(socket.handshake.query.user_email);
+    }
+
+  }
+
   //console.log(socket);
-  if (socket.handshake.user != undefined)
-    USys.setsocket(socket.handshake.user, socket);
+  // if (socket.handshake.user != undefined)
+  //   USys.setsocket(socket.handshake.user, socket);
   console.log('///////////////////////////')
   // socket.on('createroom',())
   socket.on('passuser', (data) => {
     USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-    console.log(USys.getallchatname());
     socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
-    socket['user'] = data.chatname;
+    socket['user'] = USys.getuser(data.email);
   })
   socket.join('lobby');
   socket.join('publicroom');
   socket.on('chat', (data) => {
-    console.log(data);
+    if (data.room !== 'publicroom')
+      room[data.room].history.push({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() })
     socket.to(data.room).emit('chat', data);
+    console.log(room);
   })
   socket.on("disconnect", (reason) => {
-    //console.log(socket.id + ' is disconnected!');
+    console.log(socket.id + ' is disconnected!');
   });
   socket.on('reconnect', (socket) => {
-
+    console.log(socket.id + ' is reconnected!');
   })
 });
 
+var storechathistory = () => {
 
+}
+
+var rejoinroom = (email) => {
+  var user = USys.getuser(email);
+  var rooms = user.getroom();
+  Object.keys(rooms).forEach(val => {
+    user.socket().join(rooms[val].id)
+  })
+}
 
 var joinroom = (main_socket, guest_socket) => {
   var room = main_socket.id + guest_socket.id;
@@ -247,11 +269,19 @@ app.get('/getimagelist', (req, res) => {
 
 app.get('/create_room', (req, res) => {
   console.log(req.query);
-  var user1 = USys.getuser(req.session.user.email).socket();
-  var user2 = USys.getuser(req.query.email).socket();
-  user1.join(user1.id + user2.id);
-  user2.join(user1.id + user2.id);
-  var result = { room: user1.id + user2.id, chatname: req.query.chatname }
+  var user1 = USys.getuser(req.session.user.email);
+  var user2 = USys.getuser(req.query.email);
+  var id = Date.now();
+  room[id] = {
+    id: id,
+    history: []
+  }
+  var r = room[id];
+  r[user1.uid] = user1;
+  r[user2.uid] = user2;
+  user1.joinroom(user2, room[id]);
+  user2.joinroom(user1, room[id]);
+  var result = { room: id, chatname: req.query.chatname }
   res.send(result);
 })
 
