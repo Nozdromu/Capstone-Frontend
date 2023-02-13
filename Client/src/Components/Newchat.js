@@ -9,13 +9,14 @@ function Newchat() {
     const [room, setroom] = useState('publicroom');
     const [rooms, setrooms] = useState(Core.room)
     var textbox = useRef(null);
-    // function handleKeyPress(e) {
-    //     if (e.key === 'Enter') {
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
 
-    //         handleRightchat();
-    //     }
-    // }
+            handleRightchat();
+        }
+    }
     var handleRightchat = () => {
+        //Core.room
     }
     return (
         <Container fluid="md" style={{}}>
@@ -47,7 +48,7 @@ function Newchat() {
                     <FormGroup>
                         <Row>
                             <Col>
-                                {/* <Form.Control type="input" placeholder="Enter Here" ref={textbox} onKeyDown={(e) => handleKeyPress(e)} /> */}
+                                <Form.Control type="input" placeholder="Enter Here" ref={textbox} onKeyDown={(e) => handleKeyPress(e)} />
                             </Col>
                             <Col xs md lg="4">
                                 <Button onClick={handleRightchat}>submit</Button>
