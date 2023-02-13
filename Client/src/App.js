@@ -10,7 +10,7 @@ function App() {
   te.sett(()=>{
     console.log('done')
   });
-  te.gett()();
+  te.gett();
   return (
 
       <Home />

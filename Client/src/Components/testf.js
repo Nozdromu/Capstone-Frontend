@@ -4,8 +4,9 @@ function a() {
         sett: (a) => {
             t = a;
         },
-        gett: ()=>{
-            return t;
+        gett: () => {
+            if (typeof t === 'function')
+                return t();
         }
     }
 }

@@ -7,7 +7,8 @@ import axios from 'axios'
 
 function Newchat() {
     const [room, setroom] = useState('publicroom');
-    const [rooms, setrooms] = useState(Core.room)
+    const [tabs, settabs] = useState(Core.rooms.gettabs());
+    const [windows,setwindow]= useState(Core.rooms.getwindows())
     var textbox = useRef(null);
     function handleKeyPress(e) {
         if (e.key === 'Enter') {
@@ -29,14 +30,14 @@ function Newchat() {
                         <Row>
                             <Col sm={3} className='border-end' >
                                 <Nav variant="pills" className="flex-column">
-                                    {Object.values(rooms).map(value => {
+                                    {Object.values(Core.rooms.getrooms).map(value => {
                                         return value.Tab;
                                     })}
                                 </Nav>
                             </Col>
                             <Col sm={9} style={{ maxHeight: '78vh', overflowY: 'auto' }}>
                                 <Tab.Content>
-                                    {Object.values(rooms).map(value => {
+                                    {Object.values(Core.rooms.getrooms).map(value => {
                                         return value.windwo;
                                     })}
                                 </Tab.Content>
