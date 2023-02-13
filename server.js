@@ -120,7 +120,7 @@ io.on('connection', (socket) => {
 var storechathistory = (data, room) => {
   con.query('call addchathistory(?,?,?)', [data.sender, data.reciver, data.message], function (err, result, fields) {
     if (err) throw err;
-    
+
     room.history.push(result[0][0]);
     console.log(room);
   })
@@ -284,7 +284,7 @@ app.get('/create_room', (req, res) => {
   r[user2.uid] = user2;
   user1.joinroom(user2, room[id]);
   user2.joinroom(user1, room[id]);
-  var result = { room: id, chatname: req.query.chatname }
+  var result = { room: id, chatname: req.query.chatname, user: user2 }
   res.send(result);
 })
 
@@ -299,8 +299,13 @@ app.get('/create_room_chat', (req, res) => {
   var user2 = USys.getuser(u.email);
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
-  var result = { room: user1.id + user2.id, chatname: u.firstname }
+  var result = { room: user1.id + user2.id, user: u, chatname: u.firstname }
   res.send(result);
+})
+
+app.get('/newchat', (req, res) => {
+  var user1 = USys.getuser(req.session.user.email);
+  var user2 = USys.getuser(u.email);
 })
 
 ///////////////////////////////////////////////////////////////////////////
