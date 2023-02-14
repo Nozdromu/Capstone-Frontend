@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
-import Core from '../Data';
+import Core from '../Core';
 import { Container } from 'react-bootstrap';
 
 
