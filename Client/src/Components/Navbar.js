@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Button, Popover, Container, Form, Nav, Navbar, NavDropdown, Overlay } from 'react-bootstrap';
 import Signin from './Signin'
+import Signup from './Signup'
+import Accountpage from './Account'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios';
 import Core from './Core';
