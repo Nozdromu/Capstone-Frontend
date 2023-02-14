@@ -5,6 +5,8 @@ import Itemgrid from './Itemgrid';
 import Appapi from './Api';
 import Map from './Test_example/Google_map_example'
 import { Navigate } from 'react-router-dom'
+import Newchat from './Newchat'
+import Core_chat from './Core_chat'
 
 var Core = (function () {
 
@@ -34,7 +36,7 @@ var Core = (function () {
     }
 
     var hook = 0;
-
+    var rooms;
     if (!_isLoaded) {
         Api.test.getlodingdata().then(res => {
             _load(res);
@@ -59,7 +61,7 @@ var Core = (function () {
             user._login(val.data.user);
         }
         page = {
-            Chatpage: <Chat fullscreen={true} socket={socket} />,
+            Chatpage: <Newchat />,
             Accountpage: <></>,
             Mappage: <Map />,
             Signup: <></>,
@@ -68,7 +70,7 @@ var Core = (function () {
         _isLoaded = true;
         proseecHook();
     }
-    var socketclose=()=>{
+    var socketclose = () => {
         socket.disconnect();
     }
     var _opensocket = () => {
@@ -125,7 +127,13 @@ var Core = (function () {
         getchatname: getchatname,
         getpages: getpages,
         opensocket: _opensocket,
-        socketclose:socketclose,
+        socketclose: socketclose,
+        getrooms: () => {
+            return rooms
+        },
+        loadrooms: () => {
+            rooms = new Core_chat();
+        },
         setchat: chatupdate,
         api: Api,
         Chatload: chat_hook

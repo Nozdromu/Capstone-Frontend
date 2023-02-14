@@ -28,7 +28,7 @@ var sessionsecret = '12345678';
 var app = express();
 var server = http.createServer(app);
 app.use(cors())
-app.use(session({
+var sessionMiddleware = session({
   secret: sessionsecret,
   saveUninitialized: true,
   resave: false,
@@ -36,7 +36,8 @@ app.use(session({
     httpOnly: true,
     maxAge: 60 * 60 * 1000,
   }
-}))
+})
+app.use(sessionMiddleware)
 
 
 var USys = new Usystem()
@@ -77,45 +78,61 @@ var io = socketIo(server, {
     origin: 'http://localhost:3000'
   }
 })
-
+io.engine.use(sessionMiddleware);
 var room = {};
-
-
 io.on('connection', (socket) => {
   console.log("connected: " + socket.id);
   console.log(socket);
-  if (socket.handshake.query.user_email !== undefined) {
-    var user = USys.getuser(socket.handshake.query.user_email);
-    if (user !== undefined) {
-      socket['user'] = user;
-      USys.setsocket(socket.handshake.query.user_email, socket);
-      rejoinroom(socket.handshake.query.user_email);
-    }
+  console.log(socket.request.session);
+  if (!socket.request.session.user) {
+    USys.setsocket(socket.request.session.user.email, socket);
   }
-  console.log('///////////////////////////')
-  socket.on('passuser', (data) => {
-    USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
-    socket['user'] = USys.getuser(data.email);
-  })
-  socket.join('lobby');
-  socket.join('publicroom');
-  socket.on('chat', (data) => {
-    if (data.room !== 'publicroom') {
-      // room[data.room].history.push()
-      storechathistory({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() }, room[data.room]);
-    }
+  joinpublicroom(socket);
+  // if (socket.handshake.query.user_email !== undefined) {
+  //   var user = USys.getuser(socket.handshake.query.user_email);
+  //   if (user !== undefined) {
+  //     socket['user'] = user;
+  //     USys.setsocket(socket.handshake.query.user_email, socket);
+  //     rejoinroom(socket.handshake.query.user_email);
+  //   }
+  // }
+})
 
-    socket.to(data.room).emit('chat', data);
-    console.log(room);
-  })
-  socket.on("disconnect", (reason) => {
-    console.log(socket.id + ' is disconnected!');
-  });
-  socket.on('reconnect', (socket) => {
-    console.log(socket.id + ' is reconnected!');
-  })
-});
+// io.on('connection', (socket) => {
+//   console.log("connected: " + socket.id);
+//   console.log(socket);
+//   if (socket.handshake.query.user_email !== undefined) {
+//     var user = USys.getuser(socket.handshake.query.user_email);
+//     if (user !== undefined) {
+//       socket['user'] = user;
+//       USys.setsocket(socket.handshake.query.user_email, socket);
+//       rejoinroom(socket.handshake.query.user_email);
+//     }
+//   }
+//   console.log('///////////////////////////')
+//   socket.on('passuser', (data) => {
+//     USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
+//     socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
+//     socket['user'] = USys.getuser(data.email);
+//   })
+//   socket.join('lobby');
+//   socket.join('publicroom');
+//   socket.on('chat', (data) => {
+//     if (data.room !== 'publicroom') {
+//       // room[data.room].history.push()
+//       storechathistory({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() }, room[data.room]);
+//     }
+
+//     socket.to(data.room).emit('chat', data);
+//     console.log(room);
+//   })
+//   socket.on("disconnect", (reason) => {
+//     console.log(socket.id + ' is disconnected!');
+//   });
+//   socket.on('reconnect', (socket) => {
+//     console.log(socket.id + ' is reconnected!');
+//   })
+// });
 
 var storechathistory = (data, room) => {
   con.query('call addchathistory(?,?,?)', [data.sender, data.reciver, data.message], function (err, result, fields) {
@@ -130,17 +147,26 @@ var rejoinroom = (email) => {
   var user = USys.getuser(email);
   var rooms = user.getroom();
   Object.keys(rooms).forEach(val => {
-    user.socket().join(rooms[val].id)
+    joinroom(user.socket(), val);
   })
 }
 
-var joinroom = (main_socket, guest_socket) => {
-  var room = main_socket.id + guest_socket.id;
-  main_socket.join(room);
-  guest_socket.join(room);
-  return room;
+var socketbind = () => {
+  var user
 }
 
+var joinpublicroom = (socket) => {
+  joinroom(socket, 'publicroom');
+}
+
+var joinroom = (socket, roomid) => {
+  socket.join(roomid);
+  socket.to(roomid).emit({ action: 'join', user: { uid: socket.user.uid, chatname: socket.user.firstname, email: socket.user.email } })
+}
+var leaveroom = (socket, roomid) => {
+  socket.leave(roomid);
+  io.to(roomid).emit({ action: 'leave', user: { uid: socket.user.uid, chatname: socket.user.firstname, email: socket.user.email } })
+}
 
 
 
@@ -270,22 +296,29 @@ app.get('/getimagelist', (req, res) => {
 
 app.get('/create_room', (req, res) => {
   console.log(req.query);
-  var user1 = USys.getuser(req.session.user.email);
-  var user2 = USys.getuser(req.query.email);
-  var id = Date.now();
-  room[id] = {
-    id: id,
-    user1: user1,
-    user2: user2,
-    history: []
+  var user = USys.getuser(req.query.email);
+  var result = { status: 0, reciver_id: user.uid, roomid: '' }
+  if (user._islogin()) {
+    result.status = 1;
+    result.roomid = user.socket().id;
   }
-  var r = room[id];
-  r[user1.uid] = user1;
-  r[user2.uid] = user2;
-  user1.joinroom(user2, room[id]);
-  user2.joinroom(user1, room[id]);
-  var result = { room: id, chatname: req.query.chatname, user: user2 }
-  res.send(result);
+  return result;
+  // var user1 = USys.getuser(req.session.user.email);
+  // var user2 = USys.getuser(req.query.email);
+  // var id = Date.now();
+  // room[id] = {
+  //   id: id,
+  //   user1: user1,
+  //   user2: user2,
+  //   history: []
+  // }
+  // var r = room[id];
+  // r[user1.uid] = user1;
+  // r[user2.uid] = user2;
+  // user1.joinroom(user2, room[id]);
+  // user2.joinroom(user1, room[id]);
+  // var result = { room: id, chatname: req.query.chatname, user: user2 }
+  // res.send(result);
 })
 
 app.get('/create_room_chat', (req, res) => {

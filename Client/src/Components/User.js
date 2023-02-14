@@ -1,4 +1,5 @@
 import Core from './Core';
+import Core_chat from './Core_chat';
 
 var User = (function () {
     var islogin = false;
@@ -20,6 +21,7 @@ var User = (function () {
         islogin = true;
         getlist();
         Core.opensocket();
+        Core.loadrooms();
     }
     var getlist = () => {
         list = []

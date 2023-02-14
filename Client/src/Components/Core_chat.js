@@ -3,8 +3,8 @@ import { Nav, Tab } from 'react-bootstrap';
 import Chatlobby from "./Chatlobby";
 import Chatwindow from './Chatwindow'
 import Core from './Core';
-import { axios } from 'axios';
-function Core_chat() {
+import axios from 'axios';
+export default function Core_chat() {
 
     var create_room = (user_email) => {
         axios.get('/create_room', { params: { email: user_email } }).then(res => {
@@ -19,13 +19,14 @@ function Core_chat() {
     var rooms = {
         userlist: {
             tab: <Nav.Item key={'userlist'}><Nav.Link eventKey="Users">User List</Nav.Link></Nav.Item>,
-            windows: <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby socket={() => Core.getsocket()} newchat={create_room}></Chatlobby></Tab.Pane>
+            window: <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby socket={() => Core.getsocket()} newchat={create_room}></Chatlobby></Tab.Pane>
         },
     };
     var tabs = {};
     var windows = {};
     var updatetabs;
     var updatewindows;
+    var updaterooms;
     var socket = Core.getsocket();
     var room = () => {
         var roomid
@@ -88,9 +89,12 @@ function Core_chat() {
             updatetabs(tabs);
             updatewindows(windows);
         },
-        getrooms:(()=>{
+        getrooms: () => {
             return rooms;
-        })()
+        },
+        updaterooms: (fun) => {
+            updaterooms = fun;
+        }
     }
 
 }
