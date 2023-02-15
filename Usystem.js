@@ -5,11 +5,14 @@ module.exports = Usystem;
 function Usystem() {
     var usertabel = {};
     var uobject = {};
+    var userbykey = {};
 
 
     var load = (data) => {
         data.forEach(val => {
-            usertabel[val.email] = new user(val);
+            var _user = new user(val)
+            usertabel[val.email] = _user;
+            userbykey[val.uid] = _user;
         })
     }
 
@@ -18,7 +21,7 @@ function Usystem() {
             result: false,
             userinfo: {}
         }
-        if (usertabel[_email] != undefined && usertabel[_email].checkpassword(_password)) {
+        if (usertabel[_email] != undefined && usertabel[_email].login(_password)) {
             result.result = true;
             var newuser = usertabel[_email]
             uobject[newuser.email] = newuser;
@@ -53,6 +56,10 @@ function Usystem() {
         return uobject[key];
     }
 
+    var getuserbyuid = (uid) => {
+        return userbykey[uid];
+    }
+
     var setsocket = (key, socket) => {
         getuser(key).setsocket(socket);
     }
@@ -63,7 +70,7 @@ function Usystem() {
 
     var getsocket = (key) => {
         var user = getuser(key);
-        return user.socket;
+        return user.socket();
     }
 
     return {
@@ -76,7 +83,8 @@ function Usystem() {
         setsocket: setsocket,
         getuser: getuser,
         socket_switch, socket_switch,
-        getsocket: getsocket
+        getsocket: getsocket,
+        getuserbyuid: getuserbyuid
     }
 }
 
