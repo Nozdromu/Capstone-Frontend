@@ -4,37 +4,6 @@ import Core from './Core';
 
 
 export default function Smallchat(props) {
-    // const [isload, setload] = useState(false);
-    // const [message, setmessahe] = useState([]);
-    // const [count, setcount] = useState([]);
-
-
-
-
-    // Core.getsocket().on('chat', (data) => {
-    //     newmessage(false, data);
-    // });
-    // Core.Chatload.s_chat = true;
-    // var newmessage = (LR, data) => {
-    //     var _style = LR ? 'right' : 'left';
-    //     var _classname = LR ? 'text-end' : ' text-start'
-    //     let new_message = message;
-    //     new_message = new_message.concat(<Row key={count}>
-    //         <p style={{ 'textAlign': _style, float: _style }} className={_classname}>
-    //             {data.chatname}
-    //         </p>
-    //         <div>
-    //             <p id="tooltip" role="tooltip" style={{ float: _style }}>
-    //                 {data.message}
-    //             </p>
-    //         </div>
-    //     </Row >)
-    //     setcount(count => count + 1);
-    //     setmessahe(message => new_message);
-    //     if (LR) {
-    //         Core.getsocket().emit('chat', { message: data.message, chatname: Core.getUser()._getuser().chatname, room: props.room })
-    //     }
-    // }
     var input = useRef(null);
     var roomid = props.roomid
     var _history = [...Core.getrooms().getroom(roomid).gethistory()].reverse();

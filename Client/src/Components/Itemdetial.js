@@ -18,7 +18,7 @@ export default function Itemdetial(props) {
             enforceFocus={false}
         >
             <Modal.Header closeButton>
-                <h4>{props.data.itid}</h4>
+                <h4>{props.data.itid+':'+props.data.uid}</h4>
             </Modal.Header>
             <Modal.Body>
                 <Row>
