@@ -37,7 +37,7 @@ export default function Smallchat(props) {
     // }
     var input = useRef(null);
     var roomid = props.roomid
-    var _history = Core.getrooms().getroom(roomid).gethistory().reverse();
+    var _history = [...Core.getrooms().getroom(roomid).gethistory()].reverse();
     const [history, sethistory] = useState(_history);
     const [count, setcount] = useState(0);
     function handleKeyPress(e) {
@@ -53,7 +53,7 @@ export default function Smallchat(props) {
     }
 
     var changehistory = () => {
-        sethistory(Core.getrooms().getroom(roomid).gethistory().reverse());
+        sethistory([...Core.getrooms().getroom(roomid).gethistory()].reverse());
         setcount(count => count + 1);
     }
 

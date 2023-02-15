@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 import Core from './Core';
 
 export default function Chatwindow(props) {
-    const [history, sethistory] = useState(Core.getrooms().getroom(props.roomid).gethistory());
+    var h=[...Core.getrooms().getroom(props.roomid).gethistory()].reverse()
+    const [history, sethistory] = useState(h);
     const [count, setcount] = useState(0);
     var roomid = props.roomid
     var room = Core.getrooms().getroom(roomid);
     var set = () => {
-        sethistory(history => Core.getrooms().getroom(props.roomid).gethistory());
+        h=[...Core.getrooms().getroom(props.roomid).gethistory()].reverse()
+        sethistory(history => h);
         setcount(count => count + 1)
     }
     room.setupdatehistory(set);
@@ -16,10 +18,11 @@ export default function Chatwindow(props) {
         room.setupdatehistory(set);
     }, [])
 
-    return (<Container style={{ maxHeight: '100%' }}>
+    return (<Container style={{ maxHeight: '100%', 
+    overflowY: 'auto',
+    display: 'flex',
+    'flex-direction': 'column-reverse' }}>
         <div style={{ 'textAlign': 'center' }}>{props.roomid}</div>
-        {history.map(val => {
-            return val
-        })}
+        {history.reverse()}
     </Container>)
 }
