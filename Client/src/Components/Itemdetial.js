@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Row, Col, Image, Carousel } from 'react-bootstrap';
+import Core from './Core';
 
 
 
@@ -44,7 +45,7 @@ export default function Itemdetial(props) {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={props.startchat}>chat</Button>
+                {Core.getUser()._islogin()?<Button onClick={props.startchat}>chat</Button>:<></>}
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal>
