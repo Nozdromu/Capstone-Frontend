@@ -219,31 +219,32 @@ LOCK TABLES `auth_user_user_permissions` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `chathistoty`
+-- Table structure for table `chathistory`
 --
 
-DROP TABLE IF EXISTS `chathistoty`;
+DROP TABLE IF EXISTS `chathistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `chathistoty` (
-  `chid` int NOT NULL,
-  `from` int DEFAULT NULL,
-  `to` int DEFAULT NULL,
+CREATE TABLE `chathistory` (
+  `chid` int NOT NULL AUTO_INCREMENT,
+  `sender` int DEFAULT NULL,
+  `reciver` int DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
-  `time` timestamp NULL DEFAULT NULL,
+  `sendtime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `isread` int DEFAULT NULL,
   PRIMARY KEY (`chid`),
   UNIQUE KEY `chid_UNIQUE` (`chid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `chathistoty`
+-- Dumping data for table `chathistory`
 --
 
-LOCK TABLES `chathistoty` WRITE;
-/*!40000 ALTER TABLE `chathistoty` DISABLE KEYS */;
-/*!40000 ALTER TABLE `chathistoty` ENABLE KEYS */;
+LOCK TABLES `chathistory` WRITE;
+/*!40000 ALTER TABLE `chathistory` DISABLE KEYS */;
+INSERT INTO `chathistory` VALUES (1,9,1,'earer','2023-02-12 10:25:13',NULL),(2,9,1,'112','2023-02-12 10:35:21',NULL),(3,9,1,'1','2023-02-12 10:36:35',NULL),(4,9,1,'12','2023-02-12 10:36:50',NULL),(5,9,1,'12','2023-02-12 10:37:21',NULL),(6,1,9,'jjkk','2023-02-12 10:37:27',NULL),(7,2,3,'ersg','2023-02-14 23:58:57',NULL),(8,3,2,'efwgfr','2023-02-14 23:58:57',NULL),(9,3,2,'rfaera','2023-02-14 23:58:57',NULL),(10,3,1,'aerftf','2023-02-14 23:58:57',NULL),(11,9,5,'erffs','2023-02-14 23:58:57',NULL),(12,5,1,'swgrs','2023-02-14 23:58:57',NULL),(13,2,3,'sfs','2023-02-14 23:58:57',NULL),(14,4,1,'fsaf','2023-02-14 23:58:57',NULL),(15,1,4,'afaef','2023-02-14 23:58:57',NULL),(16,6,1,'afafea','2023-02-14 23:58:57',NULL),(17,5,1,'frrfee','2023-02-14 23:58:57',NULL),(18,9,2,'sfvsg','2023-02-14 23:58:57',NULL),(19,9,7,'eg342','2023-02-14 23:58:57',NULL),(20,9,3,'sgsr','2023-02-14 23:58:57',NULL),(21,9,8,'efsf','2023-02-14 23:58:57',NULL),(22,5,9,'sgfsgr','2023-02-14 23:58:57',NULL),(23,3,9,'213213','2023-02-14 23:58:57',NULL),(24,2,9,'21321ewf','2023-02-14 23:58:57',NULL),(25,1,9,'rg3erg234','2023-02-14 23:58:57',NULL);
+/*!40000 ALTER TABLE `chathistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -571,6 +572,26 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'test'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `addchathistory` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addchathistory`(in _sender int,in _reciver int,in _message varchar(255))
+BEGIN
+	insert into chathistory (sender,reciver,message) values(_sender,_reciver,_message);
+    select*from chathistory where chid=LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `addimage` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -639,6 +660,7 @@ BEGIN
     select * from imagetable;
     select * from garagesaletable as garage left join (select*from addresstable) as address on garage.aid=address.aid;
     select * from usertable;
+    select*from chathistory;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -949,4 +971,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-07 22:54:29
+-- Dump completed on 2023-02-14 19:12:33

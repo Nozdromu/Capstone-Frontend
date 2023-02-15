@@ -2,7 +2,7 @@ import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "re
 import { useState, useRef, useEffect } from 'react';
 import Chatlobby from "./Chatlobby";
 import Core from './Core';
-import Chatwindow from './Chatwindow'
+import Chatwindow from './Test_example/Chatwindow'
 import axios from 'axios'
 
 export default function Newchat() {
@@ -36,14 +36,20 @@ export default function Newchat() {
         setcount(count => count + 1);
 
     }
+    var changeact=(id)=>{
+        setroomid(id)
+        console.log('done1')
+        setcount(count => count + 1);
+
+    }
     var handleRightchat = () => {
         Core.getrooms().sendmessage(textbox.current.value);
     }
     Core.getrooms().setpage(p);
     useEffect(() => {
         console.log('start update')
-        // Core.getrooms().updaterooms(setrooms);
         Core.getrooms().setpage(p);
+        Core.getrooms().setactivetab(changeact);
     }, [])
     return (
         <Container fluid="md" style={{}}>
@@ -52,7 +58,7 @@ export default function Newchat() {
                     {'Chat: ' + count}
                 </Card.Header>
                 <Card.Body >
-                    <Tab.Container id="left-tabs-example" defaultActiveKey="publicroom">
+                    <Tab.Container id="left-tabs-example" defaultActiveKey={roomid}>
                         <Row>
                             <Col sm={3} className='border-end' >
                                 <Nav variant="pills" className="flex-column">

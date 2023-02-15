@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Itemcard from './Itemcard';
 import Core from './Core';
-import S_chat from './S_chat'
+import S_chat from './New_s_chat'
 
 export default function Itemgrid() {
   const [list, setlist] = useState();
@@ -18,7 +18,7 @@ export default function Itemgrid() {
   }
 
   var startchat = (data) => {
-    setschat(<S_chat setshow={hidechat} room={data.room} chatname={data.chatname} />)
+    setschat(<S_chat setshow={hidechat} roomid={data.email} chatname={data.chatname} />)
     setchatshow(true);
   }
 

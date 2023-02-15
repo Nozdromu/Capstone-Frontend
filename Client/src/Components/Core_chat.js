@@ -5,18 +5,26 @@ import Core from './Core';
 import axios from 'axios';
 import Chatroom from './chat_room'
 
-export default function Core_chat() {
+export default function Core_chat(_history) {
     var currentroom = 'publicroom';
-
+    var changeactive;
+    var updateactive=(roomid)=>{
+        changeactive(roomid);
+    }
     var create_room = (user) => {
-        axios.get('/create_room', { params: { user } }).then((res) => {
-            console.log(res);
-            var rid = res.data.email;
-            rooms[rid] = Chatroom();
-            rooms[rid].load({ roomid: rid, user: { email: res.data.email, chatname: res.data.chatname }, history: [] })
-            console.log(res);
-            update();
-        })
+        if (rooms[user.email] === undefined) {
+            axios.get('/create_room', { params: { user } }).then((res) => {
+                console.log(res);
+                var rid = res.data.email;
+                rooms[rid] = Chatroom();
+                rooms[rid].load({ roomid: rid, user: { email: res.data.email, chatname: res.data.chatname }, history: [] })
+                console.log(res);
+                update();
+            })
+        } else {
+            updateactive(user.email);
+        }
+
     }
 
     var rooms = {
@@ -64,17 +72,25 @@ export default function Core_chat() {
     }
 
 
-    rooms['publicroom'] = Chatroom();
-    rooms['publicroom'].load({ roomid: 'publicroom', user: { email: 'publicroom', chatname: 'Publicroom' }, history: [] })
-
-    console.log(rooms)
-
     var fpage;
 
     var update = () => {
         fpage();
         console.log(rooms)
     }
+    var loadrooms = (history) => {
+        rooms['publicroom'] = Chatroom();
+        rooms['publicroom'].load({ roomid: 'publicroom', user: { email: 'publicroom', chatname: 'Publicroom' }, history: [] })
+        Object.keys(history).forEach(val => {
+            rooms[val] = Chatroom();
+            rooms[val].load({ roomid: val, user: { email: val, chatname: history[val].chatname }, history: [] })
+            history[val].history.forEach(message => {
+                new_message(message.sender_email !== val, !(message.sender_email === val) ? Core.getchatname() : history[val].chatname, message.message, val)
+            })
+        })
+        console.log(rooms);
+    }
+    loadrooms(_history);
 
     return {
         create_room: create_room,
@@ -95,6 +111,9 @@ export default function Core_chat() {
         setpage: (fun) => {
             fpage = fun;
         },
+        setactivetab:(fun)=>{
+            changeactive=fun
+        },
         updatepage: () => {
             return update()
         },
@@ -106,6 +125,19 @@ export default function Core_chat() {
         },
         setcurrentroom: (roomid) => {
             currentroom = roomid;
+        },
+        loadrooms: (history) => {
+            rooms['publicroom'] = Chatroom();
+            rooms['publicroom'].load({ roomid: 'publicroom', user: { email: 'publicroom', chatname: 'Publicroom' }, history: [] })
+            Object.keys(history).forEach(val => {
+                rooms[val] = Chatroom();
+                rooms[val].load({ roomid: val, user: { email: val, chatname: history[val].chatname }, history: [] })
+                history[val].history.forEach(message => {
+                    new_message(message.sender_email === val, history[val].chatname, message.message, val)
+                })
+            })
+            update()
+            console.log(rooms);
         }
     }
 

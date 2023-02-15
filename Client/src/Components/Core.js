@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
 import User from './User'
-import Chat from './Chat'
+import Chat from './Test_example/Chat'
 import Itemgrid from './Itemgrid';
 import Appapi from './Api';
 import Map from './Test_example/Google_map_example'
@@ -131,8 +131,8 @@ var Core = (function () {
         getrooms: () => {
             return rooms
         },
-        loadrooms: () => {
-            rooms = new Core_chat();
+        loadrooms: (h) => {
+            rooms = new Core_chat(h);
         },
         setchat: chatupdate,
         api: Api,

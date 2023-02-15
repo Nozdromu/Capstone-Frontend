@@ -12,7 +12,6 @@ export default function Chatwindow(props) {
         setcount(count => count + 1)
     }
     room.setupdatehistory(set);
-    // Core.getrooms().getroom(props.roomid).setupdatehistory(set);
     useEffect(() => {
         room.setupdatehistory(set);
     }, [])

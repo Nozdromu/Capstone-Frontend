@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useState, useRef } from 'react';
-import Core from './Core';
+import Core from '../Core';
 
 
 export default function Smallchat(props) {

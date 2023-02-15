@@ -9,6 +9,7 @@ var User = (function () {
     var email = '';
     var phone = '';
     var img = '';
+    var chathistory = {};
     var list = [];
 
     var login = (val) => {
@@ -18,10 +19,11 @@ var User = (function () {
         email = val.email;
         phone = val.phone;
         img = val.profilepicture;
+        chathistory = val.chathistory;
         islogin = true;
         getlist();
         Core.opensocket();
-        Core.loadrooms();
+        Core.loadrooms(chathistory);
     }
     var getlist = () => {
         list = []

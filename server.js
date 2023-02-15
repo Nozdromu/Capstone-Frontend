@@ -64,13 +64,22 @@ var loaddata = () => {
         element.list = result[1].filter(e => e.itid == element.itid);
       });
       USys.load(allitem[3]);
-      // allitem[4].forEach(val=>{
-      //   if(chathistory[val.em])
-      // })
+      var userlist = USys.getuserlist('uid');
+      allitem[4].forEach(val => {
+        var sender = userlist[val.sender];
+        var reciver = userlist[val.reciver];
+        val.sender_email = sender.email;
+        val.reciver_email = reciver.email;
+        val.sender_chatname = sender.firstname;
+        val.reciver_chatname = reciver.firstname;
+        sender.addhistory(val);
+        reciver.addhistory(val);
+      })
+      console.log(userlist);
     })
   } else {
     allitem = require('./alldata.json');
-    USys.load(allitem[3]);
+    USys.load(USys.getuserlist('email'));
   }
 }
 
@@ -103,12 +112,11 @@ io.on('connection', (socket) => {
       else {
         var sender = USys.getuser(socket.request.session.user.email);
         var reciver = USys.getuser(data.roomid);
-        var socketid = USys.getsocket(data.roomid).id;
-        if (socketid != undefined) {
-          socket.to(socketid).emit('chat', { chatname: socket.request.session.user.firstname, email: socket.request.session.user.email, message: data.message, roomid: socket.request.session.user.email });
-          storechathistory({ sender: sender.uid, reciver: reciver.uid, message:data.message })
+        if (reciver.socket() != undefined) {
+          socket.to(reciver.socket().id).emit('chat', { chatname: socket.request.session.user.firstname, email: socket.request.session.user.email, message: data.message, roomid: socket.request.session.user.email });
           console.log(data);
         }
+        storechathistory({ sender: sender.uid, reciver: reciver.uid, message: data.message })
       }
 
     })
@@ -120,11 +128,20 @@ io.on('connection', (socket) => {
 
 
 
-var storechathistory = (data, room) => {
+var storechathistory = (data) => {
   con.query('call addchathistory(?,?,?)', [data.sender, data.reciver, data.message], function (err, result, fields) {
     if (err) throw err;
-    room.history.push(result[0][0]);
-    console.log(room);
+    var userlist = USys.getuserlist('uid');
+    var _result = result[0][0];
+    var sender = userlist[_result.sender];
+    var reciver = userlist[_result.reciver];
+    _result.sender_email = sender.email;
+    _result.reciver_email = reciver.email;
+    _result.sender_chatname = sender.firstname;
+    _result.reciver_chatname = reciver.firstname;
+    sender.addhistory(_result);
+    reciver.addhistory(_result);
+
   })
 }
 
@@ -286,17 +303,16 @@ app.get('/create_room', (req, res) => {
 })
 
 app.get('/create_room_chat', (req, res) => {
-  var u;
-  allitem[3].forEach(val => {
-    if (val.uid == req.query.uid) {
-      u = val;
-    }
-  })
-  var user1 = USys.getuser(req.session.user.email);
-  var user2 = USys.getuser(u.email);
-  user1.join(user1.id + user2.id);
-  user2.join(user1.id + user2.id);
-  var result = { room: user1.id + user2.id, user: u, chatname: u.firstname }
+  console.log(req.query);
+  var user = USys.getuserlist('uid')[req.query.uid];
+  var result = { status: 0, reciver_id: user.uid, roomid: '' }
+
+  result.status = 1;
+  result.roomid = user.socket().id;
+  result.chatname = user.firstname;
+  result.email = user.email;
+
+  console.log(result);
   res.send(result);
 })
 

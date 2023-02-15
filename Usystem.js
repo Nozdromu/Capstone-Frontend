@@ -53,7 +53,7 @@ function Usystem() {
     }
 
     var getuser = (key) => {
-        return uobject[key];
+        return usertabel[key];
     }
 
     var getuserbyuid = (uid) => {
@@ -70,7 +70,7 @@ function Usystem() {
 
     var getsocket = (key) => {
         var user = getuser(key);
-        return user.socket();
+        return user.checklogin()?user.socket():undefined;
     }
 
     return {
@@ -84,7 +84,15 @@ function Usystem() {
         getuser: getuser,
         socket_switch, socket_switch,
         getsocket: getsocket,
-        getuserbyuid: getuserbyuid
+        getuserbyuid: getuserbyuid,
+        getuserlist: (type) => {
+            switch (type) {
+                case 'email':
+                    return usertabel;
+                case 'uid':
+                    return userbykey;
+            }
+        }
     }
 }
 

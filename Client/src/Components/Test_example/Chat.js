@@ -1,7 +1,7 @@
 import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "react-bootstrap";
 import { useState, useRef } from 'react';
-import Chatlobby from "./Chatlobby";
-import Core from './Core';
+import Chatlobby from "../Chatlobby";
+import Core from '../Core';
 import Chatwindow from './Chatwindow'
 import axios from 'axios'
 

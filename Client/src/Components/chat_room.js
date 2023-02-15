@@ -9,6 +9,7 @@ var room = () => {
     var tab;
     var window;
     var updatewindows;
+    var updatesamllwindow;
     var updatehistory = [];
 
     var load = (data) => {
@@ -32,6 +33,9 @@ var room = () => {
         setupdatehistory: (fun) => {
             updatehistory = fun;
         },
+        setupdatesmall: (fun) => {
+            updatesamllwindow = fun;
+        },
         update: () => {
             return updatehistory(history);
         },
@@ -46,7 +50,10 @@ var room = () => {
         },
         newmessage: (data) => {
             history.push(data);
-            updatehistory()
+            if (typeof updatehistory === 'function')
+                updatehistory()
+            if (typeof updatesamllwindow === 'function')
+                updatesamllwindow()
         },
         getreciver: () => {
             return to;
