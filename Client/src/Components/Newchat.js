@@ -65,7 +65,7 @@ export default function Newchat() {
                                     {tabs}
                                 </Nav>
                             </Col>
-                            <Col sm={9} style={{ maxHeight: '78vh', overflowY: 'auto' }}>
+                            <Col sm={9} style={{ maxHeight: '75vh', overflowY: 'auto' }}>
                                 <Tab.Content>
                                     {wins}
                                 </Tab.Content>

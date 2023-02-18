@@ -20,11 +20,16 @@ export default function Chatwindow(props) {
 
     return (<Container style={{
         maxHeight: '100%',
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column-reverse'
     }}>
         <div style={{ 'textAlign': 'center' }}>{props.roomid}</div>
-        {history}
+        <div style={{
+            maxHeight: '100%',
+            maxWidth:'100%',
+            display: 'flex',
+            flexDirection: 'column-reverse'
+        }}>
+            {history}
+        </div>
+
     </Container>)
 }
