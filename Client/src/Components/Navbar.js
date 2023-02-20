@@ -22,7 +22,7 @@ function MyNavbar(props) {
     const handleShow = () => setShow(true);
     const logout = () => {
         console.log('start logout');
-        Core.api.test.logout().then((data) => {
+        Core.api.user.sign_out((data) => {
             console.log(data)
             if (data.data.result) {
                 User._logout();
@@ -64,7 +64,7 @@ function MyNavbar(props) {
                                 type="search"
                                 placeholder="Search"
                                 className="me-2"
-                                aria-label="Search"/>
+                                aria-label="Search" />
                             <Button variant="outline-success">Search</Button>
                             {Core.getUser()._islogin() ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
                             </div> : <></>}

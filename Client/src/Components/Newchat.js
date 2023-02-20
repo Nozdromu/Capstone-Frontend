@@ -1,15 +1,11 @@
 import { Button, Card, Container, Form, FormGroup, Row, Col, Tab, Nav } from "react-bootstrap";
 import { useState, useRef, useEffect } from 'react';
-import Chatlobby from "./Chatlobby";
 import Core from './Core';
-import Chatwindow from './Test_example/Chatwindow'
-import axios from 'axios'
+
 
 export default function Newchat() {
     var room = Core.getrooms().getrooms();
     const [roomid, setroomid] = useState('publicroom');
-    // const [tabs, settabs] = useState(Core.rooms.gettabs());
-    // const [windows,setwindow]= useState(Core.rooms.getwindows())
     const [tabs, settabs] = useState(Object.values(room).map(value => {
         return value.tab();
     }));

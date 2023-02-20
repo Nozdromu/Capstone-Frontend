@@ -12,6 +12,7 @@
     "client": "cd Client && npm start",
     "serverInstall": "npm i",
     "clientInstall": "cd Client && npm i",
+    "create_database": "cmd /c \"mysql -h localhost  -u root -p 'CREATE DATABASE [IF NOT EXISTS] test'\"",
     "importforwindows": "cmd /c \"mysql -h localhost  -u root -p test < sql.sql\"",
     "dumpforwindows": "cmd /c \"mysqldump -h localhost -u root -p test --routines > sql.sql\"",
     "build": "cd Client && npm run build",
@@ -30,6 +31,8 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20",
     "socket.io": "^4.6.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.1",
     "ws": "^8.12.0"
   },
   "devDependencies": {

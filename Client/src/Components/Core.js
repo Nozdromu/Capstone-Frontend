@@ -1,10 +1,8 @@
 import { io } from "socket.io-client"
 import User from './User'
-import Chat from './Test_example/Chat'
 import Itemgrid from './Itemgrid';
-import Appapi from './Api';
+import Api from './Api';
 import Map from './Test_example/Google_map_example'
-import { Navigate } from 'react-router-dom'
 import Newchat from './Newchat'
 import Core_chat from './Core_chat'
 
@@ -22,23 +20,22 @@ var Core = (function () {
     var user = User;
     var socket = {};
     var chatupdate = {};
-    var Api = Appapi();
     var getpage = (key) => {
         return page[key];
     }
     var page = {}
     var route = {
-        Homepage: { path: '/', name: 'Spiffo-Slist', page: () => getpage('Homepage') },
-        Accountpage: { path: '/account', name: 'Account', page: () => getpage('Accountpage') },
-        Mappage: { path: '/map', name: 'Map', page: () => getpage('Mappage') },
-        Chatpage: { path: '/chat', name: 'Chat', page: () => getpage('Chatpage') },
-        Signup: { path: '/sigup', name: 'Signup', page: () => getpage('Signup') },
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
+        Accountpage: { path: '/account', name: 'Account', page: <></> },
+        Mappage: { path: '/map', name: 'Map', page: <Map /> },
+        Chatpage: { path: '/chat', name: 'Chat', page: <Newchat /> },
+        Signup: { path: '/sigup', name: 'Signup', page: <></> },
     }
 
     var hook = 0;
     var rooms;
     if (!_isLoaded) {
-        Api.test.getlodingdata().then(res => {
+        Api.data.getlodingdata().then(res => {
             _load(res);
         })
     }

@@ -4,16 +4,17 @@ import Chatlobby from "./Chatlobby";
 import Core from './Core';
 import axios from 'axios';
 import Chatroom from './chat_room'
+import Api from './Api';
 
 export default function Core_chat(_history) {
     var currentroom = 'publicroom';
     var changeactive;
-    var updateactive=(roomid)=>{
+    var updateactive = (roomid) => {
         changeactive(roomid);
     }
     var create_room = (user) => {
         if (rooms[user.email] === undefined) {
-            axios.get('/create_room', { params: { user } }).then((res) => {
+            Api.chat.startchat((res) => {
                 console.log(res);
                 var rid = res.data.email;
                 rooms[rid] = Chatroom();
@@ -111,8 +112,8 @@ export default function Core_chat(_history) {
         setpage: (fun) => {
             fpage = fun;
         },
-        setactivetab:(fun)=>{
-            changeactive=fun
+        setactivetab: (fun) => {
+            changeactive = fun
         },
         updatepage: () => {
             return update()
