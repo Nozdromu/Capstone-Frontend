@@ -133,3 +133,15 @@ img {
   max-width: 50em !important; /* Max Width of the popover (depending on the container!) */
   min-width: 30em !important;
 }
+
+
+/* //////////////////////////////////// */
+#tooltip {
+  word-break: normal;
+  width: auto;
+  max-width: 40vh;
+  background: #307ced;
+  color: rgb(0, 0, 0);
+  padding: 4px 8px;
+  border-radius: 4px;
+}

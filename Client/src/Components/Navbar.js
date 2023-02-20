@@ -1,39 +1,35 @@
 import React, { useState, useRef } from 'react';
-import { Button, Popover, Container, Form, Nav, Navbar, NavDropdown, Overlay } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Signin from './Signin'
+import Signup from './Signup'
+import Accountpage from './Account'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import axios from 'axios';
+
 import Core from './Core';
 
 function MyNavbar(props) {
     var User = Core.getUser();
-    const [login, setlogin] = useState(User._islogin());
+    const [login, setlogin] = useState(User._islogin);
     const [show, setShow] = useState(false);
-    const [chatshow, setchatshow] = useState(false);
-    const toggleShow = () => setchatshow(!chatshow);
-    const [showpop, setShowpop] = useState(false);
-    const [target, setTarget] = useState(null);
     const ref = useRef(null);
 
-    const handleClick = (event) => {
-        setShowpop(!showpop);
-        setTarget(event.target);
-    };
 
     const handleClose = () => {
         setShow(false);
     }
     const handleSignin = () => {
         setlogin(true);
+        props.router_login(true);
     }
     const handleShow = () => setShow(true);
     const logout = () => {
         console.log('start logout');
-        axios.get('/logout').then((data) => {
+        Core.api.test.logout().then((data) => {
             console.log(data)
             if (data.data.result) {
                 User._logout();
                 setlogin(false);
+                props.router_login(false);
             } else {
                 console.log('something wrong')
             }
@@ -42,9 +38,6 @@ function MyNavbar(props) {
 
     }
 
-    // (function () {
-    //     User._load();
-    // })()
     return (
 
         <>
@@ -76,21 +69,6 @@ function MyNavbar(props) {
                                 aria-label="Search"/>
                             <Button variant="outline-success">Search</Button>
                             {Core.getUser()._islogin() ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
-                                <Button onClick={handleClick}>Chat</Button>
-
-                                <Overlay
-                                    show={showpop}
-                                    target={target}
-                                    placement="bottom"
-                                    container={ref}
-                                    containerPadding={20}
-                                    popover-max-width={"100%"}
-                                    style={{ maxWidth: '100%' }}
-                                >
-                                    <Popover id="popover-contained">
-                                        {Core.getpages().chatpage}
-                                    </Popover>
-                                </Overlay>
                             </div> : <></>}
                         </Form>
                     </Navbar.Collapse>

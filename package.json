@@ -12,9 +12,10 @@
     "client": "cd Client && npm start",
     "serverInstall": "npm i",
     "clientInstall": "cd Client && npm i",
-    "importforwindows": "cmd /c \"mysql -u root -p test < sql.sql\"",
-    "dumpforwindows": "cmd /c \"mysqldump -u root -p test --routines > sql.sql\"",
-    "build": "cd Client && npm run build"
+    "importforwindows": "cmd /c \"mysql -h localhost  -u root -p test < sql.sql\"",
+    "dumpforwindows": "cmd /c \"mysqldump -h localhost -u root -p test --routines > sql.sql\"",
+    "build": "cd Client && npm run build",
+    "django": "cd backend&& py manage.py runserver"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +29,8 @@
     "http-proxy-middleware": "^2.0.6",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20",
-    "socket.io": "^4.5.4"
+    "socket.io": "^4.6.0",
+    "ws": "^8.12.0"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"

@@ -1,35 +1,58 @@
 import { io } from "socket.io-client"
-import axios from 'axios'
 import User from './User'
 import Chat from './Chat'
+import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
+import Appapi from './Api';
+import Map from './Test_example/Google_map_example'
+import { Navigate } from 'react-router-dom'
+import Newchat from './Newchat'
+import Core_chat from './Core_chat'
 
 var Core = (function () {
 
     var _isLoaded = false;
+    var chat_hook = {
+        chat: false,
+        login: false,
+        s_chat: false
+    }
     var item = {};
     var list = {};
     var t = [];
     var user = User;
-    var socket = new io('/', {
-        autoConnect: false,
-        user: user._getuser().email
-    })
-    var socket_user = [];
-    var pages = {
-        Homepage: {path:'/',name:'Spiffo-Slist',page:<Itemgrid />},
-        Accountpage:{path:'/account',name:'Account',page:<></>} ,
-        Mappage: {path:'/map',name:'Map',page:<></>},
-        Chatpage: {path:'/chat',name:'Chat',page:<Chat socket={socket} />},
-        Signup: {path:'/sigup',name:'Signup',page:<></>},
+    var socket = {};
+    var chatupdate = {};
+    var Api = Appapi();
+    var getpage = (key) => {
+        return page[key];
+    }
+    var page = {}
+    var route = {
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: () => getpage('Homepage') },
+        Accountpage: { path: '/account', name: 'Account', page: () => getpage('Accountpage') },
+        Mappage: { path: '/map', name: 'Map', page: () => getpage('Mappage') },
+        Chatpage: { path: '/chat', name: 'Chat', page: () => getpage('Chatpage') },
+        Signup: { path: '/sigup', name: 'Signup', page: () => getpage('Signup') },
     }
 
     var hook = 0;
-
+    var rooms;
     if (!_isLoaded) {
-        axios.get('/getdata').then(res => {
+        Api.test.getlodingdata().then(res => {
             _load(res);
         })
+    }
+
+    var setSocket = () => {
+        if (socket.id === undefined)
+            socket = new io('/', {
+                autoConnect: false,
+                query: {
+                    user_email: user._getuser().email,
+                    user_uid: user._getuser().uid,
+                }
+            })
     }
 
     var _load = (val) => {
@@ -37,13 +60,22 @@ var Core = (function () {
         list = val.data.data[2];
         if (val.data.islogin) {
             user._login(val.data.user);
-            opensocket();
+        }
+        page = {
+            Chatpage: <Newchat />,
+            Accountpage: <Accountpage />,
+            Mappage: <Map />,
+            Signup: <></>,
+            Homepage: <Itemgrid />
         }
         _isLoaded = true;
         proseecHook();
     }
-
-    var opensocket = () => {
+    var socketclose = () => {
+        socket.disconnect();
+    }
+    var _opensocket = () => {
+        setSocket();
         socket.connect();
         socket.emit('passuser', user._getuser());
     }
@@ -60,10 +92,6 @@ var Core = (function () {
                 t[i].apply();
                 hook++;
             }
-    }
-
-    var getchatpage = () => {
-        return <Chat socket={socket} />;
     }
 
     var getitem = () => {
@@ -85,8 +113,9 @@ var Core = (function () {
     var getchatname = () => {
         return user._getuser().chatname;
     }
+
     var getpages = () => {
-        return pages;
+        return route;
     }
     return {
         item: getitem,
@@ -97,8 +126,18 @@ var Core = (function () {
         getUser: getuser,
         getsocket: getsocket,
         getchatname: getchatname,
-        getpages:getpages,
-        opensocket, opensocket
+        getpages: getpages,
+        opensocket: _opensocket,
+        socketclose: socketclose,
+        getrooms: () => {
+            return rooms
+        },
+        loadrooms: () => {
+            rooms = new Core_chat();
+        },
+        setchat: chatupdate,
+        api: Api,
+        Chatload: chat_hook
     };
 })()
 

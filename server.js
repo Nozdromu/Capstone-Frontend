@@ -1,5 +1,4 @@
 'use strict';
-
 ///////////////////////////////////////////////////////////////////////////
 // requires
 
@@ -14,6 +13,8 @@ const session = require('express-session')
 
 const sqlconfig = require('./sqlconfig.json');
 
+const Usystem = require('./Usystem')
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -27,7 +28,7 @@ var sessionsecret = '12345678';
 var app = express();
 var server = http.createServer(app);
 app.use(cors())
-app.use(session({
+var sessionMiddleware = session({
   secret: sessionsecret,
   saveUninitialized: true,
   resave: false,
@@ -35,211 +36,11 @@ app.use(session({
     httpOnly: true,
     maxAge: 60 * 60 * 1000,
   }
-}))
-
-
-
-////////////////////////////////////////////////////////////////////////////
-var io = socketIo(server, {
-  cors: {
-    origin: 'http://localhost:3000'
-  }
 })
-var _user = [];
-//var xxx={};
-// var y='ww@www.com'
-// xxx[y]=1;
-// console.log(xxx);
-// console.log(xxx[y]);
-var _u = function () {
-  var guestid = 0;
-  var ulist = [];
-  var uobject = {};
-  var usertabel = {};
-  var u = function () {
-    var uid = -1;
-    var type = 0;
-    var chatname = '';
-    var username = '';
-    var firstname = '';
-    var lastname = '';
-    var email = '';
-    var phone = '';
-    var pic = '';
-    var socket = {};
-    var load = (_type, data) => {
-      type = _type;
-      if (type == 1) {
-        uid = data.uid;
-        username = data.username
-        chatname = data.firstname
-        firstname = data.firstname
-        lastname = data.lastname
-        email = data.email
-        phone = data.phone
-        pic = data.pic
-      } else {
-        chatname = data;
-      }
-
-    }
-
-    var setsocket = (_socket) => {
-      socket = _socket;
-    }
+app.use(sessionMiddleware)
 
 
-    var getuser = () => {
-      return {
-        uid: uid,
-        type: type,
-        chatname: chatname,
-        username: username,
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        phone: phone,
-        pic: pic,
-        socket: socket,
-      }
-    }
-
-
-    return {
-      getinfo: getuser,
-      load: load,
-      setsocket: setsocket,
-      socket: this.socket
-    }
-  }
-
-
-  var load = (data) => {
-    data.forEach(val => {
-      usertabel[val.email] = val;
-    })
-  }
-  var userlogin = (_email, _password) => {
-    var result = {
-      result: false,
-      userinfo: {}
-    }
-    if (usertabel[_email] != undefined && usertabel[_email].password == _password) {
-      result.result = true;
-      var newuser = new u();
-      newuser.load(1, usertabel[_email]);
-      uobject[newuser.getinfo().email] = newuser;
-      result.userinfo = uobject[newuser.getinfo().email].getinfo();
-    }
-    return result;
-  }
-
-  var guestlogin = () => {
-    var newuser = new u();
-    newuser.load(0, 'guest_' + guestid++);
-    uobject[newuser.getinfo().chatname] = newuser;
-    return uobject[newuser.getinfo().chatname];
-  }
-
-  var logout = (login_id) => {
-    delete uobject[login_id];
-    return true;
-  }
-
-  var getalluser = () => {
-    return uobject;
-  }
-  var getalluserinfo = () => {
-    var x = (Object.values(uobject)).map((val) => {
-      return val.getinfo();
-    })
-    return x;
-  }
-
-  var getallchatname = () => {
-    var x = (Object.values(uobject)).map((val) => {
-      return { chatname: val.getinfo().chatname, email: val.getinfo().email };
-    })
-    return x;
-  }
-
-  var getuser = (key) => {
-    return uobject[key];
-  }
-
-  var getuser_info_by_key = (key) => {
-    return getuser(key).getinfo();
-  }
-
-  var setsocket = (key, socket) => {
-    getuser(key).setsocket(socket);
-  }
-
-  var socket_switch = (user_key, guest_key) => {
-    getuser(user_key).setsocket(getuser(guest_key).socket);
-  }
-
-  var getsocket = (key) => {
-    var user = getuser(key).getinfo();
-    return user.socket;
-  }
-
-  return {
-    load: load,
-    userlogin: userlogin,
-    guestlogin: guestlogin,
-    logout: logout,
-    getalluser: getalluser,
-    getalluserinfo: getalluserinfo,
-    getallchatname: getallchatname,
-    getuserinfobykey: getuser_info_by_key,
-    setsocket: setsocket,
-    socket_switch, socket_switch,
-    getsocket: getsocket
-  }
-}
-
-var alluser = new _u()
-
-io.on('connection', (socket) => {
-  console.log("connected: " + socket.id);
-  //console.log(socket);
-  if (socket.handshake.user != undefined)
-    alluser.setsocket(socket.handshake.user, socket);
-  console.log('///////////////////////////')
-  // socket.on('createroom',())
-  socket.on('passuser', (data) => {
-    alluser.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-    console.log(alluser.getallchatname());
-    socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
-    socket['user'] = data.chatname;
-    //console.log(socket);
-  })
-  socket.join('lobby');
-  socket.join('publicroom');
-  socket.on('chat', (data) => {
-    console.log(data);
-    socket.to(data.room).emit('chat', data);
-  })
-  socket.on("disconnect", (reason) => {
-    //console.log(socket.id + ' is disconnected!');
-  });
-  socket.on('reconnect', (socket) => {
-    //console.log(socket.id + '_reconnected!');
-    //console.log(socket);
-    //console.log('////////////////////////////')
-  })
-});
-
-
-
-var joinroom = (main_socket, guest_socket) => {
-  var room = main_socket.id + guest_socket.id;
-  main_socket.join(room);
-  guest_socket.join(room);
-  return room;
-}
-
+var USys = new Usystem()
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -262,16 +63,110 @@ var loaddata = () => {
       allitem[0].forEach(element => {
         element.list = result[1].filter(e => e.itid == element.itid);
       });
-      alluser.load(allitem[3]);
+      USys.load(allitem[3]);
     })
   } else {
     allitem = require('./alldata.json');
-    alluser.load(allitem[3]);
+    USys.load(allitem[3]);
   }
 }
 
 loaddata();
+////////////////////////////////////////////////////////////////////////////
+var io = socketIo(server, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+})
+io.engine.use(sessionMiddleware);
+var room = {};
+io.on('connection', (socket) => {
+  console.log("connected: " + socket.id);
+  console.log(socket);
+  console.log(socket.request.session);
+  if (!socket.request.session.user) {
+    USys.setsocket(socket.request.session.user.email, socket);
+  }
+  joinpublicroom(socket);
+  // if (socket.handshake.query.user_email !== undefined) {
+  //   var user = USys.getuser(socket.handshake.query.user_email);
+  //   if (user !== undefined) {
+  //     socket['user'] = user;
+  //     USys.setsocket(socket.handshake.query.user_email, socket);
+  //     rejoinroom(socket.handshake.query.user_email);
+  //   }
+  // }
+})
 
+// io.on('connection', (socket) => {
+//   console.log("connected: " + socket.id);
+//   console.log(socket);
+//   if (socket.handshake.query.user_email !== undefined) {
+//     var user = USys.getuser(socket.handshake.query.user_email);
+//     if (user !== undefined) {
+//       socket['user'] = user;
+//       USys.setsocket(socket.handshake.query.user_email, socket);
+//       rejoinroom(socket.handshake.query.user_email);
+//     }
+//   }
+//   console.log('///////////////////////////')
+//   socket.on('passuser', (data) => {
+//     USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
+//     socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
+//     socket['user'] = USys.getuser(data.email);
+//   })
+//   socket.join('lobby');
+//   socket.join('publicroom');
+//   socket.on('chat', (data) => {
+//     if (data.room !== 'publicroom') {
+//       // room[data.room].history.push()
+//       storechathistory({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() }, room[data.room]);
+//     }
+
+//     socket.to(data.room).emit('chat', data);
+//     console.log(room);
+//   })
+//   socket.on("disconnect", (reason) => {
+//     console.log(socket.id + ' is disconnected!');
+//   });
+//   socket.on('reconnect', (socket) => {
+//     console.log(socket.id + ' is reconnected!');
+//   })
+// });
+
+var storechathistory = (data, room) => {
+  con.query('call addchathistory(?,?,?)', [data.sender, data.reciver, data.message], function (err, result, fields) {
+    if (err) throw err;
+
+    room.history.push(result[0][0]);
+    console.log(room);
+  })
+}
+
+var rejoinroom = (email) => {
+  var user = USys.getuser(email);
+  var rooms = user.getroom();
+  Object.keys(rooms).forEach(val => {
+    joinroom(user.socket(), val);
+  })
+}
+
+var socketbind = () => {
+  var user
+}
+
+var joinpublicroom = (socket) => {
+  joinroom(socket, 'publicroom');
+}
+
+var joinroom = (socket, roomid) => {
+  socket.join(roomid);
+  socket.to(roomid).emit({ action: 'join', user: { uid: socket.user.uid, chatname: socket.user.firstname, email: socket.user.email } })
+}
+var leaveroom = (socket, roomid) => {
+  socket.leave(roomid);
+  io.to(roomid).emit({ action: 'leave', user: { uid: socket.user.uid, chatname: socket.user.firstname, email: socket.user.email } })
+}
 
 
 
@@ -313,18 +208,18 @@ app.get('/savedatatojson', (req, res) => {
 })
 
 app.get('/switchdatasorces', (res, req) => {
-  var result='';
+  var result = '';
   if (res.query.sorces == 'mysql') {
     usemysql = true;
-    result='switched to mysql'
+    result = 'switched to mysql'
     console.log(result)
     loaddata();
   } else if (res.query.sorces == 'json') {
     usemysql = false;
-    result='switched to json'
+    result = 'switched to json'
     loaddata();
-  }else{
-    result='error'
+  } else {
+    result = 'error'
   }
   req.send(result)
 })
@@ -332,40 +227,24 @@ app.get('/switchdatasorces', (res, req) => {
 
 app.get('/getdata', (req, res) => {
   var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
-  // var x;
-  if (req.session.user == undefined) {
-    // if (req.session.guestuser == undefined) {
-    //   var newguest = alluser.guestlogin()
-    //   x = newguest.getinfo();
-    //   result.guestuser = x;
-    //   req.session.guestuser = x;
-    // } else {
-    //   result.guestuser = req.session.guestuser
-    // }
-
-  } else {
+  if (req.session.user != undefined) {
     result.islogin = true;
-    result.user = req.session.user;
+    result.user = req.session.user
   }
   res.send(result)
 })
 
 app.get('/getchatuser', (req, res) => {
   console.log('in')
-  res.send({ alluser: alluser.getallchatname() });
+  res.send({ Users: USys.getallchatname() });
 })
 
 app.get('/login', (req, res) => {
   //var result = { result: false, user: {} };
-  var user = alluser.userlogin(req.query.email, req.query.password);
+  var user = USys.userlogin(req.query.email, req.query.password);
   if (user.result) {
     var _user = user.userinfo;
     req.session.user = _user;
-    // if (req.session.guestuser != undefined) {
-    //   alluser.socket_switch(_user.email, req.session.guestuser.chatname)
-    //   alluser.logout(req.session.guestuser.chatname);
-    //   delete req.session.guestuser;
-    // }
   }
   res.send(user);
 })
@@ -417,13 +296,49 @@ app.get('/getimagelist', (req, res) => {
 
 app.get('/create_room', (req, res) => {
   console.log(req.query);
-  var user1 = alluser.getsocket(req.session.user.email);
-  var user2 = alluser.getsocket(req.query.email);
+  var user = USys.getuser(req.query.email);
+  var result = { status: 0, reciver_id: user.uid, roomid: '' }
+  if (user._islogin()) {
+    result.status = 1;
+    result.roomid = user.socket().id;
+  }
+  return result;
+  // var user1 = USys.getuser(req.session.user.email);
+  // var user2 = USys.getuser(req.query.email);
+  // var id = Date.now();
+  // room[id] = {
+  //   id: id,
+  //   user1: user1,
+  //   user2: user2,
+  //   history: []
+  // }
+  // var r = room[id];
+  // r[user1.uid] = user1;
+  // r[user2.uid] = user2;
+  // user1.joinroom(user2, room[id]);
+  // user2.joinroom(user1, room[id]);
+  // var result = { room: id, chatname: req.query.chatname, user: user2 }
+  // res.send(result);
+})
+
+app.get('/create_room_chat', (req, res) => {
+  var u;
+  allitem[3].forEach(val => {
+    if (val.uid == req.query.uid) {
+      u = val;
+    }
+  })
+  var user1 = USys.getuser(req.session.user.email);
+  var user2 = USys.getuser(u.email);
   user1.join(user1.id + user2.id);
   user2.join(user1.id + user2.id);
-  var result = { room: user1.id + user2.id, chatname: req.query.chatname }
-
+  var result = { room: user1.id + user2.id, user: u, chatname: u.firstname }
   res.send(result);
+})
+
+app.get('/newchat', (req, res) => {
+  var user1 = USys.getuser(req.session.user.email);
+  var user2 = USys.getuser(u.email);
 })
 
 ///////////////////////////////////////////////////////////////////////////

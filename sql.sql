@@ -219,6 +219,34 @@ LOCK TABLES `auth_user_user_permissions` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `chathistoty`
+--
+
+DROP TABLE IF EXISTS `chathistoty`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chathistoty` (
+  `chid` int NOT NULL,
+  `from` int DEFAULT NULL,
+  `to` int DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `time` timestamp NULL DEFAULT NULL,
+  `isread` int DEFAULT NULL,
+  PRIMARY KEY (`chid`),
+  UNIQUE KEY `chid_UNIQUE` (`chid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chathistoty`
+--
+
+LOCK TABLES `chathistoty` WRITE;
+/*!40000 ALTER TABLE `chathistoty` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chathistoty` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `django_admin_log`
 --
 
@@ -921,4 +949,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-02 15:14:39
+-- Dump completed on 2023-02-07 22:54:29

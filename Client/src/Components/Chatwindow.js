@@ -1,13 +1,11 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { Children } from 'react';
 
 function Chatwindow(props) {
     const roomname = props.room;
 
-    return (<Container>
-        {/* {props.th.map(val=>{
-            return val;
-        })} */}
+    return (<Container style={{ maxHeight: '100%' }}>
+        <div style={{ 'textAlign': 'center' }}>{props.room}</div>
         {props.children}
     </Container>)
 }
