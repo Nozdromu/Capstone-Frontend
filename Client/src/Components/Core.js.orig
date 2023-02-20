@@ -3,8 +3,9 @@ import User from './User'
 import Chat from './Chat'
 import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
-import Api from './Api';
+import Appapi from './Api';
 import Map from './Test_example/Google_map_example'
+import { Navigate } from 'react-router-dom'
 import Newchat from './Newchat'
 import Core_chat from './Core_chat'
 
@@ -20,24 +21,39 @@ var Core = (function () {
     var list = {};
     var t = [];
     var user = User;
+<<<<<<< HEAD
+    var socket = new io('/', {
+        autoConnect: false,
+        user: user._getuser().email
+    })
+    var socket_user = [];
+    var pages = {
+        Homepage: {path:'/',name:'Spiffo-Slist',page:<Itemgrid />},
+        Accountpage:{path:'/account',name:'Account',page:<Accountpage />} ,
+        Mappage: {path:'/map',name:'Map',page:<></>},
+        Chatpage: {path:'/chat',name:'Chat',page:<Chat socket={socket} />},
+        Signup: {path:'/sigup',name:'Signup',page:<></>},
+=======
     var socket = {};
     var chatupdate = {};
+    var Api = Appapi();
     var getpage = (key) => {
         return page[key];
     }
     var page = {}
     var route = {
-        Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
-        Accountpage: { path: '/account', name: 'Account', page: <></> },
-        Mappage: { path: '/map', name: 'Map', page: <Map /> },
-        Chatpage: { path: '/chat', name: 'Chat', page: <Newchat /> },
-        Signup: { path: '/sigup', name: 'Signup', page: <></> },
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: () => getpage('Homepage') },
+        Accountpage: { path: '/account', name: 'Account', page: () => getpage('Accountpage') },
+        Mappage: { path: '/map', name: 'Map', page: () => getpage('Mappage') },
+        Chatpage: { path: '/chat', name: 'Chat', page: () => getpage('Chatpage') },
+        Signup: { path: '/sigup', name: 'Signup', page: () => getpage('Signup') },
+>>>>>>> 08e9b5a9a4c423dd8050c7372b411e940a3cf790
     }
 
     var hook = 0;
     var rooms;
     if (!_isLoaded) {
-        Api.data.getlodingdata().then(res => {
+        Api.test.getlodingdata().then(res => {
             _load(res);
         })
     }
@@ -61,7 +77,7 @@ var Core = (function () {
         }
         page = {
             Chatpage: <Newchat />,
-            Accountpage: <Accountpage />,
+            Accountpage: <></>,
             Mappage: <Map />,
             Signup: <></>,
             Homepage: <Itemgrid />
@@ -130,8 +146,8 @@ var Core = (function () {
         getrooms: () => {
             return rooms
         },
-        loadrooms: (h) => {
-            rooms = new Core_chat(h);
+        loadrooms: () => {
+            rooms = new Core_chat();
         },
         setchat: chatupdate,
         api: Api,
