@@ -63,7 +63,7 @@ var Core = (function () {
         }
         page = {
             Chatpage: <Newchat />,
-            Accountpage: <></>,
+            Accountpage: <Accountpage />,
             Mappage: <Map />,
             Signup: <></>,
             Homepage: <Itemgrid />

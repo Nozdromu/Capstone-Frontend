@@ -89,7 +89,7 @@ function Accountpage() {
             {/* {} */}
             < Container >
                 <Row className="align-items-center justify-content-center">
-                    <Card style={{ width: '25em' }}>
+                    <Card style={{ width: '50em' }}>
                         <Card.Header>
                             <div className="rect-img-container" >
                                 <Card.Img className='rect-img' variant="top" src={user.img} />
