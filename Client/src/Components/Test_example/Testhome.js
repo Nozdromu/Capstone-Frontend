@@ -199,7 +199,7 @@ function TestApp() {
           </Row>
           <Row>
             <Col>
-              <ItemEdit data={currentitem} userid={userpk} listingid={currentlist} updatetable={updateitemtable} />
+              <ItemEdit data={currentitem} userid={userpk} listing={currentlist} updatetable={updateitemtable} />
             </Col>
             <Col>
             </Col>

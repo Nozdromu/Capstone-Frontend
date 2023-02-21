@@ -20,15 +20,15 @@ export default function AccountEdit(prop) {
 
     useEffect(() => {
         if (props.data !== undefined) {
-            setuid(props.data.uid);
-            setusername(props.data.username);
-            setdata(props.data);
-            setemail(props.data.email)
-            setphone(props.data.phone);
-            setfirstname(props.data.firstname)
-            setupdatetable(props.setupdatetable);
-            setlastname(props.data.lastname);
-            setlogin(!props.login)
+            setuid(props.data.uid||'');
+            setusername(props.data.username||'');
+            setdata(props.data||'');
+            setemail(props.data.email||'')
+            setphone(props.data.phone||'');
+            setfirstname(props.data.firstname||'')
+            setupdatetable(props.setupdatetable||'');
+            setlastname(props.data.lastname||'');
+            setlogin(!props.login||'')
         } else {
             setlogin(false)
         }
@@ -180,7 +180,7 @@ export default function AccountEdit(prop) {
                         <Button form='edit_user' type="submit" value='submit' style={{ width: '100%' }} >Edit</Button>
                     </Col>
                     <Col>
-                        <Button onClick={delete_user} style={{ width: '100%' }} >Delete</Button>
+                        {/* <Button onClick={delete_user} style={{ width: '100%' }} >Delete</Button> */}
                     </Col>
                 </Row>
             </fieldset>

@@ -47,21 +47,24 @@ export default function ItemEdit(prop) {
     }, [prop])
 
     useEffect(() => {
+        if (props.listing !== undefined) {
+            setowner(props.userid);
+            setlistid(props.listing.id);
+        }
         if (props.data !== undefined) {
-            setdata(props.data);
-            setprice(props.data.price);
-            setlistid(props.data.gsid);
-            setname(props.data.itemname)
-            setdescription(props.data.description);
-            setquantity(props.data.qty)
-            setprice(props.data.price)
-            setitemid(props.data.itid);
-            setupdatetable(props.setupdatetable);
-            setowner(props.data.uid)
+            setdata(props.data===null?'':props.data);
+            setprice(props.data.price===null?'':props.data.price);
+            setlistid(props.data.gsid===null?'':props.data.gsid);
+            setname(props.data.itemname===null?'':props.data.itemname)
+            setdescription(props.data.description===null?'':props.data.description);
+            setquantity(props.data.qty===null?'':props.data.qty)
+            setprice(props.data.price===null?'':props.data.price)
+            setitemid(props.data.itid===null?'':props.data.itid);
+            setupdatetable(props.setupdatetable===null?'':props.setupdatetable);
+            setowner(props.data.uid===null?'':props.data.uid)
             setcreatemode(false)
         } else {
-            setowner(props.userid);
-            setlistid(props.listingid.id);
+
             setcreatemode(true)
         }
     }, [props])
