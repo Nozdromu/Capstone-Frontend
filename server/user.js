@@ -10,6 +10,7 @@ function user(data) {
     var email = data.email;
     var phone = data.phone;
     var pic = data.pic;
+    var chathistory = {};
     var islogin = false;
     var Room = {};
     var socket = {};
@@ -48,7 +49,7 @@ function user(data) {
         Room[user.email] = room;
         socket.join(room.id);
     }
-    var getroom=()=>{
+    var getroom = () => {
         return Room;
     }
 
@@ -61,6 +62,7 @@ function user(data) {
         email: email,
         phone: phone,
         pic: pic,
+        chathistory: chathistory,
         checklogin: _islogin,
         socket: getsocket,
         setsocket: setsocket,
@@ -68,8 +70,30 @@ function user(data) {
         login: login,
         logout: logout,
         chatinfo: chatinfo,
-        joinroom:joinroom,
-        getroom:getroom
+        joinroom: joinroom,
+        getroom: getroom,
+        addhistory: (data) => {
+            _email = data.sender_email;
+            _chatname = data.sender_chatname
+            if (_email === email) {
+                _email = data.reciver_email;
+                _chatname = data.reciver_chatname
+            }
+
+
+            if (chathistory[_email] === undefined)
+                chathistory[_email] =
+                {
+                    email: _email,
+                    chatname: _chatname,
+                    history: []
+                }
+
+            chathistory[_email].history.push(data);
+        },
+        chath: () => {
+            return chathistory;
+        }
     }
 }
 module.exports = user;

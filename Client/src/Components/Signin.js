@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
 import Core from './Core';
+import Api from './Api'
 
 function Signup(props) {
   const emailInput = useRef(null);
@@ -11,38 +11,43 @@ function Signup(props) {
   const _email = (<Form.Control ref={emailInput} type="email" placeholder="Enter email" />);
   const _psd = (<Form.Control ref={psdInput} type="password" placeholder="Password" />);
   var User = Core.getUser();
-  const handlesignup = () => {
-    var account = {
-      email: emailInput.current.value,
-      password: psdInput.current.value
-    }
-    console.log(User._getuser());
-    // console.log(account);
+  // const handlesignup = () => {
+  //   var account = {
+  //     email: emailInput.current.value,
+  //     password: psdInput.current.value
+  //   }
+  //   console.log(User._getuser());
+  //   // console.log(account);
 
-    // axios.get('/signup', { params: account, withCredentials: true }).then(res => {
-    //   console.log(res);
-    //   console.log(sessionStorage);
-    // })
-  }
+  //   // axios.get('/signup', { params: account, withCredentials: true }).then(res => {
+  //   //   console.log(res);
+  //   //   console.log(sessionStorage);
+  //   // })
+  // }
 
   const handlelogin = () => {
     var account = {
       email: emailInput.current.value,
       password: psdInput.current.value
     }
-    Core.api.test.login({ params: account }).then(res => {
+    Api.user.sign_in({ params: account }, res => {
       console.log(res.data);
       if (res.data.result) {
-        User._login(res.data.userinfo);
-        props.signin();
-        props.onHide();
+        sign_in_success(res.data)
       } else {
-
+        sign_in_error()
       }
-
     })
   }
 
+  var sign_in_success = (user_data) => {
+    User._login(user_data.userinfo);
+    props.signin();
+    props.onHide();
+  }
+  var sign_in_error = (error_data) => {
+
+  }
 
   return (
     <>
@@ -79,9 +84,9 @@ function Signup(props) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handlesignup}>
+          {/* <Button variant="primary" onClick={handlesignup}>
             Regist now
-          </Button>
+          </Button> */}
           <Button variant="primary" onClick={handlelogin}>
             Submit
           </Button>

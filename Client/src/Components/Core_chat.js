@@ -1,99 +1,144 @@
 
-import { Nav, Tab } from 'react-bootstrap';
+import { Nav, Tab, Row } from 'react-bootstrap';
 import Chatlobby from "./Chatlobby";
-import Chatwindow from './Chatwindow'
 import Core from './Core';
 import axios from 'axios';
-export default function Core_chat() {
+import Chatroom from './chat_room'
+import Api from './Api';
 
-    var create_room = (user_email) => {
-        axios.get('/create_room', { params: { email: user_email } }).then(res => {
-            var rid = res.data.room;
-            rooms[rid] = new room();
-            rooms[rid].load({ roomid: rid, user: res.data.user, })
-            tabs[rid] = rooms[rid].tab;
-            tabs[rid] = rooms[rid].window;
-        })
+export default function Core_chat(_history) {
+    var currentroom = 'publicroom';
+    var changeactive;
+    var updateactive = (roomid) => {
+        changeactive(roomid);
+    }
+    var create_room = (user) => {
+        if (rooms[user.email] === undefined) {
+            Api.chat.startchat((res) => {
+                console.log(res);
+                var rid = res.data.email;
+                rooms[rid] = Chatroom();
+                rooms[rid].load({ roomid: rid, user: { email: res.data.email, chatname: res.data.chatname }, history: [] })
+                console.log(res);
+                update();
+            })
+        } else {
+            updateactive(user.email);
+        }
+
     }
 
     var rooms = {
         userlist: {
-            tab: <Nav.Item key={'userlist'}><Nav.Link eventKey="Users">User List</Nav.Link></Nav.Item>,
-            window: <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby socket={() => Core.getsocket()} newchat={create_room}></Chatlobby></Tab.Pane>
+            tab: () => { return <Nav.Item key={'userlist'}><Nav.Link eventKey="Users">User List</Nav.Link></Nav.Item> },
+            window: () => { return <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby newchat={create_room}></Chatlobby></Tab.Pane> }
         },
     };
-    var tabs = {};
-    var windows = {};
-    var updatetabs;
-    var updatewindows;
-    var updaterooms;
     var socket = Core.getsocket();
-    var room = () => {
-        var roomid
-        var history = [];
-        var to;
-        var tab;
-        var window;
-        var updatewindows;
-        var updatehistory;
-        var load = (data) => {
-            roomid = data.room.roomid;
-            to = data.user;
-            history = data.history;
-            tab = <Nav.Item key={roomid}><Nav.Link eventKey={roomid}>{to.firstname}</Nav.Link></Nav.Item>;
-            window = <Tab.Pane key={roomid} eventKey={roomid}><Chatwindow room={roomid}></Chatwindow></Tab.Pane>
-        }
 
-        return {
-            load: load,
-            roomid: () => { return roomid },
-            tab: () => { return tab },
-            window: () => { return window },
-            setupdatewindow: (fun) => {
-                updatewindows = fun
-            },
-            setupdatehistory: (fun) => {
-                updatehistory = fun
-            },
-            updatehistory: () => {
-                updatehistory(history);
-            },
-            updatewindows: () => {
-                updatewindows(window);
-            },
-            gethistory: () => {
-                return history;
-            },
-            newmessage: (data) => {
-                history.push(data);
-                updatehistory(history);
-            }
+    socket.on('publicroom', (data) => {
+        console.log(data);
+    })
+    socket.on('chat', (data) => {
+        console.log(data);
+        if (rooms[data.roomid] === undefined) {
+            rooms[data.roomid] = Chatroom();
+            rooms[data.roomid].load({ roomid: data.roomid, user: { email: data.roomid, chatname: data.chatname }, history: [] })
+            update()
         }
+        new_message(false, data.chatname, data.message, data.roomid);
+    })
+    socket.on('unauthorized', data => {
+        Core.getUser()._logout();
+    })
+
+    var new_message = (LR, chatname, message, roomid) => {
+        var _room = rooms[roomid];
+        var _style = LR ? 'right' : 'left';
+        var _classname = LR ? 'text-end' : ' text-start'
+
+        _room.newmessage(
+            <Row key={_room.gethistorycount()}>
+                <p style={{ 'textAlign': _style, float: _style }} className={_classname}>
+                    {chatname}
+                </p>
+                <div>
+                    <p id="tooltip" role="tooltip" style={{ float: _style }}>
+                        {message}
+                    </p>
+                </div>
+            </Row >
+        )
+
     }
+
+
+    var fpage;
+
+    var update = () => {
+        fpage();
+        console.log(rooms)
+    }
+    var loadrooms = (history) => {
+        rooms['publicroom'] = Chatroom();
+        rooms['publicroom'].load({ roomid: 'publicroom', user: { email: 'publicroom', chatname: 'Publicroom' }, history: [] })
+        Object.keys(history).forEach(val => {
+            rooms[val] = Chatroom();
+            rooms[val].load({ roomid: val, user: { email: val, chatname: history[val].chatname }, history: [] })
+            history[val].history.forEach(message => {
+                new_message(message.sender_email !== val, !(message.sender_email === val) ? Core.getchatname() : history[val].chatname, message.message, val)
+            })
+        })
+        console.log(rooms);
+    }
+    loadrooms(_history);
 
     return {
         create_room: create_room,
 
-        sendmessage: (message, roomid) => {
-            var _room = rooms[roomid];
-            var data = { chatname: _room.to.chatname, room: _room.roomid, message: message }
+        sendmessage: (message) => {
+            var data;
+
+            if (currentroom === 'publicroom') {
+                data = { chatname: Core.getchatname(), roomid: currentroom, message: message };
+            } else {
+                data = { chatname: Core.getchatname(), roomid: currentroom, message: message };
+
+            }
+            new_message(true, data.chatname, message, currentroom)
             Core.getsocket().emit('chat', data);
+            // update()
         },
-        settab: (fun) => {
-            updatetabs = fun;
+        setpage: (fun) => {
+            fpage = fun;
         },
-        setwindow: (fun) => {
-            updatewindows = fun;
+        setactivetab: (fun) => {
+            changeactive = fun
         },
         updatepage: () => {
-            updatetabs(tabs);
-            updatewindows(windows);
+            return update()
         },
         getrooms: () => {
             return rooms;
         },
-        updaterooms: (fun) => {
-            updaterooms = fun;
+        getroom: (roomid) => {
+            return rooms[roomid];
+        },
+        setcurrentroom: (roomid) => {
+            currentroom = roomid;
+        },
+        loadrooms: (history) => {
+            rooms['publicroom'] = Chatroom();
+            rooms['publicroom'].load({ roomid: 'publicroom', user: { email: 'publicroom', chatname: 'Publicroom' }, history: [] })
+            Object.keys(history).forEach(val => {
+                rooms[val] = Chatroom();
+                rooms[val].load({ roomid: val, user: { email: val, chatname: history[val].chatname }, history: [] })
+                history[val].history.forEach(message => {
+                    new_message(message.sender_email === val, history[val].chatname, message.message, val)
+                })
+            })
+            update()
+            console.log(rooms);
         }
     }
 

@@ -4,31 +4,34 @@
 
 const path = require('path');
 const express = require('express');
-const socketIo = require("socket.io")
 const http = require('http')
 const mysql = require('mysql');
 const cors = require('cors')
 const fs = require('fs')
 const session = require('express-session')
-
 const sqlconfig = require('./sqlconfig.json');
+const Usystem = require('./server/Usystem')
 
-const Usystem = require('./Usystem')
+// requires end
+////////////////////////////////////////////////////////////////////////////
 
 
 
 ////////////////////////////////////////////////////////////////////////////
+//  global variable
 
-var sessionsecret = '12345678';
+global.sessionsecret = '12345678';
 
 
+global.allitem = {};
 
-////////////////////////////////////////////////////////////////////////////
+global.USys = new Usystem()
 
-var app = express();
-var server = http.createServer(app);
-app.use(cors())
-var sessionMiddleware = session({
+global.usemysql = true;
+
+global.sql = mysql.createConnection(sqlconfig);
+
+global.sessionMiddleware = session({
   secret: sessionsecret,
   saveUninitialized: true,
   resave: false,
@@ -37,320 +40,62 @@ var sessionMiddleware = session({
     maxAge: 60 * 60 * 1000,
   }
 })
-app.use(sessionMiddleware)
 
-
-var USys = new Usystem()
-
-
-////////////////////////////////////////////////////////////////////////////
-// mysql connection script
-var allitem;
-var con;
-
-var usemysql = false;
-con = mysql.createConnection(sqlconfig);
-
-var loaddata = () => {
-  if (usemysql) {
-    con.connect(function (err) {
-      if (err) throw err;
-      console.log("Connected!");
-    });
-    con.query("call Alldata", function (err, result, fields) {
-      if (err) throw err;
-      allitem = result;
-      allitem[0].forEach(element => {
-        element.list = result[1].filter(e => e.itid == element.itid);
-      });
-      USys.load(allitem[3]);
-    })
-  } else {
-    allitem = require('./alldata.json');
-    USys.load(allitem[3]);
-  }
-}
-
-loaddata();
-////////////////////////////////////////////////////////////////////////////
-var io = socketIo(server, {
-  cors: {
-    origin: 'http://localhost:3000'
-  }
-})
-io.engine.use(sessionMiddleware);
-var room = {};
-io.on('connection', (socket) => {
-  console.log("connected: " + socket.id);
-  console.log(socket);
-  console.log(socket.request.session);
-  if (!socket.request.session.user) {
-    USys.setsocket(socket.request.session.user.email, socket);
-  }
-  joinpublicroom(socket);
-  // if (socket.handshake.query.user_email !== undefined) {
-  //   var user = USys.getuser(socket.handshake.query.user_email);
-  //   if (user !== undefined) {
-  //     socket['user'] = user;
-  //     USys.setsocket(socket.handshake.query.user_email, socket);
-  //     rejoinroom(socket.handshake.query.user_email);
-  //   }
-  // }
-})
-
-// io.on('connection', (socket) => {
-//   console.log("connected: " + socket.id);
-//   console.log(socket);
-//   if (socket.handshake.query.user_email !== undefined) {
-//     var user = USys.getuser(socket.handshake.query.user_email);
-//     if (user !== undefined) {
-//       socket['user'] = user;
-//       USys.setsocket(socket.handshake.query.user_email, socket);
-//       rejoinroom(socket.handshake.query.user_email);
-//     }
-//   }
-//   console.log('///////////////////////////')
-//   socket.on('passuser', (data) => {
-//     USys.setsocket(data.type == 1 ? data.email : data.chatname, socket);
-//     socket.to('lobby').emit('login', { type: 0, chatname: data.chatname, email: data.email })
-//     socket['user'] = USys.getuser(data.email);
-//   })
-//   socket.join('lobby');
-//   socket.join('publicroom');
-//   socket.on('chat', (data) => {
-//     if (data.room !== 'publicroom') {
-//       // room[data.room].history.push()
-//       storechathistory({ sender: socket.user.uid, reciver: room[data.room].user1.uid === socket.user.uid ? room[data.room].user2.uid : room[data.room].user1.uid, message: data.message, time: Date.now() }, room[data.room]);
-//     }
-
-//     socket.to(data.room).emit('chat', data);
-//     console.log(room);
-//   })
-//   socket.on("disconnect", (reason) => {
-//     console.log(socket.id + ' is disconnected!');
-//   });
-//   socket.on('reconnect', (socket) => {
-//     console.log(socket.id + ' is reconnected!');
-//   })
-// });
-
-var storechathistory = (data, room) => {
-  con.query('call addchathistory(?,?,?)', [data.sender, data.reciver, data.message], function (err, result, fields) {
-    if (err) throw err;
-
-    room.history.push(result[0][0]);
-    console.log(room);
-  })
-}
-
-var rejoinroom = (email) => {
-  var user = USys.getuser(email);
-  var rooms = user.getroom();
-  Object.keys(rooms).forEach(val => {
-    joinroom(user.socket(), val);
-  })
-}
-
-var socketbind = () => {
-  var user
-}
-
-var joinpublicroom = (socket) => {
-  joinroom(socket, 'publicroom');
-}
-
-var joinroom = (socket, roomid) => {
-  socket.join(roomid);
-  socket.to(roomid).emit({ action: 'join', user: { uid: socket.user.uid, chatname: socket.user.firstname, email: socket.user.email } })
-}
-var leaveroom = (socket, roomid) => {
-  socket.leave(roomid);
-  io.to(roomid).emit({ action: 'leave', user: { uid: socket.user.uid, chatname: socket.user.firstname, email: socket.user.email } })
-}
-
-
-
-
+//  global variable end
 ////////////////////////////////////////////////////////////////////////////
 
 
-//var staticPath = path.join(__dirname, '/Client/build');
+////////////////////////////////////////////////////////////////////////////
+// server setting
+
+var app = express();
+var server = http.createServer(app);
 var staticPath = path.join(__dirname, './');
+
+app.use(cors())
+app.use(sessionMiddleware)
 app.use(express.static(staticPath));
 app.set('port', process.env.PORT || 8080);
-app.use((req, res, next) => {
-  if (req.session.user == undefined) {
 
-  }
-  next();
-})
+//  server setting end
+/////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////
 
+
+/////////////////////////////////////////////////////////////////////////////
+//  server function
+
+//  load data from mysql
+require('./server/load')()
+
+//plugin Socket.IO 
+require('./server/chatIO')(server)
+
+//  server function end
+///////////////////////////////////////////////////////////////////////////
 
 
 
 ///////////////////////////////////////////////////////////////////////////
 // api write here
 
-var checkguest = () => {
+require('./Apis/user')(app)
+require('./Apis/item')(app)
+require('./Apis/listing')(app)
+require('./Apis/chat')(app)
+require('./Apis/other')(app)
 
-}
-
-app.get('/savedatatojson', (req, res) => {
-  fs.writeFile('alldata.json', JSON.stringify(allitem), err => {
-    if (err) {
-      res.send(err);
-    }
-    console.log('JSON data is saved.')
-    res.send('JSON data is saved.');
-  })
-})
-
-app.get('/switchdatasorces', (res, req) => {
-  var result = '';
-  if (res.query.sorces == 'mysql') {
-    usemysql = true;
-    result = 'switched to mysql'
-    console.log(result)
-    loaddata();
-  } else if (res.query.sorces == 'json') {
-    usemysql = false;
-    result = 'switched to json'
-    loaddata();
-  } else {
-    result = 'error'
-  }
-  req.send(result)
-})
+// end
+////////////////////////////////////////////////////////////////////////////
 
 
-app.get('/getdata', (req, res) => {
-  var result = { data: allitem, islogin: false, guestuser: {}, user: {} };
-  if (req.session.user != undefined) {
-    result.islogin = true;
-    result.user = req.session.user
-  }
-  res.send(result)
-})
-
-app.get('/getchatuser', (req, res) => {
-  console.log('in')
-  res.send({ Users: USys.getallchatname() });
-})
-
-app.get('/login', (req, res) => {
-  //var result = { result: false, user: {} };
-  var user = USys.userlogin(req.query.email, req.query.password);
-  if (user.result) {
-    var _user = user.userinfo;
-    req.session.user = _user;
-  }
-  res.send(user);
-})
-
-app.get('/socketid', (req, res) => {
-  req.session.user.socketid = req.query.socketid;
-  res.send({ result: true });
-})
-
-
-app.get('/signup', (req, res) => {
-  console.log(req.query);
-  console.log(req.session);
-  res.send(req.query)
-  // con.query("call adduser(?,?)",[],(err,result,fields)=>{
-  //   res.send(result[0]);
-  // })
-})
-
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.send({ result: true });
-})
-
-app.get('/startchat', (req, res) => {
-  result = { result: false, room: '' };
-
-})
-
-app.get('/testsigup', (req, res) => {
-  var result = {
-    result: true, user: {
-      user: req.query.signupinfo
-    }
-  }
-  console.log(req.query);
-  res.send(result);
-})
-
-var getimgcount = 0;
-app.get('/getimagelist', (req, res) => {
-  con.query("call getitemimage(?)", [req.query.itid], function (err, result, fields) {
-    if (err) throw err;
-    getimgcount++;
-    console.log(getimgcount);
-    res.send(result);
-  })
-})
-
-app.get('/create_room', (req, res) => {
-  console.log(req.query);
-  var user = USys.getuser(req.query.email);
-  var result = { status: 0, reciver_id: user.uid, roomid: '' }
-  if (user._islogin()) {
-    result.status = 1;
-    result.roomid = user.socket().id;
-  }
-  return result;
-  // var user1 = USys.getuser(req.session.user.email);
-  // var user2 = USys.getuser(req.query.email);
-  // var id = Date.now();
-  // room[id] = {
-  //   id: id,
-  //   user1: user1,
-  //   user2: user2,
-  //   history: []
-  // }
-  // var r = room[id];
-  // r[user1.uid] = user1;
-  // r[user2.uid] = user2;
-  // user1.joinroom(user2, room[id]);
-  // user2.joinroom(user1, room[id]);
-  // var result = { room: id, chatname: req.query.chatname, user: user2 }
-  // res.send(result);
-})
-
-app.get('/create_room_chat', (req, res) => {
-  var u;
-  allitem[3].forEach(val => {
-    if (val.uid == req.query.uid) {
-      u = val;
-    }
-  })
-  var user1 = USys.getuser(req.session.user.email);
-  var user2 = USys.getuser(u.email);
-  user1.join(user1.id + user2.id);
-  user2.join(user1.id + user2.id);
-  var result = { room: user1.id + user2.id, user: u, chatname: u.firstname }
-  res.send(result);
-})
-
-app.get('/newchat', (req, res) => {
-  var user1 = USys.getuser(req.session.user.email);
-  var user2 = USys.getuser(u.email);
-})
 
 ///////////////////////////////////////////////////////////////////////////
-
-
-
-// const socket = new Server(io,{cors: {
-//   // origin: ['*'],
-//   path:'/chat/'
-// }});
-
+// server start
 
 server.listen(app.get('port'), function () {
   console.log('listening');
 });
+
+//
+///////////////////////////////////////////////////////////////////////////

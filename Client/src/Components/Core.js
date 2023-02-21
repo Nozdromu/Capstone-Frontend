@@ -1,13 +1,13 @@
 import { io } from "socket.io-client"
 import User from './User'
-import Chat from './Chat'
 import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
-import Appapi from './Api';
+import Signup from "./Signin";
+import Api from './Api';
 import Map from './Test_example/Google_map_example'
-import { Navigate } from 'react-router-dom'
 import Newchat from './Newchat'
 import Core_chat from './Core_chat'
+
 
 var Core = (function () {
 
@@ -23,23 +23,22 @@ var Core = (function () {
     var user = User;
     var socket = {};
     var chatupdate = {};
-    var Api = Appapi();
     var getpage = (key) => {
         return page[key];
     }
     var page = {}
     var route = {
-        Homepage: { path: '/', name: 'Spiffo-Slist', page: () => getpage('Homepage') },
-        Accountpage: { path: '/account', name: 'Account', page: () => getpage('Accountpage') },
-        Mappage: { path: '/map', name: 'Map', page: () => getpage('Mappage') },
-        Chatpage: { path: '/chat', name: 'Chat', page: () => getpage('Chatpage') },
-        Signup: { path: '/sigup', name: 'Signup', page: () => getpage('Signup') },
+        Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
+        Accountpage: { path: '/account', name: 'Account', page: <Accountpage /> },
+        Mappage: { path: '/map', name: 'Map', page: <Map /> },
+        Chatpage: { path: '/chat', name: 'Chat', page: <Newchat /> },
+        Signup: { path: '/sigup', name: 'Signup', page: <></> },
     }
 
     var hook = 0;
     var rooms;
     if (!_isLoaded) {
-        Api.test.getlodingdata().then(res => {
+        Api.data.getlodingdata().then(res => {
             _load(res);
         })
     }
@@ -65,7 +64,7 @@ var Core = (function () {
             Chatpage: <Newchat />,
             Accountpage: <Accountpage />,
             Mappage: <Map />,
-            Signup: <></>,
+            Signup: <Signup/>,
             Homepage: <Itemgrid />
         }
         _isLoaded = true;
@@ -132,8 +131,8 @@ var Core = (function () {
         getrooms: () => {
             return rooms
         },
-        loadrooms: () => {
-            rooms = new Core_chat();
+        loadrooms: (h) => {
+            rooms = new Core_chat(h);
         },
         setchat: chatupdate,
         api: Api,

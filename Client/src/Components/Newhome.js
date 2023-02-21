@@ -82,7 +82,7 @@ export default function Newhome() {
                     <Route element={<AnimationLayout />}>
                         {
                             Object.values(_routes).map(val => {
-                                return <Route key={val.name} path={val.path} element={(val.name==='Chat'||val.name==='Account')?(login?val.element():<Navigate replace to={'/'}/>):val.element()}></Route>
+                                return <Route key={val.name} path={val.path} element={(val.name==='Chat'||val.name==='Account')?(login?val.element:<Navigate replace to={'/'}/>):val.element}></Route>
                             })
                         }
                     </Route>

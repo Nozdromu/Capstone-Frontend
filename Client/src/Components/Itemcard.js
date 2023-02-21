@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { useState } from 'react'
 import Itemdetial from './Itemdetial';
 import axios from 'axios';
-import S_chat from './S_chat'
+import S_chat from './Test_example/S_chat'
 
 
 export default function Itemcard(props) {

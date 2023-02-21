@@ -1,6 +1,6 @@
 import AllData from './Data';
 import { useState,useEffect } from 'react';
-import Homepage from './Test_example/Homepage'
+import Homepage from './Homepage'
 
 
 function Home(){

@@ -1,7 +1,7 @@
 import { Button, Image } from "react-bootstrap"
 import { useState } from "react";
 import ChatApp from "./Chat"
-import Core from './Core';
+import Core from '../Core';
 
 
 export default function Chatdot() {
