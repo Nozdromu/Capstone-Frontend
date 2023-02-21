@@ -55,14 +55,31 @@ function user(data) {
 
     return {
         uid: uid,
-        chatname: chatname,
-        username: username,
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        phone: phone,
-        pic: pic,
         chathistory: chathistory,
+        info: () => {
+            return {
+                uid: uid,
+                username: username,
+                chatname: firstname,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                email: email,
+                phone: phone,
+                pic: pic,
+                chathistory: chathistory,
+                islogin: islogin,
+                Room: Room,
+            }
+        },
+        updata: (val) => {
+            username = val.username;
+            phone = val.phone;
+            firstname = val.firstname;
+            lastname = val.lastname;
+            email = val.email
+            return this
+        },
         checklogin: _islogin,
         socket: getsocket,
         setsocket: setsocket,
@@ -73,8 +90,8 @@ function user(data) {
         joinroom: joinroom,
         getroom: getroom,
         addhistory: (data) => {
-            _email = data.sender_email;
-            _chatname = data.sender_chatname
+            var _email = data.sender_email;
+            var _chatname = data.sender_chatname
             if (_email === email) {
                 _email = data.reciver_email;
                 _chatname = data.reciver_chatname

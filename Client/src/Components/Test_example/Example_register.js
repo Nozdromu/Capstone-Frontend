@@ -23,7 +23,7 @@ export default function Register() {
     }
     var register_callback = (res) => {
         console.log(res);
-        setresult(JSON.stringify(res.data))
+        setresult(JSON.stringify(res.data.result))
     }
     return (<Card>
         <Card.Header>

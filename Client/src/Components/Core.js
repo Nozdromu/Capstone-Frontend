@@ -7,6 +7,7 @@ import Api from './Api';
 import Map from './Test_example/Google_map_example'
 import Newchat from './Newchat'
 import Core_chat from './Core_chat'
+import Testpage from './Test_example/Testhome'
 
 
 var Core = (function () {
@@ -30,7 +31,7 @@ var Core = (function () {
     var route = {
         Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
         Accountpage: { path: '/account', name: 'Account', page: <Accountpage /> },
-        Mappage: { path: '/map', name: 'Map', page: <Map /> },
+        Mappage: { path: '/map', name: 'Api_Test', page: <Testpage /> },
         Chatpage: { path: '/chat', name: 'Chat', page: <Newchat /> },
         Signup: { path: '/sigup', name: 'Signup', page: <></> },
     }
@@ -55,8 +56,9 @@ var Core = (function () {
     }
 
     var _load = (val) => {
-        item = val.data.data[0];
-        list = val.data.data[2];
+        console.log(val)
+        item = val.data.data.items;
+        list = val.data.data.listings;
         if (val.data.islogin) {
             user._login(val.data.user);
         }
@@ -64,7 +66,7 @@ var Core = (function () {
             Chatpage: <Newchat />,
             Accountpage: <Accountpage />,
             Mappage: <Map />,
-            Signup: <Signup/>,
+            Signup: <Signup />,
             Homepage: <Itemgrid />
         }
         _isLoaded = true;

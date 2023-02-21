@@ -47,16 +47,21 @@ export default function ItemEdit(prop) {
     }, [prop])
 
     useEffect(() => {
-        setdata(props.data);
-        setprice(props.data.price);
-        setlistid(props.data.listing);
-        setname(props.data.name)
-        setdescription(props.data.description);
-        setquantity(props.data.quantity)
-        setprice(props.data.price)
-        setitemid(props.data.id);
-        setupdatetable(props.setupdatetable);
-        setowner(props.data.owner)
+        if (props.data !== undefined) {
+            setdata(props.data);
+            setprice(props.data.price);
+            setlistid(props.data.gsid);
+            setname(props.data.itemname)
+            setdescription(props.data.description);
+            setquantity(props.data.qty)
+            setprice(props.data.price)
+            setitemid(props.data.itid);
+            setupdatetable(props.setupdatetable);
+            setowner(props.data.uid)
+            setcreatemode(false)
+        } else {
+            setcreatemode(true)
+        }
     }, [props])
     // useEffect(() => {
     //     setdata(props.data);
@@ -72,23 +77,42 @@ export default function ItemEdit(prop) {
         Item_price: useRef(null),
     }
     var edit_item = (event) => {
+        event.preventDefault();
+        var _data = {
+            itid: itemid,
+            itemname: name,
+            brand: '',
+            mnumber: '',
+            description: description,
+            price: price,
+            qty: quantity,
+            image: ''
+        }
+        Api.item.update(_data, (res) => {
+            props.updatetable();
+        })
     }
     var delete_item = () => {
-        Api.item.delete(props.data.id, (res) => {
+        Api.item.delete({ itid: itemid }, (res) => {
             console.log(res);
             props.updatetable();
         })
     }
 
-    var create_item = () => {
+    var create_item = (event) => {
+        event.preventDefault();
         var new_item = {
-            name: name,
+            itid: itemid,
+            itemname: name,
+            brand: '',
+            mnumber: '',
             description: description,
-            quantity: quantity,
             price: price,
-            listid: listid
+            qty: quantity,
+            image: '',
+            gsid: listid
         }
-        Api.item.create(new_item, listid, (res) => {
+        Api.item.create(new_item, (res) => {
             props.updatetable();
         })
     }
@@ -106,14 +130,14 @@ export default function ItemEdit(prop) {
         } else {
             setdata(props.data);
             setprice(props.data.price);
-            setlistid(props.data.listing);
-            setname(props.data.name)
+            setlistid(props.data.gsid);
+            setname(props.data.itemname)
             setdescription(props.data.description);
-            setquantity(props.data.quantity)
+            setquantity(props.data.qty)
             setprice(props.data.price)
-            setitemid(props.data.id);
+            setitemid(props.data.itid);
             setupdatetable(props.setupdatetable);
-            setowner(props.data.owner)
+            setowner(props.data.uid)
         }
     }
 
@@ -150,7 +174,7 @@ export default function ItemEdit(prop) {
                             <Col>
                                 <Form.Group className="mb-3" controlId="item_owner">
                                     <Form.Label>owner</Form.Label>
-                                    <Form.Control onChange={(e) => onchange(e, 'owner')} value={owner} required={true}  type="input" disabled={true} />
+                                    <Form.Control onChange={(e) => onchange(e, 'owner')} value={owner} required={true} type="input" disabled={true} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -214,7 +238,7 @@ export default function ItemEdit(prop) {
                 </Col>
             </Row> : <Row>
                 <Col>
-                    <Button style={{ width: '100%' }}>submit</Button>
+                    <Button form='edit_item' type="submit" value='submit' style={{ width: '100%' }}>submit</Button>
                 </Col>
             </Row>}
         </Card.Footer>

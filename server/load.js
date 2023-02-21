@@ -15,10 +15,10 @@ module.exports = (function () {
             allitem[4].forEach(val => {
                 var sender = userlist[val.sender];
                 var reciver = userlist[val.reciver];
-                val.sender_email = sender.email;
-                val.reciver_email = reciver.email;
-                val.sender_chatname = sender.firstname;
-                val.reciver_chatname = reciver.firstname;
+                val.sender_email = sender.info().email;
+                val.reciver_email = reciver.info().email;
+                val.sender_chatname = sender.info().firstname;
+                val.reciver_chatname = reciver.info().firstname;
                 sender.addhistory(val);
                 reciver.addhistory(val);
             })

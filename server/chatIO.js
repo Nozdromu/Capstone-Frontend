@@ -51,10 +51,10 @@ module.exports = function (server) {
             var _result = result[0][0];
             var sender = userlist[_result.sender];
             var reciver = userlist[_result.reciver];
-            _result.sender_email = sender.email;
-            _result.reciver_email = reciver.email;
-            _result.sender_chatname = sender.firstname;
-            _result.reciver_chatname = reciver.firstname;
+            _result.sender_email = sender.info().email;
+            _result.reciver_email = reciver.info().email;
+            _result.sender_chatname = sender.info().firstname;
+            _result.reciver_chatname = reciver.info().firstname;
             sender.addhistory(_result);
             reciver.addhistory(_result);
 

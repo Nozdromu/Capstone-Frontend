@@ -1,10 +1,15 @@
 import { Table } from 'react-bootstrap';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
-export default function ListingTable(props) {
+export default function ListingTable(prop) {
+    const [props, setprops] = useState(prop);
+    useEffect(() => {
+        setprops(prop)
+    }, [prop])
 
-    return (
+    return (props.data.length > 0) ?
+
         <Table striped bordered hover>
             <thead>
                 <tr>
@@ -22,6 +27,7 @@ export default function ListingTable(props) {
                     </tr>
                 })}
             </tbody>
-        </Table>
-    )
+        </Table> : <></>
+
+
 }

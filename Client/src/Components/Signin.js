@@ -30,7 +30,7 @@ function Signup(props) {
       email: emailInput.current.value,
       password: psdInput.current.value
     }
-    Api.user.sign_in({ params: account }, res => {
+    Api.user.sign_in(account, res => {
       console.log(res.data);
       if (res.data.result) {
         sign_in_success(res.data)
@@ -41,7 +41,7 @@ function Signup(props) {
   }
 
   var sign_in_success = (user_data) => {
-    User._login(user_data.userinfo);
+    User._login(user_data.user);
     props.signin();
     props.onHide();
   }

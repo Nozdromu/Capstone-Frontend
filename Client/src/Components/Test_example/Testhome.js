@@ -1,20 +1,22 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import Api from './Api'
-import { Button, Col, Container, Tab, Tabs, Row } from 'react-bootstrap';
+
+import Api from '../Api'
+import { Button, Col, Container, Tab, Tabs, Row, Stack } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
+import Usertable from './Example_usertable';
+import Register from './Example_register';
+import Signin from './Example_Signin';
+import Core from '../Core';
+import AccountEdit from './Example_Edit_Account';
+import ListingTable from './Example_Listingtable';
 
-import Register from './Components/Example_register';
-import Signin from './Components/Example_Signin';
-import ListingTable from './Components/Example_Listingtable';
-import ListingEdit from './Components/Example_Edit_listing';
-import ItemTable from './Components/Example_itemtable';
-import ItemEdit from './Components/Example_Edit_item';
-import Usertable from './Components/Example_usertable';
+import ItemTable from './Example_itemtable';
+import ItemEdit from './Example_Edit_item';
 
+import ListingEdit from './Example_Edit_listing';
 function TestApp() {
+
   const [islogin, setlogin] = useState(false)
-  const [userpk, setuserpk] = useState()
+  const [userpk, setuserpk] = useState(0)
   const [userdata, setuserdata] = useState()
 
   const [usertable, setusetable] = useState(<></>)
@@ -39,37 +41,38 @@ function TestApp() {
 
 
   var updatelisttable = () => {
-    Api.data.getlist((res) => {
-      setlistdata(res.data)
-      setcurrentlist(currentlist === undefined ? res.data[0] : currentlist)
-    })
+    if (userpk > 0)
+      Api.listing.getbyowner((res) => {
+        setlistdata(res.data.list)
+        setcurrentlist(currentlist === undefined ? res.data.list[0] : currentlist)
+      })
   }
   var updateitemtable = () => {
-    Api.data.getitems((res) => {
-      setitemdata(res.data);
-      setcurrentitem(currentitem === undefined ? res.data[0] : currentitem)
-    })
+    if (currentlist !== undefined) {
+      console.log(currentlist.gsid)
+      Api.item.bylisting(currentlist.gsid, (res) => {
+        console.log(res);
+        setitemdata(res.data.items);
+        setcurrentitem(currentitem === undefined ? res.data[0] : currentitem)
+      })
+    }
+
   }
 
   useEffect(() => {
     if (!mount) {
-      Api.data.checklogin((res) => {
-        console.log(res.data)
-        setuserdata(res.data.user)
-        setcurrentuser(res.data.user.username)
-        setuserpk(res.data.user.id);
+      Api.user.checklogin((res) => {
+        if (res.data.result) {
+          setuserdata(res.data.user)
+          setcurrentuser(res.data.user.username)
+          setuserpk(res.data.user.uid);
+
+        }
       })
-      // updatelisttable();
-      // updateitemtable();
       setmount(true);
     }
   })
 
-  //when the list of listdata updated, update list table.
-  useEffect(() => {
-    if (listdata.length > 0)
-      settable(<ListingTable setlisting={changelisting} data={listdata} />)
-  }, [listdata])
 
   //pass to ListingTable, use to update current list that clicked in list table.
   var changelisting = (data) => {
@@ -77,10 +80,11 @@ function TestApp() {
   }
 
   // update list editer after current list has been change by click on the list table
-  // useEffect(() => {
-  //   if (currentlist !== undefined)
-  //     setlistediter(<ListingEdit updatetable={updatelisttable} data={currentlist} />)
-  // }, [currentlist])
+  useEffect(() => {
+    if (currentlist !== undefined) {
+      updateitemtable()
+    }
+  }, [currentlist])
 
 
 
@@ -107,8 +111,8 @@ function TestApp() {
 
   useEffect(() => {
     if (userpk > 0) {
-      Api.listing.getbyowner(userpk, (res) => {
-        setlistdata(res.data)
+      Api.listing.getbyowner((res) => {
+        setlistdata(res.data.list)
       })
       setlogin(true)
     }
@@ -133,7 +137,8 @@ function TestApp() {
   var changeuser = (user) => {
     console.log(user)
     setcurrentuser(user.username)
-    setuserpk(user.id)
+    setuserdata(user)
+    setuserpk(user.uid)
   }
 
   var logout = () => {
@@ -146,29 +151,38 @@ function TestApp() {
     <Container>
       <Tabs style={{ marginBottom: '1vh' }}>
         <Tab eventKey={'user'} title={'User'}>
-          <Row>
-            {/* {usertable} */}
-            <Col>{currentuser}</Col>
-          </Row>
-          <Row>
-            <Col>
-              <Register />
-            </Col>
-            <Col>
-              <Signin login={islogin} logout={logout} changeuser={changeuser} />
-            </Col>
-          </Row>
+          <Stack gap={3}>
+            <Row>
+              {/* {usertable} */}
+              <Col>{currentuser}</Col>
+            </Row>
+            <Row>
+              <Col>
+                <Register />
+              </Col>
+              <Col>
+                <Signin login={islogin} logout={logout} changeuser={changeuser} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <AccountEdit login={islogin} data={userdata} />
+              </Col>
+              <Col>
+              </Col>
+            </Row>
+          </Stack>
 
         </Tab>
         <Tab eventKey={'listings'} title={'Listings'} disabled={!islogin}>
           <Row>
             <Col>
-              {table}
+              <ListingTable setlisting={changelisting} data={listdata} />
             </Col>
           </Row>
           <Row>
             <Col>
-              {itemtable}
+
             </Col>
           </Row>
           <Row>
@@ -176,18 +190,21 @@ function TestApp() {
               <ListingEdit updatetable={updatelisttable} data={currentlist} />
             </Col>
             <Col>
-              {currentitem === undefined ? <></> : <ItemEdit listingid={currentlist.id} data={currentitem} updatetable={updateitemtable} />}
+              {/* {currentitem === undefined ? <></> : <ItemEdit listingid={currentlist.id} data={currentitem} updatetable={updateitemtable} />} */}
             </Col>
           </Row>
-
-
-
         </Tab>
-        <Tab eventKey={'Result'} title={'Result'}>
+        <Tab disabled={currentlist === undefined} eventKey={'item'} title={'item'}>
           <Row>
-            {result}
+            <ItemTable setitem={changeitem} data={itemdata} />
           </Row>
-
+          <Row>
+            <Col>
+              <ItemEdit data={currentitem} updatetable={updateitemtable} />
+            </Col>
+            <Col>
+            </Col>
+          </Row>
         </Tab>
       </Tabs>
 

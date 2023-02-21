@@ -30,7 +30,9 @@ global.USys = new Usystem()
 global.usemysql = true;
 
 global.sql = mysql.createConnection(sqlconfig);
-
+sql.on('error', function (err) {
+  console.log("[mysql error]", err);
+});
 global.sessionMiddleware = session({
   secret: sessionsecret,
   saveUninitialized: true,

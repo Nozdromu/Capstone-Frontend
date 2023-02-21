@@ -28,6 +28,7 @@ export default function ListingEdit(prop) {
             setupdatetable(props.setupdatetable);
             setlat(props.data.lat);
             setlng(props.data.lng);
+            setcreatemode(false)
         } else {
             setcreatemode(true)
         }
@@ -44,23 +45,25 @@ export default function ListingEdit(prop) {
     }
     var edit_listing = (event) => {
         event.preventDefault();
-        var _data = {
-            id: data.id,
+        var data = {
             title: title,
             description: description,
+            gsid: listid,
             location: location,
             lat: lat,
-            lng: lng
+            lng: lng,
+            image: '',
+            zip_code: '',
+            starttime: Date.now(),
+            endtime: Date.now(),
         }
-        console.log(_data);
-        Api.listing.update(_data, (res) => {
+        Api.listing.update(data, (res) => {
             console.log(res)
-            //update list table
             props.updatetable();
         })
     }
     var delete_listing = () => {
-        Api.listing.delete(props.data.id, (res) => {
+        Api.listing.delete({ gsid: listid }, (res) => {
             console.log(res);
             props.updatetable();
         })
@@ -70,6 +73,7 @@ export default function ListingEdit(prop) {
         event.preventDefault();
         setcreatemode(!createmode);
         if (!createmode) {
+            setlistid(0);
             settitle('');
             setlocation('');
             setdescription('');
@@ -77,6 +81,7 @@ export default function ListingEdit(prop) {
             setlng('');
 
         } else {
+            setlistid(props.data.id)
             settitle(props.data.title)
             setdescription(props.data.description);
             setlocation(props.data.location)
@@ -96,20 +101,48 @@ export default function ListingEdit(prop) {
         event.preventDefault();
 
         var data = {
+            title: title,
+            description: description,
+            gsid: listid,
+            location: location,
+            lat: lat,
+            lng: lng,
+            image: '',
+            zip_code: '',
+            starttime: Date.now(),
+            endtime: Date.now(),
+        }
+        Api.listing.create(data, (res) => {
+            props.updatetable();
+        })
+
+        // var data = {
+        //     address: inputs.listing_location.current.value,
+        //     key: key
+        // }
+        // Api.map.getgeo(req_address, data, (res) => {
+        //     var data = {
+        //         title: inputs.listing_title.current.value,
+        //         description: inputs.listing_description.current.value,
+        //         location: inputs.listing_location.current.value,
+        //         lat: res.data.results[0].geometry.location.lat,
+        //         lng: res.data.results[0].geometry.location.lng
+        //     }
+        //     Api.listing.create(data, (res) => {
+        //         props.updatetable();
+        //     })
+        // })
+    }
+
+    var get_lat_lng = () => {
+        var data = {
             address: inputs.listing_location.current.value,
             key: key
         }
         Api.map.getgeo(req_address, data, (res) => {
-            var data = {
-                title: inputs.listing_title.current.value,
-                description: inputs.listing_description.current.value,
-                location: inputs.listing_location.current.value,
-                lat: res.data.results[0].geometry.location.lat,
-                lng: res.data.results[0].geometry.location.lng
-            }
-            Api.listing.create(data, (res) => {
-                props.updatetable();
-            })
+            setlat(res.data.results[0].geometry.location.lat);
+            setlng(res.data.results[0].geometry.location.lng);
+            console.log(res.data)
         })
     }
 
@@ -185,7 +218,7 @@ export default function ListingEdit(prop) {
                             <Form.Label>Location</Form.Label>
                             <InputGroup className="mb-3">
                                 <Form.Control onChange={(e) => onchange(e, 'location')} value={location} required={true} ref={inputs.listing_location} type="input" placeholder="Enter Location" />
-                                <Button variant="outline-secondary" id="button-addon2">
+                                <Button onClick={get_lat_lng} variant="outline-secondary" id="button-addon2">
                                     Get coordinate
                                 </Button>
                             </InputGroup>
@@ -213,14 +246,14 @@ export default function ListingEdit(prop) {
         <Card.Footer>
             {!createmode ? <Row>
                 <Col>
-                    <Button form='create_listing' type="submit" value='submit' onClick={edit_listing} style={{ width: '100%' }} >Edit</Button>
+                    <Button form='edit_listing' type="submit" value='submit' style={{ width: '100%' }} >Edit</Button>
                 </Col>
                 <Col>
                     <Button onClick={delete_listing} style={{ width: '100%' }} >Delete</Button>
                 </Col>
             </Row> : <Row>
                 <Col>
-                <Button form='create_listing' type="submit" value='submit' onClick={create_listing} style={{ width: '100%' }} >Edit</Button>
+                    <Button form='edit_listing' type="submit" value='submit' style={{ width: '100%' }} >Submit</Button>
                 </Col>
             </Row>}
         </Card.Footer>

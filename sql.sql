@@ -234,7 +234,7 @@ CREATE TABLE `chathistory` (
   `isread` int DEFAULT NULL,
   PRIMARY KEY (`chid`),
   UNIQUE KEY `chid_UNIQUE` (`chid`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +243,7 @@ CREATE TABLE `chathistory` (
 
 LOCK TABLES `chathistory` WRITE;
 /*!40000 ALTER TABLE `chathistory` DISABLE KEYS */;
-INSERT INTO `chathistory` VALUES (1,9,1,'earer','2023-02-12 10:25:13',NULL),(2,9,1,'112','2023-02-12 10:35:21',NULL),(3,9,1,'1','2023-02-12 10:36:35',NULL),(4,9,1,'12','2023-02-12 10:36:50',NULL),(5,9,1,'12','2023-02-12 10:37:21',NULL),(6,1,9,'jjkk','2023-02-12 10:37:27',NULL),(7,2,3,'ersg','2023-02-14 23:58:57',NULL),(8,3,2,'efwgfr','2023-02-14 23:58:57',NULL),(9,3,2,'rfaera','2023-02-14 23:58:57',NULL),(10,3,1,'aerftf','2023-02-14 23:58:57',NULL),(11,9,5,'erffs','2023-02-14 23:58:57',NULL),(12,5,1,'swgrs','2023-02-14 23:58:57',NULL),(13,2,3,'sfs','2023-02-14 23:58:57',NULL),(14,4,1,'fsaf','2023-02-14 23:58:57',NULL),(15,1,4,'afaef','2023-02-14 23:58:57',NULL),(16,6,1,'afafea','2023-02-14 23:58:57',NULL),(17,5,1,'frrfee','2023-02-14 23:58:57',NULL),(18,9,2,'sfvsg','2023-02-14 23:58:57',NULL),(19,9,7,'eg342','2023-02-14 23:58:57',NULL),(20,9,3,'sgsr','2023-02-14 23:58:57',NULL),(21,9,8,'efsf','2023-02-14 23:58:57',NULL),(22,5,9,'sgfsgr','2023-02-14 23:58:57',NULL),(23,3,9,'213213','2023-02-14 23:58:57',NULL),(24,2,9,'21321ewf','2023-02-14 23:58:57',NULL),(25,1,9,'rg3erg234','2023-02-14 23:58:57',NULL),(26,9,1,'222','2023-02-15 08:08:31',NULL),(27,9,1,'new chat test','2023-02-15 08:11:52',NULL),(28,1,9,'New test 2','2023-02-15 08:13:15',NULL),(29,9,1,'new test 3','2023-02-15 08:15:56',NULL),(30,9,1,'222','2023-02-15 09:54:10',NULL),(31,9,1,'222','2023-02-15 09:54:19',NULL),(32,9,1,'2','2023-02-15 09:55:14',NULL),(33,9,1,'2','2023-02-15 10:01:03',NULL),(34,9,1,'3','2023-02-15 10:01:11',NULL),(35,9,1,'3','2023-02-15 10:01:21',NULL),(36,9,1,'2','2023-02-15 10:02:20',NULL),(37,9,1,'22','2023-02-15 10:04:03',NULL),(38,9,1,'22','2023-02-15 10:04:08',NULL),(39,9,1,'22','2023-02-15 10:05:47',NULL),(40,9,1,'22','2023-02-15 10:07:30',NULL),(41,9,1,'22','2023-02-15 10:07:46',NULL),(42,9,1,'22','2023-02-15 10:08:13',NULL),(43,9,1,'22','2023-02-15 10:11:58',NULL),(44,9,1,'22','2023-02-15 10:12:58',NULL);
+INSERT INTO `chathistory` VALUES (1,9,1,'earer','2023-02-12 10:25:13',NULL),(2,9,1,'112','2023-02-12 10:35:21',NULL),(3,9,1,'1','2023-02-12 10:36:35',NULL),(4,9,1,'12','2023-02-12 10:36:50',NULL),(5,9,1,'12','2023-02-12 10:37:21',NULL),(6,1,9,'jjkk','2023-02-12 10:37:27',NULL),(7,2,3,'ersg','2023-02-14 23:58:57',NULL),(8,3,2,'efwgfr','2023-02-14 23:58:57',NULL),(9,3,2,'rfaera','2023-02-14 23:58:57',NULL),(10,3,1,'aerftf','2023-02-14 23:58:57',NULL),(11,9,5,'erffs','2023-02-14 23:58:57',NULL),(12,5,1,'swgrs','2023-02-14 23:58:57',NULL),(13,2,3,'sfs','2023-02-14 23:58:57',NULL),(14,4,1,'fsaf','2023-02-14 23:58:57',NULL),(15,1,4,'afaef','2023-02-14 23:58:57',NULL),(16,6,1,'afafea','2023-02-14 23:58:57',NULL),(17,5,1,'frrfee','2023-02-14 23:58:57',NULL),(18,9,2,'sfvsg','2023-02-14 23:58:57',NULL),(19,9,7,'eg342','2023-02-14 23:58:57',NULL),(20,9,3,'sgsr','2023-02-14 23:58:57',NULL),(21,9,8,'efsf','2023-02-14 23:58:57',NULL),(22,5,9,'sgfsgr','2023-02-14 23:58:57',NULL),(23,3,9,'213213','2023-02-14 23:58:57',NULL),(24,2,9,'21321ewf','2023-02-14 23:58:57',NULL),(25,1,9,'rg3erg234','2023-02-14 23:58:57',NULL),(26,9,1,'222','2023-02-15 08:08:31',NULL),(27,9,1,'new chat test','2023-02-15 08:11:52',NULL),(28,1,9,'New test 2','2023-02-15 08:13:15',NULL),(29,9,1,'new test 3','2023-02-15 08:15:56',NULL),(30,9,1,'222','2023-02-15 09:54:10',NULL),(31,9,1,'222','2023-02-15 09:54:19',NULL),(32,9,1,'2','2023-02-15 09:55:14',NULL),(33,9,1,'2','2023-02-15 10:01:03',NULL),(34,9,1,'3','2023-02-15 10:01:11',NULL),(35,9,1,'3','2023-02-15 10:01:21',NULL),(36,9,1,'2','2023-02-15 10:02:20',NULL),(37,9,1,'22','2023-02-15 10:04:03',NULL),(38,9,1,'22','2023-02-15 10:04:08',NULL),(39,9,1,'22','2023-02-15 10:05:47',NULL),(40,9,1,'22','2023-02-15 10:07:30',NULL),(41,9,1,'22','2023-02-15 10:07:46',NULL),(42,9,1,'22','2023-02-15 10:08:13',NULL),(43,9,1,'22','2023-02-15 10:11:58',NULL),(44,9,1,'22','2023-02-15 10:12:58',NULL),(45,9,1,'22','2023-02-15 20:05:10',NULL),(46,9,1,'223','2023-02-15 20:05:19',NULL),(47,9,1,'2','2023-02-15 20:08:05',NULL),(48,9,1,'2','2023-02-15 20:08:06',NULL),(49,9,1,'2','2023-02-15 20:08:44',NULL),(50,9,1,'2','2023-02-15 20:08:45',NULL),(51,9,1,'2','2023-02-15 20:08:46',NULL),(52,9,1,'2','2023-02-15 20:13:09',NULL),(53,9,1,'2','2023-02-15 20:13:09',NULL),(54,9,1,'1','2023-02-15 20:17:02',NULL),(55,9,1,'1','2023-02-15 20:17:03',NULL),(56,9,1,'1','2023-02-15 20:17:05',NULL),(57,9,1,'2','2023-02-15 20:18:02',NULL),(58,9,1,'2','2023-02-15 20:19:50',NULL),(59,9,1,'2','2023-02-15 20:19:50',NULL),(60,9,1,'2','2023-02-15 20:19:59',NULL),(61,9,1,'2','2023-02-15 20:20:00',NULL),(62,9,1,'2','2023-02-15 20:20:29',NULL),(63,9,1,'2','2023-02-15 20:20:33',NULL),(64,9,1,'2','2023-02-15 20:20:34',NULL),(65,9,1,'23','2023-02-15 20:20:39',NULL);
 /*!40000 ALTER TABLE `chathistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -373,8 +373,10 @@ CREATE TABLE `garagesaletable` (
   `starttime` timestamp NULL DEFAULT NULL,
   `endtime` timestamp NULL DEFAULT NULL,
   `aid` int DEFAULT NULL,
-  `_description` longtext,
+  `description` longtext,
   `imageid` int DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `isdelete` int DEFAULT '0',
   PRIMARY KEY (`gsid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -385,7 +387,7 @@ CREATE TABLE `garagesaletable` (
 
 LOCK TABLES `garagesaletable` WRITE;
 /*!40000 ALTER TABLE `garagesaletable` DISABLE KEYS */;
-INSERT INTO `garagesaletable` VALUES (1,9,1,'2022-11-15 02:50:36','2022-11-15 02:50:36',1,'a new sale',1),(2,9,2,'2022-11-23 08:00:00','2022-11-24 08:00:00',2,'',NULL),(3,9,3,'2022-11-30 08:00:00','2022-12-02 08:00:00',3,'other test',NULL);
+INSERT INTO `garagesaletable` VALUES (1,9,1,'2022-11-15 02:50:36','2022-11-15 02:50:36',1,'a new sale',1,'2',0),(2,9,2,'2022-11-23 08:00:00','2022-11-24 08:00:00',2,'',NULL,'3',0),(3,9,3,'2022-11-30 08:00:00','2022-12-02 08:00:00',3,'other test',NULL,'4',0);
 /*!40000 ALTER TABLE `garagesaletable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -463,9 +465,10 @@ CREATE TABLE `itemtable` (
   `posttime` timestamp NULL DEFAULT NULL,
   `imageid` int DEFAULT NULL,
   `uid` int DEFAULT NULL,
-  `display` int DEFAULT '1',
+  `display` int DEFAULT '0',
+  `isdelete` int DEFAULT '0',
   PRIMARY KEY (`itid`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -474,8 +477,42 @@ CREATE TABLE `itemtable` (
 
 LOCK TABLES `itemtable` WRITE;
 /*!40000 ALTER TABLE `itemtable` DISABLE KEYS */;
-INSERT INTO `itemtable` VALUES (1,'keyboard','apple','123456','this is a keyboard',1499.99,1,NULL,2,'2022-11-15 02:50:36',1,1,1),(2,'motherboard','ikea','12ge3456','this is a motherboard',1499.99,1,NULL,1,'2022-11-15 02:50:36',2,1,1),(3,'Samsung 970 EVO Plus SSD 2TB NVMe M.2','Samsung','MZ-V7S2T0B','ALWAYS EVOLVING SSD: Faster than the 970 EVO, the 970 EVO Plus is powered by the latest V-NAND technology and firmware optimization; It maximizes the potential of NVMe bandwidth for unbeatable computing; Comes in capacities of up to 2TB, with reliability of up to 1,200 TBW.',149.99,1,NULL,1,'2022-11-15 02:50:36',3,1,1),(4,'Gaming Computer Case','Lian Li','O11DW-GB002','GB-002 can be found in the small white O11D box (located near left top back panel) Mid-tower chassis with the dual-chamber layout',148.99,1,NULL,1,'2022-11-15 02:50:36',4,1,1),(5,'asus motherboard','ikea','awfa','a asus motherboard',1.99,1,NULL,1,'2022-11-21 22:21:11',1,1,1),(6,'headset','apple','test1','this is a hedset',1.99,1,NULL,1,'2022-11-21 22:23:18',1,1,1),(7,'phone','google','test3','a phone',2.99,1,NULL,2,'2022-11-21 22:25:44',1,1,1),(8,'test3','test3','test3','new test',2.99,1,NULL,2,'2022-11-21 22:26:57',1,1,2),(9,'test3','test3','test3','new test',2.99,1,NULL,2,'2022-11-21 22:29:35',1,1,2),(10,'test3','test3','test3','new test',2.99,1,NULL,2,'2022-11-21 22:32:02',1,1,2),(11,'test4','test4','test4',NULL,1.99,1,NULL,2,'2022-11-22 07:46:16',1,1,2),(12,'test7','test7','test7','test7test7test7test7test7',20.99,1,NULL,1,'2022-11-22 07:53:37',1,1,2),(13,'t1','t1','t1','t1t1t1t1t1t1t1',30.33,1,NULL,1,'2022-11-22 08:02:13',1,1,2),(14,'t2','t2','t2','weagesgrsgs',5.99,1,NULL,2,'2022-11-22 08:02:55',1,1,2),(15,'test55','test55','test55','wewa',1.99,1,NULL,1,'2022-11-22 08:16:35',1,1,2),(16,'test555','test555','test555','wewa',1.99,1,NULL,1,'2022-11-22 08:18:07',1,1,2),(17,'test66','test66','test66','grghshrtsh',45.99,1,NULL,1,'2022-11-22 08:18:59',1,1,2),(18,'geehg','geehg','geehg','efsgger',2.36,1,NULL,1,'2022-11-22 08:22:16',1,1,2),(19,'newtest','newbrand','nom','eawrawer',2.00,1,NULL,1,'2022-11-22 10:41:40',1,1,2),(20,'newtest1','newbrand1','nom1','eawrawer',2.00,1,NULL,2,'2022-11-22 10:43:32',1,1,2),(21,'newtest12','newbrand12','nom1','eawrawer',2.00,1,NULL,1,'2022-11-22 10:44:42',1,1,2),(22,'next','brand test','module num','new test',699.00,1,NULL,2,'2022-11-22 10:51:18',1,1,2),(23,'tttttt','wwww','aaaaa','arerr',65.00,1,NULL,1,'2022-11-22 10:54:02',1,1,2),(24,'tttttt2','wwww2','aaaaa2','arerr',65.00,1,NULL,1,'2022-11-22 10:54:49',1,1,2),(25,'gsitem3','gsitem3','gsitem3','testtest',2.36,1,NULL,1,'2022-11-22 14:30:07',1,1,2),(26,'gs31','gs','gs','ttttt',69.99,1,NULL,1,'2022-11-22 14:32:25',1,1,2),(27,'aaa','aaa','aaa','111111',1.33,1,NULL,3,'2022-11-22 14:34:09',1,1,2),(28,'efsf','esf','fesf','erersrs',1.00,1,NULL,3,'2022-11-22 14:39:55',1,1,2),(29,'34','123','41','231341',1.00,1,NULL,3,'2022-11-22 14:42:00',1,1,2),(30,'3333','3333','3333','3333',3.00,2,NULL,3,'2022-11-22 14:43:54',1,1,2);
+INSERT INTO `itemtable` VALUES (1,'keyboard','apple','123456','this is a keyboard',1499.99,1,NULL,2,'2022-11-15 02:50:36',1,1,0,0),(2,'motherboard','ikea','12ge3456','this is a motherboard',1499.99,1,NULL,1,'2022-11-15 02:50:36',2,1,0,0),(3,'Samsung 970 EVO Plus SSD 2TB NVMe M.2','Samsung','MZ-V7S2T0B','ALWAYS EVOLVING SSD: Faster than the 970 EVO, the 970 EVO Plus is powered by the latest V-NAND technology and firmware optimization; It maximizes the potential of NVMe bandwidth for unbeatable computing; Comes in capacities of up to 2TB, with reliability of up to 1,200 TBW.',149.99,1,NULL,1,'2022-11-15 02:50:36',3,1,0,0),(4,'Gaming Computer Case','Lian Li','O11DW-GB002','GB-002 can be found in the small white O11D box (located near left top back panel) Mid-tower chassis with the dual-chamber layout',148.99,1,NULL,1,'2022-11-15 02:50:36',4,1,0,0),(5,'asus motherboard','ikea','awfa','a asus motherboard',1.99,1,NULL,1,'2022-11-21 22:21:11',1,1,0,0),(6,'headset','apple','test1','this is a hedset',1.99,1,NULL,1,'2022-11-21 22:23:18',1,1,0,0),(7,'phone','google','test3','a phone',2.99,1,NULL,2,'2022-11-21 22:25:44',1,1,0,0),(8,'test3','test3','test3','new test',2.99,1,NULL,2,'2022-11-21 22:26:57',1,1,1,0),(9,'test3','test3','test3','new test',2.99,1,NULL,2,'2022-11-21 22:29:35',1,1,1,0),(10,'test3','test3','test3','new test',2.99,1,NULL,2,'2022-11-21 22:32:02',1,1,1,0),(11,'test4','test4','test4',NULL,1.99,1,NULL,2,'2022-11-22 07:46:16',1,1,1,0),(12,'test7','test7','test7','test7test7test7test7test7',20.99,1,NULL,1,'2022-11-22 07:53:37',1,1,1,0),(13,'t1','t1','t1','t1t1t1t1t1t1t1',30.33,1,NULL,1,'2022-11-22 08:02:13',1,1,1,0),(14,'t2','t2','t2','weagesgrsgs',5.99,1,NULL,2,'2022-11-22 08:02:55',1,1,1,0),(15,'test55','test55','test55','wewa',1.99,1,NULL,1,'2022-11-22 08:16:35',1,1,1,0),(16,'test555','test555','test555','wewa',1.99,1,NULL,1,'2022-11-22 08:18:07',1,1,1,0),(17,'test66','test66','test66','grghshrtsh',45.99,1,NULL,1,'2022-11-22 08:18:59',1,1,1,0),(18,'geehg','geehg','geehg','efsgger',2.36,1,NULL,1,'2022-11-22 08:22:16',1,1,1,0),(19,'newtest','newbrand','nom','eawrawer',2.00,1,NULL,1,'2022-11-22 10:41:40',1,1,1,0),(20,'newtest1','newbrand1','nom1','eawrawer',2.00,1,NULL,2,'2022-11-22 10:43:32',1,1,1,0),(21,'newtest12','newbrand12','nom1','eawrawer',2.00,1,NULL,1,'2022-11-22 10:44:42',1,1,1,0),(22,'next','brand test','module num','new test',699.00,1,NULL,2,'2022-11-22 10:51:18',1,1,1,0),(23,'tttttt','wwww','aaaaa','arerr',65.00,1,NULL,1,'2022-11-22 10:54:02',1,1,1,0),(24,'tttttt2','wwww2','aaaaa2','arerr',65.00,1,NULL,1,'2022-11-22 10:54:49',1,1,1,0),(25,'gsitem3','gsitem3','gsitem3','testtest',2.36,1,NULL,1,'2022-11-22 14:30:07',1,1,1,0),(26,'gs31','gs','gs','ttttt',69.99,1,NULL,1,'2022-11-22 14:32:25',1,1,1,0),(27,'aaa','aaa','aaa','111111',1.33,1,NULL,3,'2022-11-22 14:34:09',1,1,1,0),(28,'efsf','esf','fesf','erersrs',1.00,1,NULL,3,'2022-11-22 14:39:55',1,1,1,0),(29,'34','123','41','231341',1.00,1,NULL,3,'2022-11-22 14:42:00',1,1,1,0),(30,'3333','3333','3333','3333',3.00,2,NULL,3,'2022-11-22 14:43:54',1,1,1,0),(31,'tewt1',NULL,NULL,'arera',NULL,NULL,NULL,9,NULL,NULL,9,0,0),(32,'sergssgrsg','','','sgsrgrgdr',1.00,3,NULL,10,NULL,NULL,9,0,0),(33,'213123','','','123123',223.00,3,NULL,7,NULL,NULL,9,0,0),(34,'new name','','','new item test',2.98,1,NULL,8,NULL,NULL,9,0,0),(35,'11113','','','1113',13.00,113,NULL,15,NULL,NULL,9,1,0),(36,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL,9,0,0),(37,'new name','','','test1',2.33,1,NULL,10,NULL,NULL,9,0,0),(38,NULL,NULL,NULL,NULL,NULL,NULL,NULL,7,NULL,NULL,9,0,0),(39,'test edit','','','test edit desc',2.99,1,NULL,8,NULL,NULL,9,0,0),(40,'32','','','23',1.00,2,NULL,15,'2023-02-21 12:11:04',NULL,9,0,0),(41,'3344','','','4433',23.00,32,NULL,15,'2023-02-21 12:11:50',NULL,9,0,0);
 /*!40000 ALTER TABLE `itemtable` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `listing_table`
+--
+
+DROP TABLE IF EXISTS `listing_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `listing_table` (
+  `gsid` int NOT NULL AUTO_INCREMENT,
+  `uid` int DEFAULT NULL,
+  `starttime` timestamp NULL DEFAULT NULL,
+  `endtime` timestamp NULL DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `description` longtext,
+  `imageid` int DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `isdelete` int DEFAULT '0',
+  `lat` double DEFAULT NULL,
+  `lng` double DEFAULT NULL,
+  `zip_code` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`gsid`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `listing_table`
+--
+
+LOCK TABLES `listing_table` WRITE;
+/*!40000 ALTER TABLE `listing_table` DISABLE KEYS */;
+INSERT INTO `listing_table` VALUES (4,9,NULL,NULL,NULL,NULL,NULL,'',1,NULL,NULL,NULL),(5,9,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(6,9,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(7,9,'2023-02-21 09:22:13','2023-02-21 09:22:13','4400 Lake Washington Blvd SE, Bellevue, WA 98006','test number 2444',NULL,'Newcastle Beach Park',0,47.5656078,-122.1911237,''),(8,9,'2023-02-21 09:16:17','2023-02-21 09:16:17','575 Bellevue Square, Bellevue, WA 98004','Bellevue Square test 4',NULL,'Bellevue Square',0,47.6156024,-122.203819,''),(9,9,'2023-02-21 09:21:39','2023-02-21 09:21:39','3901 Factoria Square Mall SE, Bellevue, WA 98006','test number 2',NULL,'Amazon Flash2',0,47.5760157,-122.1710315,''),(10,9,'2023-02-21 09:23:12','2023-02-21 09:23:12','15600 NE 8th St, Bellevue, WA 98008','test cross',NULL,'Crossroads Bellevue',0,47.61748559999999,-122.1313465,''),(11,9,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(12,9,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(13,9,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(14,9,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(15,9,'2023-02-21 09:51:16','2023-02-21 09:51:16','3901 Factoria Square Mall SE, Bellevue, WA 98006','Create listing test ',NULL,'Bellevue Squareewww',0,47.5760157,-122.1710315,'');
+/*!40000 ALTER TABLE `listing_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -555,8 +592,9 @@ CREATE TABLE `usertable` (
   `profilepicture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `uid_UNIQUE` (`uid`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -565,7 +603,7 @@ CREATE TABLE `usertable` (
 
 LOCK TABLES `usertable` WRITE;
 /*!40000 ALTER TABLE `usertable` DISABLE KEYS */;
-INSERT INTO `usertable` VALUES (1,'Cary','Doe','Cary.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user123',''),(2,'Jason','Davis','Jason.Davis@gamil.com','4254254225','123456','2022-11-15 02:50:36','user124',''),(3,'Corey','Reese','Corey.Reese@gamil.com','4254254225','123456','2022-11-15 02:50:36','user125',''),(4,'Dominique','Aguirre','Dominique.Aguirre@gamil.com','4254254225','123456','2022-11-15 02:50:36','user126',''),(5,'Melissa','Rodriguez','Melissa.Rodriguez@gamil.com','4254254225','123456','2022-11-15 02:50:36','user127',''),(6,'Whitney','Green','Whitney.Green@gamil.com','4254254225','123456','2022-11-15 02:50:36','user128',''),(7,'Chase','Franklin','Franklin.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user129',''),(8,'Lauren','Tucker','Lauren.Tucker@gamil.com','4254254225','123456','2022-11-15 02:50:36','user130',''),(9,'yilei','ding','yileiding1990@gmail.com','1234567890','123456',NULL,'yilei8888','static/src/1.jpg');
+INSERT INTO `usertable` VALUES (1,'Cary','Doe','Cary.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user123',''),(2,'Jason','Davis','Jason.Davis@gamil.com','4254254225','123456','2022-11-15 02:50:36','user124',''),(3,'Corey','Reese','Corey.Reese@gamil.com','4254254225','123456','2022-11-15 02:50:36','user125',''),(4,'Dominique','Aguirre','Dominique.Aguirre@gamil.com','4254254225','123456','2022-11-15 02:50:36','user126',''),(5,'Melissa','Rodriguez','Melissa.Rodriguez@gamil.com','4254254225','123456','2022-11-15 02:50:36','user127',''),(6,'Whitney','Green','Whitney.Green@gamil.com','4254254225','123456','2022-11-15 02:50:36','user128',''),(7,'Chase','Franklin','Franklin.doe@gamil.com','4254254225','123456','2022-11-15 02:50:36','user129',''),(8,'Lauren','Tucker','Lauren.Tucker@gamil.com','4254254225','123456','2022-11-15 02:50:36','user130',''),(9,'yilei','ding','yileiding1990@gmail.com','1234567890','123456',NULL,'yilei8823',NULL),(10,NULL,NULL,'gggg@gmail.com',NULL,'123456',NULL,'gggg',NULL),(11,NULL,NULL,'gggga@gmail.com',NULL,'123456',NULL,'gggga',NULL);
 /*!40000 ALTER TABLE `usertable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -656,9 +694,10 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Alldata`()
 BEGIN
-	select *  from ( select * from itemtable where itemtable.display=1) as item  left join (select itid as id,src,main from imagetable where main=1) as itable on item.itid=itable.id order by item.itid desc;
+	select *  from itemtable as item  left join (select itid as id,src,main from imagetable where main=1) as itable on item.itid=itable.id order by item.itid desc;
     select * from imagetable;
-    select * from garagesaletable as garage left join (select*from addresstable) as address on garage.aid=address.aid;
+    select *, gsid as id  from listing_table;
+    -- select * from garagesaletable as garage left join (select*from addresstable) as address on garage.aid=address.aid;
     select * from usertable;
     select*from chathistory;
 END ;;
@@ -811,6 +850,62 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `create_list` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_list`(
+in _uid int,
+in _street varchar(128),
+in _apt varchar(64),
+in _city varchar(64),
+in _states varchar(32),
+in _zip varchar(16),
+in _lat double,
+in _lng double,
+in _title varchar(128),
+in _desc varchar(255),
+in _start timestamp,
+in _end timestamp
+)
+BEGIN
+insert into addresstable (
+street,
+apt,
+city,
+states,
+zip,
+uid,
+lat,
+lng
+) values (
+_street,
+_apt,
+_city,
+_states,
+_zip,
+_uid,
+_lat,
+_lng
+);
+insert into garagesaletable (
+uid,aid,starttime,endtime,title,description
+) values(
+_uid,LAST_INSERT_ID(),_start,_end,_title,_desc
+);
+select * from (select * from garagesaletable where gid=LAST_INSERT_ID()) as garage left join (select*from addresstable) as address on garage.aid=address.aid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `getgaragesale` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -906,6 +1001,393 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `item_create` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `item_create`(
+in _itemname varchar(45),
+in _brand varchar(45),
+in _mnumber varchar(45),
+in _description LONGTEXT,
+in _price DECIMAL(6,2),
+in _qty INT,
+in _gsid INT,
+in _uid INT
+)
+BEGIN
+insert into itemtable (itemname,brand,mnumber,description,price,qty,gsid,posttime,uid) values (_itemname,_brand,_mnumber,_description,_price,_qty,_gsid,NOW(),_uid);
+
+select *  from (select*from itemtable where itid=LAST_INSERT_ID()) as item   left join (select itid as id,src,main from imagetable where main=1) as itable on item.itid=itable.id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `item_delete` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `item_delete`(in _itid int)
+BEGIN
+update itemtable set display=1 where itid=_itid;
+select*from itemtable where itid=_itid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `item_update` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `item_update`(
+in _itid int,
+in _itemname varchar(45),
+in _brand varchar(45),
+in _mnumber varchar(45),
+in _description LONGTEXT,
+in _price DECIMAL(6,2),
+in _qty INT
+)
+BEGIN
+update itemtable set
+itemname=_itemname,
+brand=_brand,
+mnumber=_mnumber,
+description=_description,
+price=_price,
+qty=_qty
+where itid=_itid;
+
+select *  from (select*from itemtable where itid=_itid) as item   left join (select itid as id,src,main from imagetable where main=1) as itable on item.itid=itable.id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listing_create` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listing_create`(
+in _uid int,
+in _title varchar(128),
+in _desc varchar(255),
+in _start timestamp,
+in _end timestamp,
+in _aid int
+)
+BEGIN
+insert into garagesaletable (
+uid,aid,starttime,endtime,title,description
+) values(
+_uid,_aid,_start,_end,_title,_desc
+);
+select* from garagesaletabel where gsid=LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listing_create1` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listing_create1`(
+in _uid int,
+in _title varchar(128),
+in _desc varchar(255),
+in _start timestamp,
+in _end timestamp,
+in _aid int
+)
+BEGIN
+insert into garagesaletable (
+uid,aid,starttime,endtime,title,description
+) values(
+_uid,_aid,_start,_end,_title,_desc
+);
+select* from garagesaletabel where gsid=LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listing_create_old` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listing_create_old`(
+in _uid int,
+in _street varchar(128),
+in _apt varchar(64),
+in _city varchar(64),
+in _states varchar(32),
+in _zip varchar(16),
+in _lat double,
+in _lng double,
+in _title varchar(128),
+in _desc varchar(255),
+in _start timestamp,
+in _end timestamp
+)
+BEGIN
+insert into addresstable (
+street,
+apt,
+city,
+states,
+zip,
+uid,
+lat,
+lng
+) values (
+_street,
+_apt,
+_city,
+_states,
+_zip,
+_uid,
+_lat,
+_lng
+);
+insert into garagesaletable (
+uid,aid,starttime,endtime,title,description
+) values(
+_uid,LAST_INSERT_ID(),_start,_end,_title,_desc
+);
+select * from (select * from garagesaletable where gid=LAST_INSERT_ID()) as garage left join (select*from addresstable) as address on garage.aid=address.aid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listing_delete` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listing_delete`(in _gsid int)
+BEGIN
+	update  garagesaletable set isdelete=1 where gsid=_gsid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listing_location_create` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listing_location_create`(
+in _uid int,
+in _street varchar(128),
+in _apt varchar(64),
+in _city varchar(64),
+in _states varchar(32),
+in _zip varchar(16),
+in _lat double,
+in _lng double,
+in _title varchar(128),
+in _desc varchar(255),
+in _start timestamp,
+in _end timestamp
+)
+BEGIN
+call location_create(_uid,_street,_apt,_city,_states,_zip,_lat,_lng);
+call listing_create(_uid,_title,_desc,_start,_end,LAST_INSERT_ID());
+select * from (select * from garagesaletable where gsid=LAST_INSERT_ID()) as garage left join (select*from addresstable) as address on garage.aid=address.aid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listing_update` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listing_update`(
+in _gsid int,
+in _title varchar(128),
+in _desc varchar(255),
+in _start timestamp,
+in _end timestamp,
+in _aid int
+)
+BEGIN
+update garagesaletable set 
+title=_title,description=_desc,starttime=_start,endtime=_end,aid=_aid
+where gsid=_gsid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `location_create` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `location_create`(
+in _uid int,
+in _street varchar(128),
+in _apt varchar(64),
+in _city varchar(64),
+in _states varchar(32),
+in _zip varchar(16),
+in _lat double,
+in _lng double
+)
+BEGIN
+insert into addresstable (
+street,
+apt,
+city,
+states,
+zip,
+uid,
+lat,
+lng
+) values (
+_street,
+_apt,
+_city,
+_states,
+_zip,
+_uid,
+_lat,
+_lng
+);
+select*from addresstable where aid=LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `location_delete` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `location_delete`(in _aid int)
+BEGIN
+update addresstable set isdelete=1 where aid=_aid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `location_update` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `location_update`(
+in _aid int,
+in _street varchar(128),
+in _apt varchar(64),
+in _city varchar(64),
+in _states varchar(32),
+in _zip varchar(16),
+in _lat double,
+in _lng double
+)
+BEGIN
+update addresstable set
+street=_street,
+apt=_apt,
+city= _city,
+states=_states,
+zip= _zip,
+lat=_lat,
+lng=_lng
+where aid=_aid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `newgaragesale` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -939,6 +1421,98 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `New_listing_create` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `New_listing_create`(
+in _uid int,
+in _title varchar(128),
+in _desc varchar(255),
+in _start double,
+in _end double,
+in _location varchar(255),
+in _zip_code varchar(16),
+in _lat double,
+in _lng double
+)
+BEGIN
+insert into listing_table (
+uid,starttime,endtime,title,description,location,zip_code,lat,lng
+) values(
+_uid,FROM_UNIXTIME(_start * 0.001),FROM_UNIXTIME(_end * 0.001),_title,_desc,_location,_zip_code,_lat,_lng
+);
+select*,gsid as id from listing_table where gsid=LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `New_listing_delete` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `New_listing_delete`(in _gsid int)
+BEGIN
+update listing_table set isdelete=1 where gsid=_gsid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `New_listing_update` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `New_listing_update`(
+in _gsid int,
+in _title varchar(128),
+in _desc varchar(255),
+in _start double,
+in _end double,
+in _location varchar(255),
+in _zip_code varchar(16),
+in _lat double,
+in _lng double
+)
+BEGIN
+update listing_table set 
+title=_title,
+description=_desc,
+starttime=FROM_UNIXTIME(_start * 0.001),
+endtime=FROM_UNIXTIME(_end * 0.001),
+location=_location,
+zip_code=_zip_code,
+lat=_lat,
+lng=_lng
+where gsid=_gsid;
+select*from listing_table where gsid=_gsid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `updatedisplay` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -961,6 +1535,84 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `user_create` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_create`(
+in _email varchar(64),
+in _username varchar(64),
+in _password varchar(64)
+)
+BEGIN
+insert into usertable (email,username,password) values (_email,_username,_password);
+select *from usertable where uid= last_insert_id();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `user_delete` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_delete`(in _uid int)
+BEGIN
+update usertable set isdelete=1 where uid=_uid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `user_update` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_update`(
+in _uid int,
+in _firstname varchar(32),
+in _lastname varchar(32),
+in _email varchar(32),
+in _phone varchar(32),
+in _username varchar(32),
+in _profilepicture varchar(32)
+)
+BEGIN
+update usertable set 
+firstname=_firstname,
+lastname=_lastname,
+email=_email,
+phone=_phone,
+username=_username,
+profilepicture=_profilepicture 
+where uid=_uid;
+select * from usertable where uid=_uid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -971,4 +1623,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-15 11:56:01
+-- Dump completed on 2023-02-21  4:18:34

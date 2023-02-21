@@ -16,19 +16,19 @@ export default function Signin(props) {
     var _login = (event) => {
         event.preventDefault();
         var data = {
-            "username": inputs.username.current.value,
-            "password": inputs.password.current.value
+            email: inputs.username.current.value,
+            password: inputs.password.current.value
         }
-        Api.user.signin(data, (res) => {
+        Api.user.sign_in(data, (res) => {
             console.log(res);
-            if (res.data.status === 'success') {
+            if (res.data.result) {
                 props.changeuser(res.data.user);
             }
         })
     }
 
     var _signout = () => {
-        Api.user.signout((res) => {
+        Api.user.sign_out((res) => {
             console.log(res);
             props.logout()
         })

@@ -5,9 +5,8 @@ import Home from './Components/Newhome'
 
 
 function App() {
-
   return (
-      <Home />
+    <Home />
   );
 }
 
