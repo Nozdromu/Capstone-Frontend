@@ -28,6 +28,7 @@ export default function AccountEdit(prop) {
             setfirstname(props.data.firstname)
             setupdatetable(props.setupdatetable);
             setlastname(props.data.lastname);
+            setlogin(!props.login)
         } else {
             setlogin(false)
         }
