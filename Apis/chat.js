@@ -1,4 +1,4 @@
-module.exports = function (app) { 
+module.exports = function (app) {
 
     app.get('/create_room', (req, res) => {
         console.log(req.query);
@@ -12,6 +12,11 @@ module.exports = function (app) {
         }
         console.log(result);
         res.send(result);
+    })
+
+    app.get('/getchatuser', (req, res) => {
+        console.log('in')
+        res.send({ Users: USys.getallchatname() });
     })
 
 }

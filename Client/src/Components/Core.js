@@ -1,6 +1,5 @@
 import { io } from "socket.io-client"
 import User from './User'
-import Chat from './Chat'
 import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
 import Api from './Api';

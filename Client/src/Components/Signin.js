@@ -41,7 +41,7 @@ function Signup(props) {
   }
 
   var sign_in_success = (user_data) => {
-    User._login(user_data);
+    User._login(user_data.userinfo);
     props.signin();
     props.onHide();
   }
