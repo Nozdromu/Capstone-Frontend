@@ -10,7 +10,7 @@ const cors = require('cors')
 const fs = require('fs')
 const session = require('express-session')
 const sqlconfig = require('./sqlconfig.json');
-const Usystem = require('./server/Usystem')
+const Usystem = require('./Usystem')
 
 // requires end
 ////////////////////////////////////////////////////////////////////////////
@@ -66,10 +66,10 @@ app.set('port', process.env.PORT || 8080);
 //  server function
 
 //  load data from mysql
-require('./server/load')()
+require('./load')()
 
 //plugin Socket.IO 
-require('./server/chatIO')(server)
+require('./chatIO')(server)
 
 //  server function end
 ///////////////////////////////////////////////////////////////////////////
