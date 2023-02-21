@@ -19,9 +19,9 @@ function TestApp() {
   const [userpk, setuserpk] = useState(0)
   const [userdata, setuserdata] = useState()
 
-  const [usertable, setusetable] = useState(<></>)
-  const [itemtable, setitemtable] = useState(<></>)
-  const [table, settable] = useState(<></>);
+  // const [usertable, setusetable] = useState(<></>)
+  // const [itemtable, setitemtable] = useState(<></>)
+  // const [table, settable] = useState(<></>);
 
 
   const [itemdata, setitemdata] = useState([])
@@ -31,11 +31,11 @@ function TestApp() {
   const [currentitem, setcurrentitem] = useState()
 
 
-  const [itemediter, setitemediter] = useState(<></>)
-  const [listediter, setlistediter] = useState(<></>)
+  // const [itemediter, setitemediter] = useState(<></>)
+  // const [listediter, setlistediter] = useState(<></>)
 
   const [mount, setmount] = useState(false);
-  const [result, setresult] = useState('null')
+  // const [result, setresult] = useState('null')
 
   const [currentuser, setcurrentuser] = useState('no login');
 
@@ -90,10 +90,9 @@ function TestApp() {
 
 
   //when the list of itemdata updated, update item table
-  useEffect(() => {
-    if (itemdata.length > 0)
-      setitemtable(<ItemTable setitem={changeitem} data={itemdata} />)
-  }, [itemdata])
+  // useEffect(() => {
+  //   if (itemdata.length > 0)
+  // }, [itemdata])
 
   // pass to ItemTable, use to update current item that clicked in item table
   var changeitem = (data) => {
@@ -200,7 +199,7 @@ function TestApp() {
           </Row>
           <Row>
             <Col>
-              <ItemEdit data={currentitem} updatetable={updateitemtable} />
+              <ItemEdit data={currentitem} userid={userpk} listingid={currentlist} updatetable={updateitemtable} />
             </Col>
             <Col>
             </Col>

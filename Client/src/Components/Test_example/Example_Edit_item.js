@@ -60,6 +60,8 @@ export default function ItemEdit(prop) {
             setowner(props.data.uid)
             setcreatemode(false)
         } else {
+            setowner(props.userid);
+            setlistid(props.listingid.id);
             setcreatemode(true)
         }
     }, [props])
