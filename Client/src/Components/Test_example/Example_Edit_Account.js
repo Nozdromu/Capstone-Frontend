@@ -174,14 +174,16 @@ export default function AccountEdit(prop) {
             </Form>
         </Card.Body>
         <Card.Footer>
-            <Row>
-                <Col>
-                    <Button form='edit_user' type="submit" value='submit' style={{ width: '100%' }} >Edit</Button>
-                </Col>
-                <Col>
-                    <Button onClick={delete_user} style={{ width: '100%' }} >Delete</Button>
-                </Col>
-            </Row>
+            <fieldset disabled={login}>
+                <Row>
+                    <Col>
+                        <Button form='edit_user' type="submit" value='submit' style={{ width: '100%' }} >Edit</Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={delete_user} style={{ width: '100%' }} >Delete</Button>
+                    </Col>
+                </Row>
+            </fieldset>
         </Card.Footer>
     </Card>)
 }
