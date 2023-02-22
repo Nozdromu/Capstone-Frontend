@@ -70,9 +70,6 @@ var Core = (function () {
             testa.push(x);
         });
         console.log(testa);
-        testa.forEach(val => {
-            console.log(val.json)
-        })
         console.log('item data')
         item.forEach(element => {
             var x = new Item(element,true);

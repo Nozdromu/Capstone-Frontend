@@ -1,3 +1,5 @@
+import Api from './../Components/Api';
+
 export default class Item {
     constructor(item, server) {
         this.Id = item.id || item.itid; //
@@ -51,6 +53,19 @@ export default class Item {
             lng:this.Lng,
             date:this.Date
         }
+    }
+
+    update(callback) {
+        console.log(this.json);
+        Api.item.update(this.json, res => callback(res));
+    }
+    create(callback) {
+        console.log(this.json);
+        Api.item.create(this.json, res => callback(res));
+    }
+    delete(callback) {
+        console.log(this.json);
+        Api.item.delete(this.json, res => callback(res));
     }
     // get() {
     //     return this.

@@ -73,6 +73,7 @@ module.exports = function (app) {
         var response = { response: true }
         var gsid = parseInt(req.query.gsid);
         response.items = allitem[0].filter((element) => { return element.gsid === gsid && element.isdelete === 0 })
+        console.log(response.items)
         res.send(response)
     })
 

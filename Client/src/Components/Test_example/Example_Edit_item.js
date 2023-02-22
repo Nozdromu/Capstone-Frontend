@@ -4,8 +4,6 @@ import Api from '../Api'
 
 export default function ItemEdit(prop) {
     const [createmode, setcreatemode] = useState(false)
-    const [data, setdata] = useState(prop.data)
-    const [updatetable, setupdatetable] = useState(prop.updatetable)
     const [props, setprops] = useState(prop)
 
     const [listid, setlistid] = useState('');
@@ -20,22 +18,28 @@ export default function ItemEdit(prop) {
 
         switch (keys) {
             case 'itemid':
-                setitemid(event.target.value);
+                props.data.itid = event.target.value;
+                setitemid(props.data.itid);
                 break;
             case 'listid':
-                setlistid(event.target.value);
+                props.data.gsid = event.target.value;
+                setlistid(props.data.gsid);
                 break;
             case 'description':
-                setdescription(event.target.value);
+                props.data.description = event.target.value;
+                setdescription(props.data.description);
                 break;
             case 'quantity':
-                setquantity(event.target.value);
+                props.data.quantity = event.target.value;
+                setquantity(props.data.quantity);
                 break;
             case 'price':
-                setprice(event.target.value);
+                props.data.price = event.target.value;
+                setprice(props.data.price);
                 break;
             case 'name':
-                setname(event.target.value);
+                props.data.name = event.target.value;
+                setname(props.data.name);
                 break;
             default:
         }
@@ -52,16 +56,14 @@ export default function ItemEdit(prop) {
             setlistid(props.listing.id);
         }
         if (props.data !== undefined) {
-            setdata(props.data===null?'':props.data);
-            setprice(props.data.price===null?'':props.data.price);
-            setlistid(props.data.gsid===null?'':props.data.gsid);
-            setname(props.data.itemname===null?'':props.data.itemname)
-            setdescription(props.data.description===null?'':props.data.description);
-            setquantity(props.data.qty===null?'':props.data.qty)
-            setprice(props.data.price===null?'':props.data.price)
-            setitemid(props.data.itid===null?'':props.data.itid);
-            setupdatetable(props.setupdatetable===null?'':props.setupdatetable);
-            setowner(props.data.uid===null?'':props.data.uid)
+            setprice(props.data.price === null ? '' : props.data.price);
+            setlistid(props.data.gsid === null ? '' : props.data.gsid);
+            setname(props.data.itemname === null ? '' : props.data.itemname)
+            setdescription(props.data.description === null ? '' : props.data.description);
+            setquantity(props.data.qty === null ? '' : props.data.qty)
+            setprice(props.data.price === null ? '' : props.data.price)
+            setitemid(props.data.itid === null ? '' : props.data.itid);
+            setowner(props.data.uid === null ? '' : props.data.uid)
             setcreatemode(false)
         } else {
 
@@ -83,43 +85,42 @@ export default function ItemEdit(prop) {
     }
     var edit_item = (event) => {
         event.preventDefault();
-        var _data = {
-            itid: itemid,
-            itemname: name,
-            brand: '',
-            mnumber: '',
-            description: description,
-            price: price,
-            qty: quantity,
-            image: ''
-        }
-        Api.item.update(_data, (res) => {
-            props.updatetable();
-        })
+        // var _data = {
+        //     itid: itemid,
+        //     itemname: name,
+        //     brand: '',
+        //     mnumber: '',
+        //     description: description,
+        //     price: price,
+        //     qty: quantity,
+        //     image: ''
+        // }
+        // Api.item.update(_data, (res) => {
+        //     props.updatetable();
+        // })
+        props.data.update(() => props.updatetable())
     }
     var delete_item = () => {
-        Api.item.delete({ itid: itemid }, (res) => {
-            console.log(res);
-            props.updatetable();
-        })
+        props.data.delete(() => props.updatetable())
     }
 
     var create_item = (event) => {
         event.preventDefault();
-        var new_item = {
-            itid: itemid,
-            itemname: name,
-            brand: '',
-            mnumber: '',
-            description: description,
-            price: price,
-            qty: quantity,
-            image: '',
-            gsid: listid
-        }
-        Api.item.create(new_item, (res) => {
-            props.updatetable();
-        })
+        // var new_item = {
+        //     itid: itemid,
+        //     itemname: name,
+        //     brand: '',
+        //     mnumber: '',
+        //     description: description,
+        //     price: price,
+        //     qty: quantity,
+        //     image: '',
+        //     gsid: listid
+        // }
+        // Api.item.create(new_item, (res) => {
+        //     props.updatetable();
+        // })
+
     }
 
     var startcreate = (event) => {
@@ -133,7 +134,6 @@ export default function ItemEdit(prop) {
             setprice('')
             setprice('');
         } else {
-            setdata(props.data);
             setprice(props.data.price);
             setlistid(props.data.gsid);
             setname(props.data.itemname)
@@ -141,7 +141,6 @@ export default function ItemEdit(prop) {
             setquantity(props.data.qty)
             setprice(props.data.price)
             setitemid(props.data.itid);
-            setupdatetable(props.setupdatetable);
             setowner(props.data.uid)
         }
     }

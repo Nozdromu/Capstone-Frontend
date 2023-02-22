@@ -156,8 +156,8 @@ var Api = (function Api() {
     var test_item_read = async (data, callback) => {
         return axiosApi.get('/item/read', { params: data }).then(res => callback(res))
     }
-    var test_item_list = async (listingid, callback) => {
-        return axiosApi.get('/item/listing', { params: { gsid: listingid } }).then(res => callback(res))
+    var test_item_list = async (data, callback) => {
+        return axiosApi.get('/item/listing', { params: data }).then(res => callback(res))
     }
 
     // test chat api
@@ -174,6 +174,7 @@ var Api = (function Api() {
 
     /////////////////////////////////////////////////////////////////////
     var Api = {
+        testserver: true,
         user: {
             checklogin: test_server ? test_user_read : _checklogin,
             register: test_server ? test_register : user_register,

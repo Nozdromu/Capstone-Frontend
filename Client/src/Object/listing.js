@@ -1,22 +1,35 @@
 
+import Api from './../Components/Api';
 
 export default class Listing {
     constructor(listing, server) {
-        this.Id = listing.id || listing.gsid;
+        this.Id = listing.id || listing.gsid||0;
         this.Title = listing.title || '';
         this.Description = listing.description || '';
-        this.Location = listing.location
+        this.Location = listing.location||'';
         this.Date = listing.date || '';
         this.Starttime = listing.starttime || '';
         this.Endtime = listing.endtime || '';
         this.Zip_code = listing.zip_code || '';
         this.Theme = listing.theme || '';
-        this.Owner = listing.owner || listing.uid;
+        this.Owner = listing.owner || listing.uid||0;
         this.Lat = listing.lat || 0
         this.Lng = listing.lng || 0;
         this.Photo = listing.listing_main_photo || listing.image || '';
         this.Isdelete = listing.isdelete || 0;
         this.Servertype = server || false;
+    }
+    update(callback) {
+        console.log(this.json);
+        Api.listing.update(this.json, res => callback(res));
+    }
+    create(callback) {
+        console.log(this.json);
+        Api.listing.create(this.json, res => callback(res));
+    }
+    delete(callback) {
+        console.log(this.json);
+        Api.listing.delete(this.json, res => callback(res));
     }
     get json() {
         return this.Servertype ?
@@ -29,8 +42,8 @@ export default class Listing {
                 "lat": this.Lat,
                 "lng": this.Lng,
                 "zip_code": this.Zip_code,
-                "starttime": this.Starttime,
-                "endtime": this.Endtime,
+                "starttime": Date.parse(this.Starttime),
+                "endtime": Date.parse(this.Endtime),
                 "isdelete": this.Isdelete,
                 "image": this.Photo
             }

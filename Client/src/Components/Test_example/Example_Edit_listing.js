@@ -1,6 +1,7 @@
 import { Card, Row, Col, Form, Button, InputGroup } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
 import Api from '../Api'
+import Listing from '../../Object/listing'
 
 export default function ListingEdit(prop) {
     const [createmode, setcreatemode] = useState(false)
@@ -45,40 +46,23 @@ export default function ListingEdit(prop) {
     }
     var edit_listing = (event) => {
         event.preventDefault();
-        var data = {
-            title: title,
-            description: description,
-            gsid: listid,
-            location: location,
-            lat: lat,
-            lng: lng,
-            image: '',
-            zip_code: '',
-            starttime: Date.now(),
-            endtime: Date.now(),
-        }
-        Api.listing.update(data, (res) => {
-            console.log(res)
-            props.updatetable();
-        })
+        props.data.update(() => props.updatetable());
     }
     var delete_listing = () => {
-        Api.listing.delete({ gsid: listid }, (res) => {
-            console.log(res);
-            props.updatetable();
-        })
+        props.data.delete(() => props.updatetable())
     }
 
     var startcreate = (event) => {
         event.preventDefault();
         setcreatemode(!createmode);
+        var newlisting = new Listing({ uid: props.data.owner }, true);
         if (!createmode) {
-            setlistid(0);
-            settitle('');
-            setlocation('');
-            setdescription('');
-            setlat('');
-            setlng('');
+            setlistid(newlisting.id);
+            settitle(newlisting.title);
+            setlocation(newlisting.location);
+            setdescription(newlisting.description);
+            setlat(newlisting.lat);
+            setlng(newlisting.lng);
 
         } else {
             setlistid(props.data.id)
@@ -150,19 +134,24 @@ export default function ListingEdit(prop) {
 
         switch (keys) {
             case 'title':
-                settitle(event.target.value);
+                props.data.title = event.target.value
+                settitle(props.data.title);
                 break;
             case 'description':
-                setdescription(event.target.value);
+                props.data.description = event.target.value
+                setdescription(props.data.description);
                 break;
             case 'location':
-                setlocation(event.target.value);
+                props.data.location = event.target.value
+                setlocation(props.data.location);
                 break;
             case 'lng':
-                setlng(event.target.value);
+                props.data.lng = event.target.value
+                setlng(props.data.lng);
                 break;
             case 'lat':
-                setlat(event.target.value);
+                props.data.lat = event.target.value
+                setlat(props.data.lat);
                 break;
             default:
         }

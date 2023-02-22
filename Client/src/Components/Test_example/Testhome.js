@@ -13,6 +13,8 @@ import ItemTable from './Example_itemtable';
 import ItemEdit from './Example_Edit_item';
 
 import ListingEdit from './Example_Edit_listing';
+import Listing from './../../Object/listing';
+import Item from './../../Object/item';
 function TestApp() {
 
   const [islogin, setlogin] = useState(false)
@@ -41,19 +43,26 @@ function TestApp() {
 
 
   var updatelisttable = () => {
-    if (userpk > 0)
+    if (userpk > 0) {
       Api.listing.getbyowner((res) => {
-        setlistdata(res.data.list)
-        setcurrentlist(currentlist === undefined ? res.data.list[0] : currentlist)
+        var list = []
+        res.data.list.forEach(element => {
+          list.push(new Listing(element, true))
+        });
+        setlistdata(list)
+        setcurrentlist(currentlist || res.data.list[0])
       })
+    }
   }
   var updateitemtable = () => {
     if (currentlist !== undefined) {
-      console.log(currentlist.gsid)
-      Api.item.bylisting(currentlist.gsid, (res) => {
-        console.log(res);
-        setitemdata(res.data.items);
-        setcurrentitem(currentitem === undefined ? res.data[0] : currentitem)
+      Api.item.bylisting(currentlist.json, (res) => {
+        var items = [];
+        res.data.items.forEach(element => {
+          items.push(new Item(element, true))
+        })
+        setitemdata(items);
+        setcurrentitem(currentitem || res.data[0]);
       })
     }
 
@@ -66,7 +75,6 @@ function TestApp() {
           setuserdata(res.data.user)
           setcurrentuser(res.data.user.username)
           setuserpk(res.data.user.uid);
-
         }
       })
       setmount(true);
@@ -88,12 +96,6 @@ function TestApp() {
 
 
 
-
-  //when the list of itemdata updated, update item table
-  // useEffect(() => {
-  //   if (itemdata.length > 0)
-  // }, [itemdata])
-
   // pass to ItemTable, use to update current item that clicked in item table
   var changeitem = (data) => {
     setcurrentitem(data);
@@ -111,7 +113,11 @@ function TestApp() {
   useEffect(() => {
     if (userpk > 0) {
       Api.listing.getbyowner((res) => {
-        setlistdata(res.data.list)
+        var list = []
+        res.data.list.forEach(element => {
+          list.push(new Listing(element, true))
+        });
+        setlistdata(list)
       })
       setlogin(true)
     }
@@ -186,7 +192,7 @@ function TestApp() {
           </Row>
           <Row>
             <Col>
-              <ListingEdit updatetable={updatelisttable} data={currentlist} />
+              <ListingEdit updatetable={updatelisttable} data={currentlist} owner={userpk} />
             </Col>
             <Col>
               {/* {currentitem === undefined ? <></> : <ItemEdit listingid={currentlist.id} data={currentitem} updatetable={updateitemtable} />} */}
