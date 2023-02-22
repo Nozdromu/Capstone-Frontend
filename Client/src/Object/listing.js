@@ -1,24 +1,24 @@
 
 
 export default class Listing {
-    constructor(server) {
-        this.Id = 0;    //
-        this.Title = '';    //
-        this.Description = '';  //
-        this.Location = ''; //
-        this.Date = ''; //
-        this.Starttime = '';    //
-        this.Endtime = '';  //
-        this.Zip_code = ''; //
-        this.Theme = '';
-        this.Owner = '';    //
-        this.Lat = '';  //
-        this.Lng = '';  //
-        this.Photo = '';    //
-        this.Isdelete = 0;  //
-        this.Servertype = server;
+    constructor(listing, server) {
+        this.Id = listing.id || listing.gsid;
+        this.Title = listing.title || '';
+        this.Description = listing.description || '';
+        this.Location = listing.location
+        this.Date = listing.date || '';
+        this.Starttime = listing.starttime || '';
+        this.Endtime = listing.endtime || '';
+        this.Zip_code = listing.zip_code || '';
+        this.Theme = listing.theme || '';
+        this.Owner = listing.owner || listing.uid;
+        this.Lat = listing.lat || 0
+        this.Lng = listing.lng || 0;
+        this.Photo = listing.listing_main_photo || listing.image || '';
+        this.Isdelete = listing.isdelete || 0;
+        this.Servertype = server || false;
     }
-    get jsonfile() {
+    get json() {
         return this.Servertype ?
             {
                 "gsid": this.Id,

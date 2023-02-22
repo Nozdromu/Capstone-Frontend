@@ -9,6 +9,7 @@ import Newchat from './Newchat'
 import Core_chat from './Core_chat'
 import Testpage from './Test_example/Testhome'
 import Listing from "../Object/listing";
+import Item from './../Object/item';
 
 
 var Core = (function () {
@@ -60,18 +61,29 @@ var Core = (function () {
         console.log(val)
         item = val.data.data.items;
         list = val.data.data.listings;
-        var testa = []
+        var testa = [];
+        var testb = [];
+        /////////////////////////////////////
+        console.log('listing data')
         list.forEach(element => {
-            var x = new Listing(true);
-            Object.keys(element).forEach(key => {
-                x[key] = element[key];
-            })
+            var x = new Listing(element,true);
             testa.push(x);
         });
         console.log(testa);
         testa.forEach(val => {
-            console.log(val.jsonfile)
+            console.log(val.json)
         })
+        console.log('item data')
+        item.forEach(element => {
+            var x = new Item(element,true);
+
+            testb.push(x);
+        });
+        console.log(testb);
+        testb.forEach(val => {
+            console.log(val.json)
+        })
+        ////////////////////////////////////
         if (val.data.islogin) {
             user._login(val.data.user);
         }
