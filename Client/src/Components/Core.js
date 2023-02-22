@@ -8,6 +8,7 @@ import Map from './Test_example/Google_map_example'
 import Newchat from './Newchat'
 import Core_chat from './Core_chat'
 import Testpage from './Test_example/Testhome'
+import Listing from "../Object/listing";
 
 
 var Core = (function () {
@@ -59,6 +60,18 @@ var Core = (function () {
         console.log(val)
         item = val.data.data.items;
         list = val.data.data.listings;
+        var testa = []
+        list.forEach(element => {
+            var x = new Listing(true);
+            Object.keys(element).forEach(key => {
+                x[key] = element[key];
+            })
+            testa.push(x);
+        });
+        console.log(testa);
+        testa.forEach(val => {
+            console.log(val.jsonfile)
+        })
         if (val.data.islogin) {
             user._login(val.data.user);
         }
