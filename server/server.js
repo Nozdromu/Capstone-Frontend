@@ -22,7 +22,6 @@ const Usystem = require('./Usystem')
 
 global.sessionsecret = '12345678';
 
-
 global.allitem = {};
 
 global.USys = new Usystem()

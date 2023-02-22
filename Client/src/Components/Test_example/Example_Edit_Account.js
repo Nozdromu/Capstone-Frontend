@@ -56,11 +56,6 @@ export default function AccountEdit(prop) {
         Api.user.update(_data, (res) => {
             console.log(res);
         })
-        // Api.listing.update(_data, (res) => {
-        //     console.log(res)
-        //     //update list table
-        //     //props.updatetable();
-        // })
     }
     var delete_user = () => {
         Api.user.delete({ uid: uid }, (res) => {
@@ -68,26 +63,6 @@ export default function AccountEdit(prop) {
             //props.updatetable();
         })
     }
-
-    // var startcreate = (event) => {
-    //     event.preventDefault();
-    //     setcreatemode(!createmode);
-    //     if (!createmode) {
-    //         settitle('');
-    //         setlocation('');
-    //         setdescription('');
-    //         setlat('');
-    //         setlng('');
-
-    //     } else {
-    //         settitle(props.data.title)
-    //         setdescription(props.data.description);
-    //         setlocation(props.data.location)
-    //         setlat(props.data.lat);
-    //         setlng(props.data.lng);
-    //     }
-    // }
-
 
 
     var onchange = (event, keys) => {
@@ -180,7 +155,7 @@ export default function AccountEdit(prop) {
                         <Button form='edit_user' type="submit" value='submit' style={{ width: '100%' }} >Edit</Button>
                     </Col>
                     <Col>
-                        {/* <Button onClick={delete_user} style={{ width: '100%' }} >Delete</Button> */}
+                        <Button onClick={delete_user} style={{ width: '100%' }} >Delete</Button>
                     </Col>
                 </Row>
             </fieldset>
