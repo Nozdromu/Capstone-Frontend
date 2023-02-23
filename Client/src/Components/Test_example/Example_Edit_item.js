@@ -1,10 +1,12 @@
 import { Card, Row, Col, Form, Button, InputGroup } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
 import Api from '../Api'
+import Item from '../../Object/item'
 
 export default function ItemEdit(prop) {
-    const [createmode, setcreatemode] = useState(false)
+    const [createmode, setcreatemode] = useState(true)
     const [props, setprops] = useState(prop)
+    const [data, setdata] = useState();
 
     const [listid, setlistid] = useState('');
     const [itemid, setitemid] = useState('');
@@ -14,67 +16,38 @@ export default function ItemEdit(prop) {
     const [price, setprice] = useState('');
     const [owner, setowner] = useState('');
 
-    var onchange = (event, keys) => {
-
-        switch (keys) {
-            case 'itemid':
-                props.data.itid = event.target.value;
-                setitemid(props.data.itid);
-                break;
-            case 'listid':
-                props.data.gsid = event.target.value;
-                setlistid(props.data.gsid);
-                break;
-            case 'description':
-                props.data.description = event.target.value;
-                setdescription(props.data.description);
-                break;
-            case 'quantity':
-                props.data.quantity = event.target.value;
-                setquantity(props.data.quantity);
-                break;
-            case 'price':
-                props.data.price = event.target.value;
-                setprice(props.data.price);
-                break;
-            case 'name':
-                props.data.name = event.target.value;
-                setname(props.data.name);
-                break;
-            default:
-        }
-    }
-
-
+    //update props when props change by parent component
     useEffect(() => {
         setprops(prop)
     }, [prop])
 
     useEffect(() => {
-        if (props.listing !== undefined) {
+        if (props.listing) {
             setowner(props.userid);
             setlistid(props.listing.id);
         }
-        if (props.data !== undefined) {
-            setprice(props.data.price === null ? '' : props.data.price);
-            setlistid(props.data.gsid === null ? '' : props.data.gsid);
-            setname(props.data.itemname === null ? '' : props.data.itemname)
-            setdescription(props.data.description === null ? '' : props.data.description);
-            setquantity(props.data.qty === null ? '' : props.data.qty)
-            setprice(props.data.price === null ? '' : props.data.price)
-            setitemid(props.data.itid === null ? '' : props.data.itid);
-            setowner(props.data.uid === null ? '' : props.data.uid)
+        if (props.data) {
+            setdata(props.data);
             setcreatemode(false)
         } else {
-
             setcreatemode(true)
         }
     }, [props])
-    // useEffect(() => {
-    //     setdata(props.data);
-    //     setupdatetable(props.setupdatetable);
-    // }, [props])
 
+    useEffect(() => {
+        if (data) {
+            setprice(data.price || '');
+            setlistid(data.gsid || '');
+            setname(data.itemname || '')
+            setdescription(data.description || '');
+            setquantity(data.qty || '')
+            setprice(data.price || '')
+            setitemid(data.itid || '');
+            setowner(data.uid || '')
+        }
+    }, [data])
+
+    // setup inputs
     var inputs = {
         Listing_ID: useRef(null),
         Item_id: useRef(null),
@@ -83,65 +56,59 @@ export default function ItemEdit(prop) {
         Item_quantity: useRef(null),
         Item_price: useRef(null),
     }
+
+    // input onChange onchangehandler
+    var onchange = (event, keys) => {
+
+        switch (keys) {
+            case 'itemid':
+                data.itid = event.target.value;
+                setitemid(data.itid);
+                break;
+            case 'listid':
+                data.gsid = event.target.value;
+                setlistid(data.gsid);
+                break;
+            case 'description':
+                data.description = event.target.value;
+                setdescription(data.description);
+                break;
+            case 'quantity':
+                data.quantity = event.target.value;
+                setquantity(data.quantity);
+                break;
+            case 'price':
+                data.price = event.target.value;
+                setprice(data.price);
+                break;
+            case 'name':
+                data.name = event.target.value;
+                setname(data.name);
+                break;
+            default:
+        }
+    }
+
+    // item contry
     var edit_item = (event) => {
         event.preventDefault();
-        // var _data = {
-        //     itid: itemid,
-        //     itemname: name,
-        //     brand: '',
-        //     mnumber: '',
-        //     description: description,
-        //     price: price,
-        //     qty: quantity,
-        //     image: ''
-        // }
-        // Api.item.update(_data, (res) => {
-        //     props.updatetable();
-        // })
-        props.data.update(() => props.updatetable())
+        data.update(() => props.updatetable())
     }
-    var delete_item = () => {
-        props.data.delete(() => props.updatetable())
-    }
-
     var create_item = (event) => {
         event.preventDefault();
-        // var new_item = {
-        //     itid: itemid,
-        //     itemname: name,
-        //     brand: '',
-        //     mnumber: '',
-        //     description: description,
-        //     price: price,
-        //     qty: quantity,
-        //     image: '',
-        //     gsid: listid
-        // }
-        // Api.item.create(new_item, (res) => {
-        //     props.updatetable();
-        // })
-
+        data.create(() => props.updatetable())
+    }
+    var delete_item = () => {
+        data.delete(() => props.updatetable())
     }
 
-    var startcreate = (event) => {
-        event.preventDefault();
+    var startcreate = () => {
         setcreatemode(!createmode);
         if (!createmode) {
-            setitemid('');
-            setname('')
-            setdescription('');
-            setquantity('')
-            setprice('')
-            setprice('');
+            setdata(new Item({ gsid: props.listing.id, uid: props.userid }, true))
+
         } else {
-            setprice(props.data.price);
-            setlistid(props.data.gsid);
-            setname(props.data.itemname)
-            setdescription(props.data.description);
-            setquantity(props.data.qty)
-            setprice(props.data.price)
-            setitemid(props.data.itid);
-            setowner(props.data.uid)
+            setdata(props.data)
         }
     }
 

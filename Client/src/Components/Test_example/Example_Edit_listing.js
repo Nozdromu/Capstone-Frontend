@@ -4,9 +4,8 @@ import Api from '../Api'
 import Listing from '../../Object/listing'
 
 export default function ListingEdit(prop) {
-    const [createmode, setcreatemode] = useState(false)
+    const [createmode, setcreatemode] = useState(true)
     const [data, setdata] = useState(prop.data)
-    const [updatetable, setupdatetable] = useState(prop.updatetable)
     const [listid, setlistid] = useState(0)
     const [props, setprops] = useState(prop)
     const [title, settitle] = useState('');
@@ -21,19 +20,30 @@ export default function ListingEdit(prop) {
 
     useEffect(() => {
         if (props.data !== undefined) {
-            setlistid(props.data.id)
             setdata(props.data);
-            settitle(props.data.title)
-            setdescription(props.data.description);
-            setlocation(props.data.location)
-            setupdatetable(props.setupdatetable);
-            setlat(props.data.lat);
-            setlng(props.data.lng);
             setcreatemode(false)
         } else {
             setcreatemode(true)
         }
     }, [props])
+    useEffect(() => {
+        if (createmode) {
+            setdata(new Listing({ uid: props.owner }, true))
+        } else {
+            setdata(props.data);
+        }
+    }, [createmode])
+
+    useEffect(() => {
+        if (data) {
+            setlistid(data.id || 0)
+            settitle(data.title || '')
+            setdescription(data.description || '');
+            setlocation(data.location || '')
+            setlat(data.lat || '');
+            setlng(data.lng || '');
+        }
+    }, [data])
 
     var inputs = {
         listing_id: useRef(null),
@@ -48,110 +58,58 @@ export default function ListingEdit(prop) {
         event.preventDefault();
         props.data.update(() => props.updatetable());
     }
-    var delete_listing = () => {
-        props.data.delete(() => props.updatetable())
+
+    var create_listing = (event) => {
+        event.preventDefault();
+        data.create(props.updatetable());
     }
 
     var startcreate = (event) => {
         event.preventDefault();
         setcreatemode(!createmode);
-        var newlisting = new Listing({ uid: props.data.owner }, true);
-        if (!createmode) {
-            setlistid(newlisting.id);
-            settitle(newlisting.title);
-            setlocation(newlisting.location);
-            setdescription(newlisting.description);
-            setlat(newlisting.lat);
-            setlng(newlisting.lng);
-
-        } else {
-            setlistid(props.data.id)
-            settitle(props.data.title)
-            setdescription(props.data.description);
-            setlocation(props.data.location)
-            setlat(props.data.lat);
-            setlng(props.data.lng);
-        }
     }
 
+    var delete_listing = () => {
+        props.data.delete(() => props.updatetable())
+    }
+
+    // get lat and lng from google api
     var req_address = 'https://maps.googleapis.com/maps/api/geocode/json'
     var key = 'AIzaSyA0DZnzUceQi8G8bH-4CFl4XD6jawq91Ws'
-    // var inputs = {
-    //     listing_title: useRef(null),
-    //     listing_description: useRef(null),
-    //     listing_location: useRef(null)
-    // }
-    var create_listing = (event) => {
-        event.preventDefault();
-
-        var data = {
-            title: title,
-            description: description,
-            gsid: listid,
-            location: location,
-            lat: lat,
-            lng: lng,
-            image: '',
-            zip_code: '',
-            starttime: Date.now(),
-            endtime: Date.now(),
-        }
-        Api.listing.create(data, (res) => {
-            props.updatetable();
-        })
-
-        // var data = {
-        //     address: inputs.listing_location.current.value,
-        //     key: key
-        // }
-        // Api.map.getgeo(req_address, data, (res) => {
-        //     var data = {
-        //         title: inputs.listing_title.current.value,
-        //         description: inputs.listing_description.current.value,
-        //         location: inputs.listing_location.current.value,
-        //         lat: res.data.results[0].geometry.location.lat,
-        //         lng: res.data.results[0].geometry.location.lng
-        //     }
-        //     Api.listing.create(data, (res) => {
-        //         props.updatetable();
-        //     })
-        // })
-    }
-
     var get_lat_lng = () => {
-        var data = {
+        var _data = {
             address: inputs.listing_location.current.value,
             key: key
         }
-        Api.map.getgeo(req_address, data, (res) => {
-            setlat(res.data.results[0].geometry.location.lat);
-            setlng(res.data.results[0].geometry.location.lng);
-            console.log(res.data)
+        Api.map.getgeo(req_address, _data, (res) => {
+            data.lat = res.data.results[0].geometry.location.lat;
+            data.lng = res.data.results[0].geometry.location.lng
+            setlat(data.lat);
+            setlng(data.lng);
         })
     }
 
     var onchange = (event, keys) => {
-
         switch (keys) {
             case 'title':
-                props.data.title = event.target.value
-                settitle(props.data.title);
+                data.title = event.target.value
+                settitle(data.title);
                 break;
             case 'description':
-                props.data.description = event.target.value
-                setdescription(props.data.description);
+                data.description = event.target.value
+                setdescription(data.description);
                 break;
             case 'location':
-                props.data.location = event.target.value
-                setlocation(props.data.location);
+                data.location = event.target.value
+                setlocation(data.location);
                 break;
             case 'lng':
-                props.data.lng = event.target.value
-                setlng(props.data.lng);
+                data.lng = event.target.value
+                setlng(data.lng);
                 break;
             case 'lat':
-                props.data.lat = event.target.value
-                setlat(props.data.lat);
+                data.lat = event.target.value
+                setlat(data.lat);
                 break;
             default:
         }

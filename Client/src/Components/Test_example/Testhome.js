@@ -1,11 +1,9 @@
 
 import Api from '../Api'
-import { Button, Col, Container, Tab, Tabs, Row, Stack } from 'react-bootstrap';
+import { Col, Container, Tab, Tabs, Row, Stack } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import Usertable from './Example_usertable';
 import Register from './Example_register';
 import Signin from './Example_Signin';
-import Core from '../Core';
 import AccountEdit from './Example_Edit_Account';
 import ListingTable from './Example_Listingtable';
 
@@ -62,7 +60,7 @@ function TestApp() {
           items.push(new Item(element, true))
         })
         setitemdata(items);
-        setcurrentitem(currentitem || res.data[0]);
+        setcurrentitem(items.length > 0 ? (currentitem || res.data[0]) : new Item({ uid: userpk, gsid: currentlist.id }, true));
       })
     }
 
