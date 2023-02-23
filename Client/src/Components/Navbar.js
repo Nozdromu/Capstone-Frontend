@@ -51,7 +51,7 @@ function MyNavbar(props) {
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
                             {props.routes.Mappage.navlink}
                             {props.routes.Signup.navlink}
-                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + User._getuser().firstname} id="navbarScrollingDropdown">
+                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + User.firstname} id="navbarScrollingDropdown">
                                 <NavDropdown.Item >
                                     {props.routes.Accountpage.navlink}
                                 </NavDropdown.Item>
@@ -68,7 +68,7 @@ function MyNavbar(props) {
                                 className="me-2"
                                 aria-label="Search" />
                             <Button variant="outline-success">Search</Button>
-                            {Core.getUser()._islogin() ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
+                            {Core.getUser().islogin ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
                             </div> : <></>}
                         </Form>
                     </Navbar.Collapse>

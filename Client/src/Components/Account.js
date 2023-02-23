@@ -69,7 +69,7 @@ var ListInfo = (props) => {
 
 function Accountpage() {
     var ismount = false
-    var user =Core.getUser()._getuser();
+    var user =Core.getUser();
     const [list, setList] = useState([]);
     console.log(user);
     useEffect(() => {

@@ -11,26 +11,13 @@ function Signup(props) {
   const _email = (<Form.Control ref={emailInput} type="email" placeholder="Enter email" />);
   const _psd = (<Form.Control ref={psdInput} type="password" placeholder="Password" />);
   var User = Core.getUser();
-  // const handlesignup = () => {
-  //   var account = {
-  //     email: emailInput.current.value,
-  //     password: psdInput.current.value
-  //   }
-  //   console.log(User._getuser());
-  //   // console.log(account);
-
-  //   // axios.get('/signup', { params: account, withCredentials: true }).then(res => {
-  //   //   console.log(res);
-  //   //   console.log(sessionStorage);
-  //   // })
-  // }
 
   const handlelogin = () => {
-    var account = {
-      email: emailInput.current.value,
-      password: psdInput.current.value
-    }
-    Api.user.sign_in(account, res => {
+    // var account = {
+    //   email: emailInput.current.value,
+    //   password: psdInput.current.value
+    // }
+    User.login(emailInput.current.value,psdInput.current.value, res => {
       console.log(res.data);
       if (res.data.result) {
         sign_in_success(res.data)
@@ -41,7 +28,7 @@ function Signup(props) {
   }
 
   var sign_in_success = (user_data) => {
-    User._login(user_data.user);
+    // User._login(user_data.user);
     props.signin();
     props.onHide();
   }

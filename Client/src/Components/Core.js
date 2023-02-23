@@ -1,15 +1,13 @@
-import { io } from "socket.io-client"
-import User from './User'
 import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
 import Signup from "./Signin";
 import Api from './Api';
 import Map from './Test_example/Google_map_example'
 import Newchat from './Newchat'
-import Core_chat from './Core_chat'
 import Testpage from './Test_example/Testhome'
 import Listing from "../Object/listing";
 import Item from './../Object/item';
+import User from "../Object/user";
 
 
 var Core = (function () {
@@ -23,8 +21,8 @@ var Core = (function () {
     var item = {};
     var list = {};
     var t = [];
-    var user = User;
-    var socket = {};
+    var user = new User({},true);
+    // var socket = {};
     var chatupdate = {};
     var getpage = (key) => {
         return page[key];
@@ -46,16 +44,16 @@ var Core = (function () {
         })
     }
 
-    var setSocket = () => {
-        if (socket.id === undefined)
-            socket = new io('/', {
-                autoConnect: false,
-                query: {
-                    user_email: user._getuser().email,
-                    user_uid: user._getuser().uid,
-                }
-            })
-    }
+    // var setSocket = () => {
+    //     if (socket.id === undefined)
+    //         socket = new io('/', {
+    //             autoConnect: false,
+    //             query: {
+    //                 user_email: user._getuser().email,
+    //                 user_uid: user._getuser().uid,
+    //             }
+    //         })
+    // }
 
     var _load = (val) => {
         console.log(val)
@@ -77,9 +75,9 @@ var Core = (function () {
 
 
         ////////////////////////////////////
-        
+
         if (val.data.islogin) {
-            user._login(val.data.user);
+            user.login(val.data.user);
         }
         page = {
             Chatpage: <Newchat />,
@@ -91,14 +89,14 @@ var Core = (function () {
         _isLoaded = true;
         proseecHook();
     }
-    var socketclose = () => {
-        socket.disconnect();
-    }
-    var _opensocket = () => {
-        setSocket();
-        socket.connect();
-        socket.emit('passuser', user._getuser());
-    }
+    // var socketclose = () => {
+    //     socket.disconnect();
+    // }
+    // var _opensocket = () => {
+    //     setSocket();
+    //     socket.connect();
+    //     socket.emit('passuser', user._getuser());
+    // }
 
 
     var afterupdata = (callback) => {
@@ -127,9 +125,9 @@ var Core = (function () {
     var getuser = () => {
         return user;
     }
-    var getsocket = () => {
-        return socket;
-    }
+    // var getsocket = () => {
+    //     return socket;
+    // }
     var getchatname = () => {
         return user._getuser().chatname;
     }
@@ -144,17 +142,17 @@ var Core = (function () {
         isLoaded: isLoaded,
         addhook: afterupdata,
         getUser: getuser,
-        getsocket: getsocket,
+        // getsocket: getsocket,
         getchatname: getchatname,
         getpages: getpages,
-        opensocket: _opensocket,
-        socketclose: socketclose,
+        // opensocket: _opensocket,
+        // socketclose: socketclose,
         getrooms: () => {
             return rooms
         },
-        loadrooms: (h) => {
-            rooms = new Core_chat(h);
-        },
+        // loadrooms: (h) => {
+        //     rooms = new Core_chat(h);
+        // },
         setchat: chatupdate,
         api: Api,
         Chatload: chat_hook

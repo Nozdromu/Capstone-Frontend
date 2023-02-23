@@ -1,5 +1,4 @@
 import Core from './Core';
-import Core_chat from './Core_chat';
 
 var User = (function () {
     var islogin = false;

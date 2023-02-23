@@ -1,12 +1,62 @@
 
 import Api from './../Components/Api';
+import { io } from 'socket.io-client';
+import Core_chat from './../Components/Core_chat';
 export default class User {
     constructor(user, server = false) {
-        if(arguments.length===1){
+        if (arguments.length === 1) {
 
         }
-        this.Username = user.username;  //
-        this.Id = user.id || user.uid;  //
+        this.Username = user.username||'';  //
+        this.Id = user.id || user.uid||0;  //
+        this.First_name = user.first_name || user.firstname||'';
+        this.Last_name = user.last_name || user.lastname||'';
+        this.Phone_number = user.phone_number || user.phone||'';
+        this.Email = user.email || '';
+        this.Password = user.password || '';
+        this.Re_password = user.re_password || '';
+        this.Address_line_1 = user.address_line_1 || '';
+        this.Address_line_2 = user.address_line_2 || '';
+        this.City = user.city || '';
+        this.State = user.state || '';
+        this.Zip_code = user.zip_code || ''
+        this.Registertime = user.registertime || '';
+        this.Profilepicture = user.profilepicture || '';
+        this.Islogin = false;
+        this.Chathistory = user.chathistory || [];
+        this.Socket = {};
+        this.Rooms = {};
+        this.servertype = server || false;
+    }
+
+    login(email, password, callback) {
+        Api.user.sign_in({ email: email, password: password }, (res) => {
+            if (res.result) {
+                this.load(res.user)
+            }
+            callback(res)
+        })
+    }
+
+    logout(callback) {
+        Api.user.sign_out((res) => {
+            this.Socket.disconnect();
+            callback(res)
+        });
+    }
+
+    signup(callback) {
+        Api.user.register(this.json, (res) => {
+            if (res.result) {
+                this.load(res.user)
+            }
+            callback(res);
+        })
+    }
+
+    load(user, callback) {
+        this.Username = user.username;
+        this.Id = user.id || user.uid;
         this.First_name = user.first_name || user.firstname;
         this.Last_name = user.last_name || user.lastname;
         this.Phone_number = user.phone_number || user.phone;
@@ -19,19 +69,27 @@ export default class User {
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
         this.Profilepicture = user.profilepicture || '';
-        this.servertype = server || false;
+        this.Chathistory = user.chathistory || [];
+        this.Islogin = true;
+        this.Socket = new io('/', {
+            autoConnect: false,
+            query: {
+                user_email: user._getuser().email,
+                user_uid: user._getuser().uid,
+            }
+        })
+        this.Socket.connect();
+        this.Socket.emit('passuser', this.chatinfo);
+        this.Rooms = new Core_chat(this.Chathistory)
+        callback();
     }
 
-    login(email, password) {
-
-    }
-
-    logout() {
-
-    }
-
-    signup() {
-        Api.user.register()
+    get chatinfo() {
+        return {
+            uid: this.Id,
+            email: this.Email,
+            chatname: this.First_name
+        }
     }
 
     get json() {
@@ -44,7 +102,8 @@ export default class User {
             password: this.Password,
             registertime: this.Registertime,
             username: this.Username,
-            profilepicture: this.Profilepicture
+            profilepicture: this.Profilepicture,
+            re_password: this.Re_password
         } : {
             id: this.Id,
             username: this.Username,
@@ -57,7 +116,8 @@ export default class User {
             city: this.City,
             state: this.State,
             zip_code: this.Zip_code,
-            phone_number: this.Phone_number
+            phone_number: this.Phone_number,
+            re_password: this.Re_password
         }
     }
 
@@ -77,6 +137,19 @@ export default class User {
 
     ////////////////////////////////////////////////////
     //
+    get re_password() {
+        return this.Re_password
+    }
+    set re_password(val) {
+        this.Re_password = val;
+    }
+    get islogin() {
+        return this.Islogin
+    }
+    set islogin(val) {
+        this.Islogin = val;
+    }
+
     get email() {
         return this.Email
     }
@@ -138,6 +211,25 @@ export default class User {
     }
     set profilepicture(val) {
         this.Profilepicture = val;
+    }
+
+    ///////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////
+    // phone
+
+    get history() {
+        return this.Chathistory
+    }
+    set history(val) {
+        this.Chathistory = val;
+    }
+
+    get chathistory() {
+        return this.Chathistory
+    }
+    set chathistory(val) {
+        this.Chathistory = val;
     }
 
     ///////////////////////////////////////////////////
