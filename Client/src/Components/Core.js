@@ -59,27 +59,23 @@ var Core = (function () {
 
     var _load = (val) => {
         console.log(val)
-        item = val.data.data.items;
-        list = val.data.data.listings;
-        var testa = [];
-        var testb = [];
-        /////////////////////////////////////
-        console.log('listing data')
-        list.forEach(element => {
-            var x = new Listing(element,true);
-            testa.push(x);
-        });
-        console.log(testa);
-        console.log('item data')
-        item.forEach(element => {
-            var x = new Item(element,true);
+        item = [];
+        list = [];
 
-            testb.push(x);
+        /////////////////////////////////////
+
+        val.data.data.listings.forEach(element => {
+            var x = new Listing(element, true);
+            list.push(x);
         });
-        console.log(testb);
-        testb.forEach(val => {
-            console.log(val.json)
-        })
+
+        val.data.data.items.forEach(element => {
+            var x = new Item(element, true);
+
+            item.push(x);
+        });
+
+
         ////////////////////////////////////
         if (val.data.islogin) {
             user._login(val.data.user);

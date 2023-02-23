@@ -12,7 +12,7 @@ export default function ItemTable(prop) {
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    {Object.keys(props.data[0]).map(val => {
+                    {Object.keys(props.data[0].table).map(val => {
                         return <th key={val}>{val}</th>;
                     })}
                 </tr>
@@ -20,7 +20,7 @@ export default function ItemTable(prop) {
             <tbody>
                 {props.data.map(val => {
                     return <tr key={val.itid} onClick={() => props.setitem(val)}>
-                        {Object.values(val).map((value, index) => (
+                        {Object.values(val.table).map((value, index) => (
                             <td key={index + val.itid}>{value}</td>
                         ))}
                     </tr>

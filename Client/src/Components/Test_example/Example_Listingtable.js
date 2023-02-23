@@ -13,7 +13,7 @@ export default function ListingTable(prop) {
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    {Object.keys(props.data[0]).map(val => {
+                    {Object.keys(props.data[0].table).map(val => {
                         return <th key={val}>{val}</th>;
                     })}
                 </tr>
@@ -21,7 +21,7 @@ export default function ListingTable(prop) {
             <tbody>
                 {props.data.map(val => {
                     return <tr key={val.id} onClick={() => props.setlisting(val)}>
-                        {Object.values(val).map((value, index) => (
+                        {Object.values(val.table).map((value, index) => (
                             <td key={index}>{value}</td>
                         ))}
                     </tr>

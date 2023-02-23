@@ -77,7 +77,7 @@ function TestApp() {
       })
       setmount(true);
     }
-  })
+  }, [mount])
 
 
   //pass to ListingTable, use to update current list that clicked in list table.

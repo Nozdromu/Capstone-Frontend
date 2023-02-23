@@ -30,7 +30,7 @@ export default function Itemcard(props) {
                 <Card.Body>
                     <Card.Title className="text-over">{props.data.itemname}</Card.Title>
                     <Card.Text>
-                        {props.data.price}
+                        {'$' + props.data.price}
                     </Card.Text>
                     <Card.Text className="text-over">
                         {props.data.description}
