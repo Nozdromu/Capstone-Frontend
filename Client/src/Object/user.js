@@ -1,7 +1,10 @@
 
-
+import Api from './../Components/Api';
 export default class User {
-    constructor(user, server) {
+    constructor(user, server = false) {
+        if(arguments.length===1){
+
+        }
         this.Username = user.username;  //
         this.Id = user.id || user.uid;  //
         this.First_name = user.first_name || user.firstname;
@@ -17,6 +20,18 @@ export default class User {
         this.Registertime = user.registertime || '';
         this.Profilepicture = user.profilepicture || '';
         this.servertype = server || false;
+    }
+
+    login(email, password) {
+
+    }
+
+    logout() {
+
+    }
+
+    signup() {
+        Api.user.register()
     }
 
     get json() {

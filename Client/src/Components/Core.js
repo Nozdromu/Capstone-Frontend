@@ -77,6 +77,7 @@ var Core = (function () {
 
 
         ////////////////////////////////////
+        
         if (val.data.islogin) {
             user._login(val.data.user);
         }
