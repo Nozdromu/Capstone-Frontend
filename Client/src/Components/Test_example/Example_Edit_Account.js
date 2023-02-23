@@ -4,7 +4,6 @@ import Api from '../Api'
 
 export default function AccountEdit(prop) {
     const [data, setdata] = useState({})
-    const [updatetable, setupdatetable] = useState({})
     const [props, setprops] = useState(prop)
     const [uid, setuid] = useState(0);
     const [username, setusername] = useState('');
@@ -19,21 +18,24 @@ export default function AccountEdit(prop) {
     }, [prop])
 
     useEffect(() => {
-        if (props.data !== undefined) {
-            setuid(props.data.uid||'');
-            setusername(props.data.username||'');
-            setdata(props.data||'');
-            setemail(props.data.email||'')
-            setphone(props.data.phone||'');
-            setfirstname(props.data.firstname||'')
-            setupdatetable(props.setupdatetable||'');
-            setlastname(props.data.lastname||'');
-            setlogin(!props.login||'')
+        if (props.data) {
+            setdata(props.data || '');
+            setlogin(!props.login || '')
         } else {
             setlogin(false)
         }
     }, [props])
 
+    useEffect(() => {
+        if (data) {
+            setuid(data.uid || '');
+            setusername(data.username || '');
+            setemail(data.email || '')
+            setphone(data.phone || '');
+            setfirstname(data.firstname || '')
+            setlastname(data.lastname || '');
+        }
+    }, [data])
     var inputs = {
         user_uid: useRef(null),
         user_username: useRef(null),
@@ -44,24 +46,15 @@ export default function AccountEdit(prop) {
     }
     var edit_user = (event) => {
         event.preventDefault();
-        var _data = {
-            uid: parseInt(uid),
-            email: email,
-            phone: phone,
-            firstname: firstname,
-            lastname: lastname,
-            username: username,
-        }
-        console.log(_data);
-        Api.user.update(_data, (res) => {
-            console.log(res);
-        })
+        console.log(data)
+        data.update(props.update());
+
     }
     var delete_user = () => {
-        Api.user.delete({ uid: uid }, (res) => {
-            console.log(res);
-            //props.updatetable();
-        })
+        // Api.user.delete({ uid: uid }, (res) => {
+        //     console.log(res);
+        //     //props.updatetable();
+        // })
     }
 
 
@@ -69,19 +62,24 @@ export default function AccountEdit(prop) {
 
         switch (keys) {
             case 'username':
-                setusername(event.target.value);
+                data.username = event.target.value
+                setusername(data.username);
                 break;
             case 'firstname':
-                setfirstname(event.target.value);
+                data.firstname = event.target.value
+                setfirstname(data.firstname);
                 break;
             case 'lastname':
-                setlastname(event.target.value);
+                data.lastname = event.target.value
+                setlastname(data.lastname);
                 break;
             case 'email':
-                setemail(event.target.value);
+                data.email = event.target.value
+                setemail(data.email);
                 break;
             case 'phone':
-                setphone(event.target.value);
+                data.phone = event.target.value
+                setphone(data.phone);
                 break;
             default:
         }

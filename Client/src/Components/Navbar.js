@@ -9,7 +9,7 @@ import Core from './Core';
 
 function MyNavbar(props) {
     var User = Core.getUser();
-    const [login, setlogin] = useState(User._islogin);
+    const [login, setlogin] = useState(User.islogin);
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
@@ -24,18 +24,15 @@ function MyNavbar(props) {
     const handleShow = () => setShow(true);
     const logout = () => {
         console.log('start logout');
-        Core.api.user.sign_out((data) => {
+        User.logout((data)=>{
             console.log(data)
             if (data.data.result) {
-                User._logout();
                 setlogin(false);
                 props.router_login(false);
             } else {
                 console.log('something wrong')
             }
-
         })
-
     }
 
     return (
@@ -68,7 +65,7 @@ function MyNavbar(props) {
                                 className="me-2"
                                 aria-label="Search" />
                             <Button variant="outline-success">Search</Button>
-                            {Core.getUser().islogin ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
+                            {!login ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
                             </div> : <></>}
                         </Form>
                     </Navbar.Collapse>

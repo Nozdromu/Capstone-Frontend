@@ -13,12 +13,13 @@ import ItemEdit from './Example_Edit_item';
 import ListingEdit from './Example_Edit_listing';
 import Listing from './../../Object/listing';
 import Item from './../../Object/item';
+import Core from './../Core';
 function TestApp() {
 
   const [islogin, setlogin] = useState(false)
   const [userpk, setuserpk] = useState(0)
-  const [userdata, setuserdata] = useState()
-
+  const [userdata, setuserdata] = useState(Core.getUser())
+  // var userdata = Core.getUser();
   // const [usertable, setusetable] = useState(<></>)
   // const [itemtable, setitemtable] = useState(<></>)
   // const [table, settable] = useState(<></>);
@@ -40,6 +41,8 @@ function TestApp() {
   const [currentuser, setcurrentuser] = useState('no login');
 
 
+
+
   var updatelisttable = () => {
     if (userpk > 0) {
       Api.listing.getbyowner((res) => {
@@ -53,7 +56,7 @@ function TestApp() {
     }
   }
   var updateitemtable = () => {
-    if (currentlist !== undefined) {
+    if (currentlist) {
       Api.item.bylisting(currentlist.json, (res) => {
         var items = [];
         res.data.items.forEach(element => {
@@ -63,21 +66,19 @@ function TestApp() {
         setcurrentitem(items.length > 0 ? (currentitem || res.data[0]) : new Item({ uid: userpk, gsid: currentlist.id }, true));
       })
     }
+  }
 
+  var updateuser = () => {
+    setcurrentuser(userdata.username)
   }
 
   useEffect(() => {
-    if (!mount) {
-      Api.user.checklogin((res) => {
-        if (res.data.result) {
-          setuserdata(res.data.user)
-          setcurrentuser(res.data.user.username)
-          setuserpk(res.data.user.uid);
-        }
-      })
-      setmount(true);
+
+    if (!mount && userdata.islogin) {
+      setuserpk(userdata.uid);
     }
-  }, [mount])
+    setmount(true)
+  })
 
 
   //pass to ListingTable, use to update current list that clicked in list table.
@@ -87,7 +88,7 @@ function TestApp() {
 
   // update list editer after current list has been change by click on the list table
   useEffect(() => {
-    if (currentlist !== undefined) {
+    if (currentlist) {
       updateitemtable()
     }
   }, [currentlist])
@@ -126,21 +127,20 @@ function TestApp() {
 
   useEffect(() => {
     if (islogin) {
-
+      setuserdata(Core.getUser())
     } else {
       setcurrentuser('no login');
     }
   }, [islogin])
 
-
   useEffect(() => {
-  }, [currentuser])
-
+    if (userdata.islogin) {
+      setcurrentuser(userdata.username)
+    }
+  }, [userdata])
 
   var changeuser = (user) => {
     console.log(user)
-    setcurrentuser(user.username)
-    setuserdata(user)
     setuserpk(user.uid)
   }
 
@@ -169,7 +169,7 @@ function TestApp() {
             </Row>
             <Row>
               <Col>
-                <AccountEdit login={islogin} data={userdata} />
+                <AccountEdit login={islogin} data={userdata} update={updateuser} />
               </Col>
               <Col>
               </Col>

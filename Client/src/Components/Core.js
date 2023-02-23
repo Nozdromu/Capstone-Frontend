@@ -21,7 +21,7 @@ var Core = (function () {
     var item = {};
     var list = {};
     var t = [];
-    var user = new User({},true);
+    var user = new User({}, true);
     // var socket = {};
     var chatupdate = {};
     var getpage = (key) => {
@@ -77,7 +77,7 @@ var Core = (function () {
         ////////////////////////////////////
 
         if (val.data.islogin) {
-            user.login(val.data.user);
+            user.load(val.data.user);
         }
         page = {
             Chatpage: <Newchat />,
@@ -129,7 +129,7 @@ var Core = (function () {
     //     return socket;
     // }
     var getchatname = () => {
-        return user._getuser().chatname;
+        return user.chatname;
     }
 
     var getpages = () => {
@@ -148,7 +148,7 @@ var Core = (function () {
         // opensocket: _opensocket,
         // socketclose: socketclose,
         getrooms: () => {
-            return rooms
+            return user.rooms
         },
         // loadrooms: (h) => {
         //     rooms = new Core_chat(h);

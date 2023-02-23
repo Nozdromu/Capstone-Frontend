@@ -2,16 +2,18 @@
 import Api from './../Components/Api';
 import { io } from 'socket.io-client';
 import Core_chat from './../Components/Core_chat';
+
+
 export default class User {
     constructor(user, server = false) {
         if (arguments.length === 1) {
 
         }
-        this.Username = user.username||'';  //
-        this.Id = user.id || user.uid||0;  //
-        this.First_name = user.first_name || user.firstname||'';
-        this.Last_name = user.last_name || user.lastname||'';
-        this.Phone_number = user.phone_number || user.phone||'';
+        this.Username = user.username || '';  //
+        this.Id = user.id || user.uid || 0;  //
+        this.First_name = user.first_name || user.firstname || '';
+        this.Last_name = user.last_name || user.lastname || '';
+        this.Phone_number = user.phone_number || user.phone || '';
         this.Email = user.email || '';
         this.Password = user.password || '';
         this.Re_password = user.re_password || '';
@@ -45,14 +47,39 @@ export default class User {
         });
     }
 
+    update(callback) {
+        Api.user.update(this.json, res => {
+            var user=res.user
+            this.Username = user.username;
+            this.Id = user.id || user.uid;
+            this.First_name = user.first_name || user.firstname;
+            this.Last_name = user.last_name || user.lastname;
+            this.Phone_number = user.phone_number || user.phone;
+            this.Email = user.email || '';
+            this.Password = user.password || '';
+            this.Address_line_1 = user.address_line_1 || '';
+            this.Address_line_2 = user.address_line_2 || '';
+            this.City = user.city || '';
+            this.State = user.state || '';
+            this.Zip_code = user.zip_code || ''
+            this.Registertime = user.registertime || '';
+            this.Profilepicture = user.profilepicture || '';
+            this.Chathistory = user.chathistory || [];
+            if (callback) callback(res)
+        })
+    }
+
     signup(callback) {
         Api.user.register(this.json, (res) => {
             if (res.result) {
                 this.load(res.user)
             }
-            callback(res);
+            if (callback)
+                callback(res);
         })
     }
+
+    check
 
     load(user, callback) {
         this.Username = user.username;
@@ -74,14 +101,15 @@ export default class User {
         this.Socket = new io('/', {
             autoConnect: false,
             query: {
-                user_email: user._getuser().email,
-                user_uid: user._getuser().uid,
+                user_email: this.Email,
+                user_uid: this.Id,
             }
         })
         this.Socket.connect();
         this.Socket.emit('passuser', this.chatinfo);
-        this.Rooms = new Core_chat(this.Chathistory)
-        callback();
+        this.Rooms = new Core_chat(user.chathistory)
+        if (callback)
+            callback();
     }
 
     get chatinfo() {
@@ -137,12 +165,27 @@ export default class User {
 
     ////////////////////////////////////////////////////
     //
+    get rooms() {
+        return this.Rooms
+    }
+    set rooms(val) {
+        this.Rooms = val;
+    }
+
+    get socket() {
+        return this.Socket
+    }
+    set socket(val) {
+        this.Socket = val;
+    }
+
     get re_password() {
         return this.Re_password
     }
     set re_password(val) {
         this.Re_password = val;
     }
+
     get islogin() {
         return this.Islogin
     }
@@ -289,6 +332,10 @@ export default class User {
         this.First_name = val;
     }
 
+    get chatname() {
+        return this.First_name
+    }
+
     ///////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////
@@ -323,7 +370,7 @@ export default class User {
     get username() {
         return this.Username
     }
-    set(val) {
+    set username(val) {
         this.Username = val;
     }
 

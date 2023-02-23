@@ -34,7 +34,7 @@ export default function Core_chat(_history) {
             window: () => { return <Tab.Pane key={'userlist'} eventKey="Users"><Chatlobby newchat={create_room}></Chatlobby></Tab.Pane> }
         },
     };
-    var socket = Core.getsocket();
+    var socket = Core.getUser().socket;
 
     socket.on('publicroom', (data) => {
         console.log(data);
@@ -49,7 +49,7 @@ export default function Core_chat(_history) {
         new_message(false, data.chatname, data.message, data.roomid);
     })
     socket.on('unauthorized', data => {
-        Core.getUser()._logout();
+        Core.getUser().logout();
     })
 
     var new_message = (LR, chatname, message, roomid) => {

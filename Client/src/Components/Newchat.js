@@ -4,7 +4,9 @@ import Core from './Core';
 
 
 export default function Newchat() {
-    var room = Core.getrooms().getrooms();
+    var user = Core.getUser();
+    var room = user.rooms.getrooms();
+    console.log(room)
     const [roomid, setroomid] = useState('publicroom');
     const [tabs, settabs] = useState(Object.values(room).map(value => {
         return value.tab();
@@ -32,14 +34,14 @@ export default function Newchat() {
         setcount(count => count + 1);
 
     }
-    var changeact=(id)=>{
+    var changeact = (id) => {
         setroomid(id)
         console.log('done1')
         setcount(count => count + 1);
 
     }
     var handleRightchat = () => {
-        Core.getrooms().sendmessage(textbox.current.value);
+        room.sendmessage(textbox.current.value);
     }
     Core.getrooms().setpage(p);
     useEffect(() => {

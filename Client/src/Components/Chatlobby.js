@@ -28,7 +28,7 @@ function Chatlobby(props) {
                 })))
             })
             if (!Core.Chatload.login) {
-                Core.getsocket().on('login', (data) => {
+                Core.getUser().socket.on('login', (data) => {
                     console.log(data);
                     if (!list.includes(data.chatname)) {
                         var newlogin = [<ListGroup.Item key={data.chatname} action onClick={() => { props.newchat({ email: data.email, chatname: data.chatname }) }}>{data.chatname}</ListGroup.Item>];
