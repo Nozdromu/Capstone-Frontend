@@ -1,18 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Signin from './Signin'
-import Signup from './Signup'
-import Accountpage from './Account'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Core from './Core';
 
 function MyNavbar(props) {
-    var User = Core.getUser();
-    const [login, setlogin] = useState(User.islogin);
+    const [username, setusername] = useState(Core.getUser().username)
+    const [login, setlogin] = useState(Core.getUser().islogin);
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
+    useEffect(() => {
+        if (login) {
+            console.log(Core.getUser().username)
+            setusername(Core.getUser().username)
+        }
+    }, [login])
 
     const handleClose = () => {
         setShow(false);
@@ -24,7 +28,7 @@ function MyNavbar(props) {
     const handleShow = () => setShow(true);
     const logout = () => {
         console.log('start logout');
-        User.logout((data)=>{
+        Core.getUser().logout((data) => {
             console.log(data)
             if (data.data.result) {
                 setlogin(false);
@@ -48,7 +52,7 @@ function MyNavbar(props) {
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
                             {props.routes.Mappage.navlink}
                             {props.routes.Signup.navlink}
-                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + User.firstname} id="navbarScrollingDropdown">
+                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + username} id="navbarScrollingDropdown">
                                 <NavDropdown.Item >
                                     {props.routes.Accountpage.navlink}
                                 </NavDropdown.Item>

@@ -2,7 +2,6 @@
 import { Nav, Tab, Row } from 'react-bootstrap';
 import Chatlobby from "./Chatlobby";
 import Core from './Core';
-import axios from 'axios';
 import Chatroom from './chat_room'
 import Api from './Api';
 
@@ -106,7 +105,7 @@ export default function Core_chat(_history) {
 
             }
             new_message(true, data.chatname, message, currentroom)
-            Core.getsocket().emit('chat', data);
+            Core.getUser().socket.emit('chat', data);
             // update()
         },
         setpage: (fun) => {

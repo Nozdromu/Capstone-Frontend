@@ -46,8 +46,8 @@ export default function AccountEdit(prop) {
     }
     var edit_user = (event) => {
         event.preventDefault();
-        console.log(data)
         data.update(props.update());
+        window.location.reload();
 
     }
     var delete_user = () => {

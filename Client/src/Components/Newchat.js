@@ -41,7 +41,7 @@ export default function Newchat() {
 
     }
     var handleRightchat = () => {
-        room.sendmessage(textbox.current.value);
+        Core.getrooms().sendmessage(textbox.current.value);
     }
     Core.getrooms().setpage(p);
     useEffect(() => {

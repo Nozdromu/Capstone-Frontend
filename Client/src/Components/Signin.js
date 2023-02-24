@@ -20,7 +20,7 @@ function Signup(props) {
     User.login(emailInput.current.value,psdInput.current.value, res => {
       console.log(res.data);
       if (res.data.result) {
-        sign_in_success(res.data)
+        sign_in_success()
       } else {
         sign_in_error()
       }

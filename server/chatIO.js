@@ -57,7 +57,9 @@ module.exports = function (server) {
             _result.reciver_chatname = reciver.info().firstname;
             sender.addhistory(_result);
             reciver.addhistory(_result);
-
+            console.log(userlist);
+            console.log(sender);
+            console.log(USys.getuserlist('email'))
         })
     }
 

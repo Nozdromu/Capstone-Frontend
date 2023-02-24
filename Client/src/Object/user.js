@@ -33,10 +33,10 @@ export default class User {
 
     login(email, password, callback) {
         Api.user.sign_in({ email: email, password: password }, (res) => {
-            if (res.result) {
-                this.load(res.user)
+            if (res.data.result) {
+                this.load(res.data.user)
+                callback(res)
             }
-            callback(res)
         })
     }
 
@@ -49,7 +49,7 @@ export default class User {
 
     update(callback) {
         Api.user.update(this.json, res => {
-            var user=res.user
+            var user = res.user.data
             this.Username = user.username;
             this.Id = user.id || user.uid;
             this.First_name = user.first_name || user.firstname;
