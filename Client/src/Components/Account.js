@@ -1,11 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Container, Tab, Tabs, Accordion } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Core from './Core';
-
+import Api from './Api';
 
 var ListInfo = (props) => {
     return (
@@ -67,22 +67,100 @@ var ListInfo = (props) => {
 }
 
 
-function Accountpage() {
+function Accountpage(prop) {
     var ismount = false
     var user =Core.getUser();
+    const [props, setprops] = useState(prop)
+
+    const [username, setusername] = useState('');
+    const [email, setemail] = useState('');
+    const [phone, setphone] = useState('');
+    const [firstname, setfirstname] = useState('');
+    const [lastname, setlastname] = useState('');
+    const [address1, setaddress1] = useState('');
+    const [address2, setaddress2] = useState('');
+    const [city, setcity] = useState('');
+    const [ustate, setustate] = useState('');
+    const [zip, setzip] = useState('');
+
+    const fn = useRef();
+    const ln = useRef();
+    const em = useRef();
+    const ph = useRef();
+    const add1 = useRef();
+    const add2 = useRef();
+    const cit = useRef();
+    const st = useRef();
+    const zp = useRef();
+
     const [list, setList] = useState([]);
     console.log(user);
-    useEffect(() => {
-
+    /*useEffect(() => {
+        
         if (!ismount) {
             ismount = true;
-            var _list = user.list.map(val => {
-                return <ListInfo data={val} key={val.gsid}></ListInfo>
+            //user.list
+            var _list = Api.listing.getbyowner().map(val => {
+                return <ListInfo data={val} key={val.gsid} ></ListInfo>
             });
             setList(_list)
         }
-    }, []);
+    }, []);*/
+    
+    var edit_user = (event) => {
+        event.preventDefault();
+        user.update(props.update());
+        window.location.reload();
 
+    }
+
+
+    var onchange = (event, keys) => {
+
+        switch (keys) {
+            case 'username':
+                user.username = event.target.value
+                setusername(user.username);
+                break;
+            case 'firstname':
+                user.firstname = event.target.value
+                setfirstname(user.firstname);
+                break;
+            case 'lastname':
+                user.lastname = event.target.value
+                setlastname(user.lastname);
+                break;
+            case 'email':
+                user.email = event.target.value
+                setemail(user.email);
+                break;
+            case 'phone':
+                user.phone = event.target.value
+                setphone(user.phone);
+                break;
+            case 'address1':
+                user.address_line_1 = event.target.value
+                setaddress1(user.address_line_1);
+                break;
+            case 'address2':
+                user.address_line_2 = event.target.value
+                setaddress2(user.address_line_2);
+                break;
+            case 'city':
+                user.city = event.target.value
+                setcity(user.city);
+                break;
+            case 'state':
+                user.state = event.target.value
+                setustate(user.state);
+                break;
+            case 'zip':
+                user.zip = event.target.value
+                setzip(user.zip);
+                break;
+            default:
+        }
+    }
 
     return (
         <>
@@ -104,27 +182,23 @@ function Accountpage() {
                                 justify
                             >
                                 <Tab eventKey="profile" title="Profile">
+                                    <Form id='edit_user' onSubmit={edit_user}>  
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
                                             <Col>
-                                                <Form.Label >Frist name </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
+                                                <Form.Label >Frist Name </Form.Label>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Frist name" value={user.firstname} disabled />
+                                        <Form.Control onChange={(e) => onchange(e, 'firstname')} required={true} value={firstname} ref={fn} type="input" placeholder="Enter First Name" />
+
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
                                             <Col>
                                                 <Form.Label >Last name </Form.Label>
                                             </Col>
-                                            <Col>
-                                                <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                                            </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Last name" value={user.lastname} disabled />
+                                        <Form.Control onChange={(e) => onchange(e, 'lastname')} required={true} value={lastname} ref={ln} type="input" placeholder="Enter Last Name" />
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -136,22 +210,55 @@ function Accountpage() {
                                                 <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter email" value={user.email} disabled />
+                                        <Form.Control onChange={(e) => onchange(e, 'email')} required={true} value={email} ref={em} type="input" placeholder="Enter Email" />
+
                                     </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Address Line 1 </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control onChange={(e) => onchange(e, 'address1')} required={true} value={address1} ref={add1} type="input" placeholder="Address line 1" />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Address Line 2 </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control onChange={(e) => onchange(e, 'address2')} required={true} value={address2} ref={add2} type="input" placeholder="Address line 2" />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                                <Form.Label >City</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'city')} required={true} value={city} ref={cit} type="input" placeholder="City" />
+                                                <Form.Label >State</Form.Label>                                        
+                                                <Form.Control onChange={(e) => onchange(e, 'state')} required={true} value={ustate} ref={st} type="input" placeholder="State" />
+                                    
+                                                <Form.Label >Zip</Form.Label>                                      
+                                                <Form.Control onChange={(e) => onchange(e, 'zip')} required={true} value={zip} ref={zp} type="input" placeholder="Zip Code" />
+                                        </Row>
+                                    </Form.Group>
+
 
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
                                             <Col>
                                                 <Form.Label >Phone number </Form.Label>
                                             </Col>
-                                            <Col>
-                                                <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                                            </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Phone number" value={user.phone} disabled />
+                                        <Form.Control onChange={(e) => onchange(e, 'phone')} required={true} value={phone} ref={ph} type="input" placeholder="City" />
+
                                     </Form.Group>
+                                    
                                     <Button>log out</Button>
+                                    </Form>
                                 </Tab>
+                                
                                 <Tab eventKey="list" title="List">
 
                                     <Row className='gy-2' >
@@ -177,6 +284,8 @@ function Accountpage() {
             </Container ></>
 
     )
+
+
 }
 
 export default Accountpage;
