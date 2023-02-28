@@ -1,291 +1,189 @@
+import React, {useEffect, useState} from "react";
+import {
+  Accordion,
+  Button,
+  Col,
+  Container,
+  Row,
+  Tab,
+  Tabs,
+} from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Card from "react-bootstrap/Card";
+import Core from "./Core"
+import User from "../Object/user";
+import Api from "./Api";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Container, Tab, Tabs, Accordion } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
-import { Row, Col } from 'react-bootstrap';
-import Core from './Core';
-import Api from './Api';
-
-var ListInfo = (props) => {
-    return (
-        <Accordion.Item eventKey={props.data.gsid}>
-            <Accordion.Header>{'#' + props.data.gsid}</Accordion.Header>
-            <Accordion.Body>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Row className='d-flex justify-content-between'>
-                        <Col>
-                            <Form.Label >Street</Form.Label>
-                        </Col>
-                        <Col>
-                            <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                        </Col>
-                    </Row>
-                    <Form.Control type="input" placeholder="Enter Street" value={props.data.street} disabled />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Row className='d-flex justify-content-between'>
-                        <Col>
-                            <Form.Label >City</Form.Label>
-                        </Col>
-                        <Col>
-                            <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                        </Col>
-                    </Row>
-                    <Form.Control type="input" placeholder="Enter City" value={props.data.city} disabled />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Row className='d-flex justify-content-between'>
-                        <Col>
-                            <Form.Label >State</Form.Label>
-                        </Col>
-                        <Col>
-                            <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                        </Col>
-                    </Row>
-                    <Form.Control type="input" placeholder="Enter State" value={props.data.states} disabled />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Row className='d-flex justify-content-between'>
-                        <Col>
-                            <Form.Label >Zip Code</Form.Label>
-                        </Col>
-                        <Col>
-                            <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                        </Col>
-                    </Row>
-                    <Form.Control type="input" placeholder="Enter Zip Code" value={props.data.zip} disabled />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Button style={{ width: '100%' }}>Remove List</Button>
-                </Form.Group>
-            </Accordion.Body>
-        </Accordion.Item>
-    )
+// Because bootstrap inputs are super verbose, extracted the repetitive portions into custom components
+function TextField({ value, onChange, required = false, placeholder, ...rest }) {
+  return (
+    <Form.Control
+      onChange={(e) => onChange(e.target.value)}
+      required={required}
+      value={value}
+      type="input"
+      placeholder={placeholder}
+      {...rest}
+    />
+  );
+}
+function LabelledTextField({ label, ...rest }) {
+  return (
+    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+      <Row className="d-flex justify-content-between">
+        <Col>
+          <Form.Label>{label}</Form.Label>
+        </Col>
+      </Row>
+      <TextField {...rest} />
+    </Form.Group>
+  );
 }
 
+// Then, since the whole form is kind of one unit (operates on a user), extracted that into a component as well
+// You can kind of think of it as an input field, just that it takes more complex data (an entire user) instead of just a string or number
+function UserForm({user, setUser}) {
+  const onChange = (key) => (e) => {
+    console.log(key);
+    setUser(current => ({...current, [key]: e}))//e.target.value creasheD?
+  }
+  return (
+    <>
+      <LabelledTextField
+        label="First name"
+        onChange={onChange('firstname')}
+        value={user.firstname}
+        required
+        placeholder="Enter First Name"
+      />
+      <LabelledTextField
+        label="Last name"
+        value={user.lastname}
+        onChange={onChange('lastname')}
+        required
+        placeholder="Enter Last Name"
+      />
+      <LabelledTextField
+        label="Email"
+        value={user.email}
+        onChange={onChange('email')}
+        required
+        placeholder="Enter Email"
+      />
+      <LabelledTextField
+        label="Address Line 1"
+        value={user.address1}
+        onChange={onChange('address1')}
+        required
+        placeholder="Address line 1"
+      />
+      <LabelledTextField
+        label="Address line 2"
+        value={user.address2}
+        onChange={onChange('address2')}
+        required
+        placeholder="Address line 2"
+      />
 
+      <Form.Group
+        className="mb-3"
+        controlId="exampleForm.ControlInput1"
+      >
+        <Row className="d-flex justify-content-between">
+          <Form.Label>City</Form.Label>
+          <TextField placeholder="City" value={user.city} onChange={onChange('city')}/>
+
+          <Form.Label>State</Form.Label>
+          <TextField placeholder="State" value={user.state} onChange={onChange('state')}/>
+
+          <Form.Label>Zip</Form.Label>
+          <TextField placeholder="Zip Code" value={user.zip} onChange={onChange('zip')}/>
+        </Row>
+      </Form.Group>
+
+      <LabelledTextField
+        label="Phone number"
+        value={user.phone}
+        onChange={onChange('Phone')}
+        required
+        placeholder="City"
+      />
+    </>
+  )
+}
+
+// assume that the only prop passed in to the page is the user ID
 function Accountpage(prop) {
-    var ismount = false
-    var user =Core.getUser();
-    const [props, setprops] = useState(prop)
 
-    const [username, setusername] = useState('');
-    const [email, setemail] = useState('');
-    const [phone, setphone] = useState('');
-    const [firstname, setfirstname] = useState('');
-    const [lastname, setlastname] = useState('');
-    const [address1, setaddress1] = useState('');
-    const [address2, setaddress2] = useState('');
-    const [city, setcity] = useState('');
-    const [ustate, setustate] = useState('');
-    const [zip, setzip] = useState('');
+  const [savedUser, setSavedUser] = useState(null); // User data fetched from / saved to the server (updates only when saved)
+  const [user, setUser] = useState(null); // Current user data in the frontend application (updates in real time, controls input fields)
 
-    const fn = useRef();
-    const ln = useRef();
-    const em = useRef();
-    const ph = useRef();
-    const add1 = useRef();
-    const add2 = useRef();
-    const cit = useRef();
-    const st = useRef();
-    const zp = useRef();
+  const [load, setLoad] = useState(false)
+  var set = () => {
+    setLoad(true);
+  }
+  
+  useEffect(() => {
+    Core.addhook(set);
+    // So I will use that ID to fetch the rest of the user data
+    //     New react has a 'use' hook and suspense, but I'm not familiar with that tech yet
 
-    const [list, setList] = useState([]);
-    console.log(user);
-    /*useEffect(() => {
-        
-        if (!ismount) {
-            ismount = true;
-            //user.list
-            var _list = Api.listing.getbyowner().map(val => {
-                return <ListInfo data={val} key={val.gsid} ></ListInfo>
-            });
-            setList(_list)
-        }
-    }, []);*/
+    var temp = Core.getUser();
+      //setSavedUser(temp);
+      setUser(temp);
     
-    var edit_user = (event) => {
-        event.preventDefault();
-        user.update(props.update());
-        window.location.reload();
+},[])
 
-    }
+  const saveUser = () => {
+    setSavedUser(user);
+    new User(user).update();
+  }
 
-
-    var onchange = (event, keys) => {
-
-        switch (keys) {
-            case 'username':
-                user.username = event.target.value
-                setusername(user.username);
-                break;
-            case 'firstname':
-                user.firstname = event.target.value
-                setfirstname(user.firstname);
-                break;
-            case 'lastname':
-                user.lastname = event.target.value
-                setlastname(user.lastname);
-                break;
-            case 'email':
-                user.email = event.target.value
-                setemail(user.email);
-                break;
-            case 'phone':
-                user.phone = event.target.value
-                setphone(user.phone);
-                break;
-            case 'address1':
-                user.address_line_1 = event.target.value
-                setaddress1(user.address_line_1);
-                break;
-            case 'address2':
-                user.address_line_2 = event.target.value
-                setaddress2(user.address_line_2);
-                break;
-            case 'city':
-                user.city = event.target.value
-                setcity(user.city);
-                break;
-            case 'state':
-                user.state = event.target.value
-                setustate(user.state);
-                break;
-            case 'zip':
-                user.zip = event.target.value
-                setzip(user.zip);
-                break;
-            default:
-        }
-    }
-
-    return (
-        <>
-            {/* {} */}
-            < Container >
-                <Row className="align-items-center justify-content-center">
-                    <Card style={{ width: '50em' }}>
-                        <Card.Header>
-                            <div className="rect-img-container" >
-                                <Card.Img className='rect-img' variant="top" src={user.img} />
-                            </div>
-
-                        </Card.Header>
-                        <Card.Body>
-                            <Tabs
-                                defaultActiveKey="profile"
-                                id="justify-tab-example"
-                                className="mb-3"
-                                justify
-                            >
-                                <Tab eventKey="profile" title="Profile">
-                                    <Form id='edit_user' onSubmit={edit_user}>  
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                            <Col>
-                                                <Form.Label >Frist Name </Form.Label>
-                                            </Col>
-                                        </Row>
-                                        <Form.Control onChange={(e) => onchange(e, 'firstname')} required={true} value={firstname} ref={fn} type="input" placeholder="Enter First Name" />
-
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                            <Col>
-                                                <Form.Label >Last name </Form.Label>
-                                            </Col>
-                                        </Row>
-                                        <Form.Control onChange={(e) => onchange(e, 'lastname')} required={true} value={lastname} ref={ln} type="input" placeholder="Enter Last Name" />
-                                    </Form.Group>
-
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                            <Col>
-                                                <Form.Label >Email </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                                            </Col>
-                                        </Row>
-                                        <Form.Control onChange={(e) => onchange(e, 'email')} required={true} value={email} ref={em} type="input" placeholder="Enter Email" />
-
-                                    </Form.Group>
-
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                            <Col>
-                                                <Form.Label >Address Line 1 </Form.Label>
-                                            </Col>
-                                        </Row>
-                                        <Form.Control onChange={(e) => onchange(e, 'address1')} required={true} value={address1} ref={add1} type="input" placeholder="Address line 1" />
-                                    </Form.Group>
-
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                            <Col>
-                                                <Form.Label >Address Line 2 </Form.Label>
-                                            </Col>
-                                        </Row>
-                                        <Form.Control onChange={(e) => onchange(e, 'address2')} required={true} value={address2} ref={add2} type="input" placeholder="Address line 2" />
-                                    </Form.Group>
-
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                                <Form.Label >City</Form.Label>
-                                        <Form.Control onChange={(e) => onchange(e, 'city')} required={true} value={city} ref={cit} type="input" placeholder="City" />
-                                                <Form.Label >State</Form.Label>                                        
-                                                <Form.Control onChange={(e) => onchange(e, 'state')} required={true} value={ustate} ref={st} type="input" placeholder="State" />
-                                    
-                                                <Form.Label >Zip</Form.Label>                                      
-                                                <Form.Control onChange={(e) => onchange(e, 'zip')} required={true} value={zip} ref={zp} type="input" placeholder="Zip Code" />
-                                        </Row>
-                                    </Form.Group>
+  const list = [];
 
 
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                        <Row className='d-flex justify-content-between'>
-                                            <Col>
-                                                <Form.Label >Phone number </Form.Label>
-                                            </Col>
-                                        </Row>
-                                        <Form.Control onChange={(e) => onchange(e, 'phone')} required={true} value={phone} ref={ph} type="input" placeholder="City" />
+  return load ? (
+    <>
+      <Container>
+        <Row className="align-items-center justify-content-center">
+          <Card style={{ width: "50em" }}>
+            <Card.Header>
+              <div className="rect-img-container">
+              <Card.Img className='rect-img' variant="top" src={user.img} />
+              </div>
+            </Card.Header>
+            <Card.Body>
+              <Tabs
+                defaultActiveKey="profile"
+                id="justify-tab-example"
+                className="mb-3"
+                justify
+              >
+                <Tab eventKey="profile" title="Profile">
+                  {/* Here we can nearly use the entire form just as if it was a basic input field */}
+                  <UserForm user={user} setUser={setUser} />
+                  <Button onClick={saveUser} disabled={user === savedUser}>Save</Button>
+                  <Button onClick={Core.getUser.logout}>log out</Button>
+                </Tab>
 
-                                    </Form.Group>
-                                    
-                                    <Button>log out</Button>
-                                    </Form>
-                                </Tab>
-                                
-                                <Tab eventKey="list" title="List">
-
-                                    <Row className='gy-2' >
-                                        <Col className='col-12'>
-                                            <Accordion>
-                                                {list}
-                                            </Accordion>
-                                        </Col>
-                                        <Col className='col-12'>
-                                            <Button style={{ width: '100%' }}>Add new list</Button>
-                                        </Col>
-                                    </Row>
-                                </Tab>
-
-                            </Tabs>
-
-
-                        </Card.Body>
-
-                    </Card>
-                </Row>
-
-            </Container ></>
-
-    )
-
-
+                
+                <Tab eventKey="list" title="List">
+                  <Row className="gy-2">
+                    <Col className="col-12">
+                      <Accordion>{list}</Accordion>
+                    </Col>
+                    <Col className="col-12">
+                      <Button style={{ width: "100%" }}>Add new listing</Button>
+                    </Col>
+                  </Row>
+                </Tab>
+              </Tabs>
+            </Card.Body>
+          </Card>
+        </Row>
+      </Container>
+    </>
+  ) : (<></>);
 }
 
 export default Accountpage;
