@@ -18,6 +18,7 @@ export default class Listing {
         this.Photo = listing.listing_main_photo || listing.image || '';
         this.Isdelete = listing.isdelete || 0;
         this.Servertype = server || false;
+        this.List = listing.list || []
     }
     update(callback) {
         console.log(this.json);
@@ -116,6 +117,16 @@ export default class Listing {
                 "end_time": this.endtime,
             }
     }
+    ////////////////////////////////////
+    // list
+    get list() {
+        return this.List;
+    }
+    set list(list) {
+        this.List = list;
+    }
+    ////////////////////////////////////
+
     ////////////////////////////////////
     // theme
     get theme() {

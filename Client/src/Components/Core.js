@@ -8,6 +8,7 @@ import Listing from "../Object/listing";
 import Item from './../Object/item';
 import User from "../Object/user";
 import Newhome from './Newhome';
+import Map from './Test_example/Google_map_example';
 
 
 var Core = (function () {
@@ -63,9 +64,10 @@ var Core = (function () {
         route = {
             Homepage: { path: '', name: 'Spiffo-Slist', page: <Itemgrid /> },
             Accountpage: { path: 'account', name: 'Account', page: <Accountpage /> },
-            Mappage: { path: 'map', name: 'Api_Test', page: <Testpage /> },
+            Mappage: { path: 'map', name: 'Map', page: <Map /> },
             Chatpage: { path: 'chat', name: 'Chat', page: isdev ? <Newchat /> : <></> },
             Signup: { path: 'sigup', name: 'Signup', page: <></> },
+            TestAPI: { path: 'api', name: 'TestAPI', page: <Testpage /> }
         }
 
         _isLoaded = true;
