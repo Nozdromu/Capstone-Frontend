@@ -1,5 +1,6 @@
 import axios from "axios";
 import Core from './Core';
+import { useCallback } from 'react';
 
 var Api = (function Api() {
     var axiosApi = axios;
@@ -14,15 +15,113 @@ var Api = (function Api() {
             }
         })
     }
+    var userCheck = async (callback, data) => {
+        if (test_server)
+            return _checklogin(callback)
+        else
+            return user_read(data, callback)
+    }
+
+    var userRegister = async (data, callback) => {
+        if (test_server)
+            return test_register(data, callback)
+        else
+            return user_register(data, callback)
+    }
+    var userLogin = async (data, callback) => {
+        if (test_server)
+            test_login(data, callback)
+        else
+            return user_login(data, (res) => { console.log(res); if (callback) callback(res) })
+
+    }
+    var userLogout = async (callback) => {
+        if (test_server)
+            test_logout(callback)
+        else
+            return user_logout(callback);
+
+    }
+    var userUpdate = async (data, callback) => {
+        if (test_server)
+            test_user_edit(data, callback)
+        else
+            return user_change(data, callback)
+
+    }
+    var userRead = async (data, callback) => {
+        if (test_server)
+            test_user_read(data, callback)
+        else
+            return user_read(data, callback)
+
+    }
+
+
+    var listingCreate = async (data, callback) => {
+        if (test_server)
+            return test_listing_create(data, callback)
+        else
+            return listings_create(data, callback)
+    }
+    var listingUpdate = async (data, callback) => {
+        if (test_server)
+            return test_listing_update(data, callback)
+        else
+            return listings_update(data, callback)
+    }
+    var listingDelete = async (data, callback) => {
+        if (test_server)
+            return test_listing_delete(data, callback)
+        else
+            return listings_delete(data, callback)
+    }
+    var listingOwner = async (callback) => {
+        if (test_server)
+            return test_listing_owner(callback)
+        else
+            return listings_read(callback)
+    }
+
+
+    var itemCreate = async (data, callback) => {
+        if (test_server)
+            return test_item_create(data, callback)
+        else
+            return item_create(data, callback)
+    }
+    var itemUpdate = async (data, callback) => {
+        if (test_server)
+            return test_item_update(data, callback)
+        else
+            return item_update(data, callback)
+    }
+    var itemDelete = async (data, callback) => {
+        if (test_server)
+            return test_item_delete(data, callback)
+        else
+            return item_delete(data, callback)
+    }
+    var itemListing = async (data, callback) => {
+        if (test_server)
+            return test_item_list(data, callback)
+        else
+            return item_owner(data, callback)
+    }
+    var itemRead = async (data, callback) => {
+        if (test_server)
+            return
+        else
+            return
+    }
+
 
     /**
      * @param {data type of data} param name - description of param.
      */
     var user_register = async (data, callback) => {
-        if (test_server)
-        
-        else
-            return axiosApi.post('/users/register/', data).then(res => { callback(res) })
+
+        return axiosApi.post('/users/register/', data).then(res => { callback(res) })
     }
 
     var user_login = async (data, callback) => {
@@ -46,7 +145,7 @@ var Api = (function Api() {
         return axiosApi.put('/users/', {})
     }
 
-    var user_read = async (pk, callback) => {
+    var user_read = async (callback, pk) => {
         return axiosApi.get('/users/' + pk + '/').then(res => callback(res));
     }
 
@@ -55,7 +154,7 @@ var Api = (function Api() {
     // listings
     var listings_create = async (data, callback) => {
         console.log(data)
-        return axiosApi.post('/listings/create/', data).then(res => { callback(res) })
+        return axiosApi.post('/listings/create/', data).then(res => { console.log(res); if (callback) callback(res) })
     }
 
     var listings_delete = async (listingsPK, callback) => {
@@ -87,15 +186,24 @@ var Api = (function Api() {
         // return axiosApi.post('/listings/' + listingspk + '/createitem', _item).then(res => callback(res))
     }
 
-    var item_create = async (_item, listingspk, callback) => {
-        return axiosApi.post('/listings/' + listingspk + '/createitem', _item).then(res => callback(res))
+    var item_owner = async (data, callback) => {
+        return axiosApi.get('/listings/sort/items/listing/' + data.id + '/').then(res => {
+            var data = { data: { items: res.data } }
+            if (callback)
+                callback(data)
+        }
+        )
     }
 
-    var item_delete = async (listingspk, itempk, callback) => {
-        return axiosApi.delete('/listings/' + listingspk + '/' + itempk + '/delete')
+    var item_create = async (data, callback) => {
+        return axiosApi.post('/listings/' + data.listing + '/createitem/', data).then(res => callback(res))
     }
-    var item_update = async (item, listingspk, itempk) => {
-        return axiosApi.put('/listings/' + listingspk + '/' + itempk + '/update/', item)
+
+    var item_delete = async (data, callback) => {
+        return axiosApi.delete('/listings/' + data.listing + '/' + data.id + '/delete').then(res => { if (callback) callback(res) })
+    }
+    var item_update = async (data, callback) => {
+        return axiosApi.put('/listings/' + data.listing + '/' + data.id + '/update/', data).then(res => { if (callback) callback(res) })
     }
 
 
@@ -210,25 +318,25 @@ var Api = (function Api() {
     var Api = {
         testserver: test_server,
         user: {
-            checklogin: test_server ? test_user_read : _checklogin,
-            register: test_server ? test_register : user_register,
-            sign_in: test_server ? test_login : user_login,
-            sign_out: test_server ? test_logout : user_logout,
-            update: test_server ? test_user_edit : user_change,
-            get: test_server ? test_user_read : user_read
+            checklogin: userCheck,
+            register: userRegister,
+            sign_in: userLogin,
+            sign_out: userLogout,
+            update: userUpdate,
+            get: userRead
         },
         listing: {
-            create: test_server ? test_listing_create : listings_create,
-            update: test_server ? test_listing_update : listings_update,
-            delete: test_server ? test_listing_delete : listings_delete,
-            getbyowner: test_server ? test_listing_owner : listings_read
+            create: listingCreate,
+            update: listingUpdate,
+            delete: listingDelete,
+            getbyowner: listingOwner
         },
         item: {
-            create: test_server ? test_item_create : item_create,
-            update: test_server ? test_item_update : item_update,
-            delete: test_server ? test_item_delete : item_delete,
-            get: test_server ? test_item_read : item_read,
-            bylisting: test_server ? test_item_list : {},
+            create: itemCreate,
+            update: itemUpdate,
+            delete: itemDelete,
+            get: itemRead,
+            bylisting: itemListing,
         },
         // data: {
         //     getlist: test_server ? _getlist,

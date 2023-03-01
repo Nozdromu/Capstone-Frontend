@@ -10,7 +10,7 @@ export default class Item {
         this.Listing = item.listing || item.gsid; //
         this.Quantity = item.quantity || item.qty; //
         this.Price = item.price || 0;
-        this.Tags = item.tags || '';
+        this.Tags = item.tags || 'none';
         this.Zip_code = item.zip_code || '';
         this.Lat = item.lat || '';
         this.Lng = item.lng || '';

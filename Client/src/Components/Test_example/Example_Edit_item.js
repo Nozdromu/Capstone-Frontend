@@ -2,6 +2,7 @@ import { Card, Row, Col, Form, Button, InputGroup } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
 import Api from '../Api'
 import Item from '../../Object/item'
+import Core from './../Core';
 
 export default function ItemEdit(prop) {
     const [createmode, setcreatemode] = useState(true)
@@ -105,7 +106,7 @@ export default function ItemEdit(prop) {
     var startcreate = () => {
         setcreatemode(!createmode);
         if (!createmode) {
-            setdata(new Item({ gsid: props.listing.id, uid: props.userid }, true))
+            setdata(new Item({ gsid: props.listing.id, uid: props.userid }, Core.check_dev()))
 
         } else {
             setdata(props.data)

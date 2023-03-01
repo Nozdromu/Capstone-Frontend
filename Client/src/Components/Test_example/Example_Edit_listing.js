@@ -60,12 +60,12 @@ export default function ListingEdit(prop) {
     }
     var edit_listing = (event) => {
         event.preventDefault();
-        props.data.update(() => props.updatetable());
+        props.data.update(props.updatetable);
     }
 
     var create_listing = (event) => {
         event.preventDefault();
-        data.create(props.updatetable());
+        data.create(props.updatetable);
     }
 
     var startcreate = (event) => {
@@ -74,7 +74,7 @@ export default function ListingEdit(prop) {
     }
 
     var delete_listing = () => {
-        props.data.delete(() => props.updatetable())
+        props.data.delete(props.updatetable)
     }
 
     // get lat and lng from google api

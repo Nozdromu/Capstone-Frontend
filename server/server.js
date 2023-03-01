@@ -56,7 +56,7 @@ var staticPath = path.join(__dirname, './');
 app.use(cors())
 app.use(sessionMiddleware)
 app.use(express.static(staticPath));
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 8000);
 
 //  server setting end
 /////////////////////////////////////////////////////////////////////////////

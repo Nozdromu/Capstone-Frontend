@@ -58,16 +58,16 @@ function TestApp() {
   }
 
   var updateitemtable = () => {
-    // if (currentlist) {
-    //   Api.item.bylisting(currentlist.json, (res) => {
-    //     var items = [];
-    //     res.data.items.forEach(element => {
-    //       items.push(new Item(element, Core.check_dev()))
-    //     })
-    //     setitemdata(items);
-    //     setcurrentitem(items.length > 0 ? (currentitem || res.data[0]) : new Item({ uid: userpk, gsid: currentlist.id }, true));
-    //   })
-    // }
+    if (currentlist) {
+      Api.item.bylisting(currentlist.json, (res) => {
+        var items = [];
+        res.data.items.forEach(element => {
+          items.push(new Item(element, Core.check_dev()))
+        })
+        setitemdata(items);
+        setcurrentitem(items.length > 0 ? (currentitem || res.data[0]) : new Item({ uid: userpk, gsid: currentlist.id }, true));
+      })
+    }
   }
 
   var updateuser = () => {
