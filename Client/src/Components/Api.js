@@ -19,7 +19,10 @@ var Api = (function Api() {
      * @param {data type of data} param name - description of param.
      */
     var user_register = async (data, callback) => {
-        return axiosApi.post('/users/register/', data).then(res => { callback(res) })
+        if (test_server)
+        
+        else
+            return axiosApi.post('/users/register/', data).then(res => { callback(res) })
     }
 
     var user_login = async (data, callback) => {
@@ -64,12 +67,12 @@ var Api = (function Api() {
         return axiosApi.put('/listings/' + data.id + '/update/', data).then(res => callback(res))
     }
 
-    var listings_read = async ( callback) => {
+    var listings_read = async (callback) => {
         console.log(Core.getUser().pk);
 
         return axiosApi.get('/listings/profile/' + Core.getUser().pk + '/').then(res => {
             var data = {};
-            data.data={}
+            data.data = {}
             data.data.list = res.data;
             console.log(res);
             if (callback)
@@ -130,7 +133,7 @@ var Api = (function Api() {
         //     isdev: false,
         //     islogin: false
         // }
-        return axiosApi.get('/getdata').then(res => {
+        return axiosApi.get('/data').then(res => {
             // data.listings = res.data.data.listings;
             // data.items = res.data.data.items;
             // if (res.data.server) {
@@ -205,7 +208,7 @@ var Api = (function Api() {
 
     /////////////////////////////////////////////////////////////////////
     var Api = {
-        testserver: true,
+        testserver: test_server,
         user: {
             checklogin: test_server ? test_user_read : _checklogin,
             register: test_server ? test_register : user_register,
@@ -234,13 +237,16 @@ var Api = (function Api() {
         //     checklogin: test_server ? _checklogin
         // },
         data: {
-            getlodingdata: test_server ? getdata : data,
+            getlodingdata: data,
         },
         map: {
             getgeo: getgeo
         },
         chat: {
             startchat: test_chat_startchat
+        },
+        setdev: (isdev) => {
+            test_server = isdev
         }
     }
 
