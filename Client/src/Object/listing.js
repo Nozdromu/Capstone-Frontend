@@ -29,7 +29,7 @@ export default class Listing {
     }
     delete(callback) {
         console.log(this.json);
-        Api.listing.delete(this.json, res => callback(res));
+        Api.listing.delete(this.Id, res => callback(res));
     }
     get table() {
         return this.Servertype ?
@@ -112,7 +112,6 @@ export default class Listing {
                 "zip_code": this.Zip_code,
                 "date": this.Date,
                 "theme": this.Theme,
-                "listing_main_photo": this.Photo,
                 "start_time": this.Starttime,
                 "end_time": this.endtime,
             }
