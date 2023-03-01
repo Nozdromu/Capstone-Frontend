@@ -27,11 +27,26 @@ export default class User {
         this.Chathistory = user.chathistory || [];
         this.Socket = {};
         this.Rooms = {};
-        this.servertype =  server || false;
+        this.servertype = server || false;
+    }
+
+    get loginjson() {
+        return this.servertype ? {
+            username: this.username,
+            password: this.password
+        } : {
+
+        }
     }
 
     login(email, password, callback) {
-        Api.user.sign_in({ email: email, password: password }, (res) => {
+        var json = {
+            email: email,
+            username: email,
+            password: password
+        };
+
+        Api.user.sign_in(json, (res) => {
             if (res.data.result) {
                 this.load(res.data.user)
                 callback(res)
