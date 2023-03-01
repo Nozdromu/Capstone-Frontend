@@ -18,7 +18,7 @@ var Core = (function () {
     var hook = [];
     var isdev = false;
     var homepage = <></>;
-    var user = new User({}, isdev);
+    var user;
     var route;
 
     var hookcount = 0;
@@ -33,6 +33,8 @@ var Core = (function () {
         if (val.server)
             isdev = true;
 
+        Api.setdev(isdev)
+        user = new User({}, isdev);
         /////////////////////////////////////
 
         /////////////////////////////////////

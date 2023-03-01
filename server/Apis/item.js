@@ -77,13 +77,13 @@ module.exports = function (app) {
         res.send(response)
     })
 
-    app.get('/getdata', (req, res, next) => {
+    app.get('/data', (req, res, next) => {
         var result = { items: allitem[0].filter((val) => { return val.display === 0 }), listings: allitem[2].filter((val) => { return val.isdelete === 0 }), islogin: false, guestuser: {}, user: {} };
         if (req.session.user != undefined) {
             result.islogin = true;
             result.user = USys.getuserbyuid(req.session.user.uid).info();
         }
-        result.server = 'dev';
+        result.server = true;
         res.send(result)
     })
 
