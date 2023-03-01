@@ -63,9 +63,6 @@ function Signup(props) {
               <Form.Label>Password</Form.Label>
               {_psd}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
 
           </Form>
         </Modal.Body>
