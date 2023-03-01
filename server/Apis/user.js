@@ -43,27 +43,34 @@ module.exports = function (app) {  //receiving "app" instance
     app.get('/user/edit', (req, res) => {
         var user = req.query;
         var response = { result: false }
-        if (req.session.user.uid.toString() === user.uid) {
-            sql.query(
-                'call user_update(?,?,?,?,?,?,?)',
-                [user.uid, user.firstname, user.lastname, user.email, user.phone, user.username, user.profilepicture],
-                (err, result, fields) => {
-                    if (err) {
-                        response.message = err
-                        throw err;
-                    } else {
-                        var user = USys.getuserbyuid(req.session.user.uid)
-                        user.updata(result[0][0])
-                        response.result = true;
-                        console.log(user.info());
-                        req.session.user = USys.getuserbyuid(req.session.user.uid).info()
-                        response.userinfo = USys.getuserbyuid(req.session.user.uid).info()
+        if (req.session.user) {
+            if (req.session.user.uid.toString() === user.uid) {
+                sql.query(
+                    'call user_update(?,?,?,?,?,?,?)',
+                    [user.uid, user.firstname, user.lastname, user.email, user.phone, user.username, user.profilepicture],
+                    (err, result, fields) => {
+                        if (err) {
+                            response.message = err
+                            throw err;
+                        } else {
+                            var user = USys.getuserbyuid(req.session.user.uid)
+                            user.updata(result[0][0])
+                            response.result = true;
+                            console.log(user.info());
+                            req.session.user = USys.getuserbyuid(req.session.user.uid).info()
+                            response.userinfo = USys.getuserbyuid(req.session.user.uid).info()
+                        }
+                        res.send(response)
                     }
-                    res.send(response)
-                }
-            )
+                )
+            } else {
+                response.message = 'some thing wrong'
+                res.send(response)
+            }
+        } else {
+            response.message = 'user not login'
+            res.send(response)
         }
-
     })
 
     app.get('/user/delete', (req, res) => {

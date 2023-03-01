@@ -78,12 +78,12 @@ module.exports = function (app) {
     })
 
     app.get('/getdata', (req, res, next) => {
-        var result = { data: { items: allitem[0].filter((val) => { return val.display === 0 }), listings: allitem[2].filter((val) => { return val.isdelete === 0 }) }, islogin: false, guestuser: {}, user: {} };
+        var result = { items: allitem[0].filter((val) => { return val.display === 0 }), listings: allitem[2].filter((val) => { return val.isdelete === 0 }), islogin: false, guestuser: {}, user: {} };
         if (req.session.user != undefined) {
             result.islogin = true;
             result.user = USys.getuserbyuid(req.session.user.uid).info();
-            result.server='dev';
         }
+        result.server = 'dev';
         res.send(result)
     })
 

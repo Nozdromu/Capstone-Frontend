@@ -6,14 +6,22 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Core from './Core';
 
 function MyNavbar(props) {
+    // const [load, setload] = useState(false);
     const [username, setusername] = useState(Core.getUser().username)
     const [login, setlogin] = useState(Core.getUser().islogin);
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
+    // var startload=()=>{
+    //     setload(true)
+    // }
+
+    // useEffect(()=>{
+    //     Core.addhook(startload)
+    // })
+
     useEffect(() => {
         if (login) {
-            console.log(Core.getUser().username)
             setusername(Core.getUser().username)
         }
     }, [login])
@@ -39,46 +47,42 @@ function MyNavbar(props) {
         })
     }
 
-    return (
-
-        <>
-            <Navbar bg="light" expand="lg" className='margin-bottom' sticky="top">
-                <Container>
-                    <Navbar.Brand>
-                        {props.routes.Homepage.navlink}
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="navbarScroll" />
-                    <Navbar.Collapse id="navbarScroll">
-                        <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
-                            {props.routes.Mappage.navlink}
-                            {props.routes.Signup.navlink}
-                            {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + username} id="navbarScrollingDropdown">
-                                <NavDropdown.Item >
-                                    {props.routes.Accountpage.navlink}
-                                </NavDropdown.Item>
-                                <NavDropdown.Item >
-                                    {props.routes.Chatpage.navlink}
-                                </NavDropdown.Item>
-                                <NavDropdown.Item onClick={logout}>Log out</NavDropdown.Item>
-                            </NavDropdown>}
-                        </Nav>
-                        <Form className="d-flex">
-                            <Form.Control
-                                type="search"
-                                placeholder="Search"
-                                className="me-2"
-                                aria-label="Search" />
-                            <Button variant="outline-success">Search</Button>
-                            {!login ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
-                            </div> : <></>}
-                        </Form>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-            <Signin show={show} onHide={handleClose} signin={handleSignin}></Signin>
-        </>
-
-
+    return (<>
+        <Navbar bg="light" expand="lg" className='margin-bottom' sticky="top">
+            <Container>
+                <Navbar.Brand>
+                    {props.routes.Homepage.navlink}
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="navbarScroll" />
+                <Navbar.Collapse id="navbarScroll">
+                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+                        {props.routes.Mappage.navlink}
+                        {props.routes.Signup.navlink}
+                        {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + username} id="navbarScrollingDropdown">
+                            <NavDropdown.Item >
+                                {props.routes.Accountpage.navlink}
+                            </NavDropdown.Item>
+                            <NavDropdown.Item >
+                                {props.routes.Chatpage.navlink}
+                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={logout}>Log out</NavDropdown.Item>
+                        </NavDropdown>}
+                    </Nav>
+                    <Form className="d-flex">
+                        <Form.Control
+                            type="search"
+                            placeholder="Search"
+                            className="me-2"
+                            aria-label="Search" />
+                        <Button variant="outline-success">Search</Button>
+                        {!login ? <div style={{ maxwidth: '100%', Width: '800px' }} ref={ref}>
+                        </div> : <></>}
+                    </Form>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
+        <Signin show={show} onHide={handleClose} signin={handleSignin}></Signin>
+    </>
     );
 }
 

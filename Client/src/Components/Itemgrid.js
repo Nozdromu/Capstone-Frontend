@@ -9,7 +9,6 @@ import S_chat from './New_s_chat'
 
 export default function Itemgrid() {
   const [list, setlist] = useState();
-  const [isload, setload] = useState(false)
   const [chatshow, setchatshow] = useState(true);
   const [schat, setschat] = useState(<></>);
 
@@ -27,16 +26,15 @@ export default function Itemgrid() {
       return <Col md={3} sm={6} key={val.itid} style={{ marginBottom: '1em' }} ><Itemcard data={val} key={val.itid} startchat={startchat} /></Col>
     })
     setlist(list => _list);
-    setload(true);
   }
   if (!list)
     Core.addhook(createItemCard);
 
 
-  return isload ? (<Container style={{ height: '90vh' }}>
+  return (<Container style={{ height: '90vh' }}>
     <Row justify-content="space-evenly" >
       {list}
     </Row>
     {chatshow ? schat : <></>}
-  </Container>) : (<></>)
+  </Container>) 
 }

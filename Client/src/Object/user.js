@@ -4,11 +4,9 @@ import { io } from 'socket.io-client';
 import Core_chat from './../Components/Core_chat';
 
 
-export default class User {
-    constructor(user, server = false) {
-        if (arguments.length === 1) {
 
-        }
+export default class User {
+    constructor(user = {}, server = false) {
         this.Username = user.username || '';  //
         this.Id = user.id || user.uid || 0;  //
         this.First_name = user.first_name || user.firstname || '';
@@ -49,22 +47,26 @@ export default class User {
 
     update(callback) {
         Api.user.update(this.json, res => {
-            var user = res.user.data
-            this.Username = user.username;
-            this.Id = user.id || user.uid;
-            this.First_name = user.first_name || user.firstname;
-            this.Last_name = user.last_name || user.lastname;
-            this.Phone_number = user.phone_number || user.phone;
-            this.Email = user.email || '';
-            this.Password = user.password || '';
-            this.Address_line_1 = user.address_line_1 || '';
-            this.Address_line_2 = user.address_line_2 || '';
-            this.City = user.city || '';
-            this.State = user.state || '';
-            this.Zip_code = user.zip_code || ''
-            this.Registertime = user.registertime || '';
-            this.Profilepicture = user.profilepicture || '';
-            this.Chathistory = user.chathistory || [];
+            if (res.result) {
+                var user = res.user.data
+                this.Username = user.username;
+                this.Id = user.id || user.uid;
+                this.First_name = user.first_name || user.firstname;
+                this.Last_name = user.last_name || user.lastname;
+                this.Phone_number = user.phone_number || user.phone;
+                this.Email = user.email || '';
+                this.Password = user.password || '';
+                this.Address_line_1 = user.address_line_1 || '';
+                this.Address_line_2 = user.address_line_2 || '';
+                this.City = user.city || '';
+                this.State = user.state || '';
+                this.Zip_code = user.zip_code || ''
+                this.Registertime = user.registertime || '';
+                this.Profilepicture = user.profilepicture || '';
+                this.Chathistory = user.chathistory || [];
+            } else {
+                console.log(res);
+            }
             if (callback) callback(res)
         })
     }
@@ -79,7 +81,9 @@ export default class User {
         })
     }
 
-    check
+    setdev(dev) {
+        this.servertype = dev;
+    }
 
     load(user, callback) {
         this.Username = user.username;

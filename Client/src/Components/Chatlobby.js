@@ -27,21 +27,20 @@ function Chatlobby(props) {
                     return c
                 })))
             })
-            if (!Core.Chatload.login) {
-                Core.getUser().socket.on('login', (data) => {
-                    console.log(data);
-                    if (!list.includes(data.chatname)) {
-                        var newlogin = [<ListGroup.Item key={data.chatname} action onClick={() => { props.newchat({ email: data.email, chatname: data.chatname }) }}>{data.chatname}</ListGroup.Item>];
-                        setcount(count => count + 1);
-                        setUserlist(userlist.concat(newlogin))
-                    }
 
-                })
-                Core.Chatload.login = true;
-            }
+            Core.getUser().socket.on('login', (data) => {
+                console.log(data);
+                if (!list.includes(data.chatname)) {
+                    var newlogin = [<ListGroup.Item key={data.chatname} action onClick={() => { props.newchat({ email: data.email, chatname: data.chatname }) }}>{data.chatname}</ListGroup.Item>];
+                    setcount(count => count + 1);
+                    setUserlist(userlist.concat(newlogin))
+                }
+
+            })
+
             setmound(true);
         }
-    },[]);
+    }, []);
 
 
 

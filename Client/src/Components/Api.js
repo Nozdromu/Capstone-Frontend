@@ -71,12 +71,6 @@ var Api = (function Api() {
         return axiosApi.delete('/listings/' + listingspk + '/' + itempk + '/delete')
     }
     var item_update = async (item, listingspk, itempk) => {
-        // var data = {
-        //     name: _item.name,
-        //     description: _item.description,
-        //     quantity: _item.quantity,
-        //     price: _item.price
-        // }
         return axiosApi.put('/listings/' + listingspk + '/' + itempk + '/update/', item)
     }
 
@@ -108,7 +102,23 @@ var Api = (function Api() {
     ///////////////////////////////////////////////////////////////////////
     // test api
     var getdata = async () => {
-        return axiosApi.get('/getdata')
+        // var data = {
+        //     listings: [],
+        //     items: [],
+        //     user: {},
+        //     isdev: false,
+        //     islogin: false
+        // }
+        return axiosApi.get('/getdata').then(res => {
+            // data.listings = res.data.data.listings;
+            // data.items = res.data.data.items;
+            // if (res.data.server) {
+            //     data.isdev = true;
+            // }
+            // data.islogin = res.data.islogin;
+            // data.user = res.data.user
+            return res.data;
+        })
     }
     // test user api
     var test_login = async (data, callback) => {

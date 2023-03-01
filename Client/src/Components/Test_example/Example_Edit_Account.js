@@ -48,7 +48,6 @@ export default function AccountEdit(prop) {
         event.preventDefault();
         data.update(props.update());
         window.location.reload();
-
     }
     var delete_user = () => {
         // Api.user.delete({ uid: uid }, (res) => {

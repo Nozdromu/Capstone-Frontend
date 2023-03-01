@@ -2,12 +2,12 @@ import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
 import Signup from "./Signin";
 import Api from './Api';
-import Map from './Test_example/Google_map_example'
 import Newchat from './Newchat'
 import Testpage from './Test_example/Testhome'
 import Listing from "../Object/listing";
 import Item from './../Object/item';
 import User from "../Object/user";
+import Newhome from './Newhome';
 
 
 var Core = (function () {
@@ -17,15 +17,9 @@ var Core = (function () {
     var list = {};
     var hook = [];
     var isdev = false;
-    var user = new User({}, true);
-
-    var route = {
-        Homepage: { path: '/', name: 'Spiffo-Slist', page: <Itemgrid /> },
-        Accountpage: { path: '/account', name: 'Account', page: <Accountpage /> },
-        Mappage: { path: '/map', name: 'Api_Test', page: <Testpage /> },
-        Chatpage: { path: '/chat', name: 'Chat', page: <Newchat /> },
-        Signup: { path: '/sigup', name: 'Signup', page: <></> },
-    }
+    var homepage = <></>;
+    var user = new User();
+    var route;
 
     var hookcount = 0;
     if (!_isLoaded) {
@@ -35,18 +29,24 @@ var Core = (function () {
     }
 
     var _load = (val) => {
-        console.log(val)
         item = [];
         list = [];
 
         /////////////////////////////////////
 
-        val.data.data.listings.forEach(element => {
+        if (val.server)
+            isdev = true;
+
+        /////////////////////////////////////
+
+        /////////////////////////////////////
+
+        val.listings.forEach(element => {
             var x = new Listing(element, true);
             list.push(x);
         });
 
-        val.data.data.items.forEach(element => {
+        val.items.forEach(element => {
             var x = new Item(element, true);
 
             item.push(x);
@@ -55,11 +55,23 @@ var Core = (function () {
 
         ////////////////////////////////////
 
-        if (val.data.islogin) {
-            user.load(val.data.user);
+        if (val.islogin) {
+            user.load(val.user);
+        }
+
+        ////////////////////////////////////
+
+        ////////////////////////////////////
+        route = {
+            Homepage: { path: '', name: 'Spiffo-Slist', page: <Itemgrid /> },
+            Accountpage: { path: 'account', name: 'Account', page: <Accountpage /> },
+            Mappage: { path: 'map', name: 'Api_Test', page: <Testpage /> },
+            Chatpage: { path: 'chat', name: 'Chat', page: <Newchat /> },
+            Signup: { path: 'sigup', name: 'Signup', page: <></> },
         }
 
         _isLoaded = true;
+        homepage = <Newhome />;
         proseecHook();
     }
 
@@ -77,6 +89,9 @@ var Core = (function () {
 
     return {
         load: _load,
+        check_dev: () => {
+            return isdev;
+        },
         item: () => {
             return item;
         },
@@ -101,6 +116,9 @@ var Core = (function () {
         },
         getrooms: () => {
             return user.rooms
+        },
+        gethomepage: () => {
+            return homepage;
         }
     };
 })()
