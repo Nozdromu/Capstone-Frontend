@@ -162,8 +162,8 @@ export default function ListingEdit(prop) {
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="create_listing_image">
-                            <Form.Label>description</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')} value={image} required={true} ref={inputs.image} type="file" placeholder="Select image" />
+                            <Form.Label>image</Form.Label>
+                            <Form.Control onChange={(e) => onchange(e, 'image')} value={image} required={false} ref={inputs.image} type="file" placeholder="Select image" />
                         </Form.Group>
                     </Col>
                 </Row>
