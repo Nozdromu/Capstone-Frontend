@@ -2,6 +2,7 @@
 import Api from './../Components/Api';
 import { io } from 'socket.io-client';
 import Core_chat from './../Components/Core_chat';
+import Core from '../Components/Core';
 
 
 
@@ -26,7 +27,7 @@ export default class User {
         this.Chathistory = user.chathistory || [];
         this.Socket = {};
         this.Rooms = {};
-        this.servertype = server || false;
+        this.servertype =  server || false;
     }
 
     login(email, password, callback) {
@@ -102,16 +103,18 @@ export default class User {
         this.Profilepicture = user.profilepicture || '';
         this.Chathistory = user.chathistory || [];
         this.Islogin = true;
-        this.Socket = new io('/', {
-            autoConnect: false,
-            query: {
-                user_email: this.Email,
-                user_uid: this.Id,
-            }
-        })
-        this.Socket.connect();
-        this.Socket.emit('passuser', this.chatinfo);
-        this.Rooms = new Core_chat(user.chathistory)
+        if (this.servertype) {
+            this.Socket = new io('/', {
+                autoConnect: false,
+                query: {
+                    user_email: this.Email,
+                    user_uid: this.Id,
+                }
+            })
+            this.Socket.connect();
+            this.Socket.emit('passuser', this.chatinfo);
+            this.Rooms = new Core_chat(user.chathistory)
+        }
         if (callback)
             callback();
     }

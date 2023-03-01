@@ -18,15 +18,11 @@ var Core = (function () {
     var hook = [];
     var isdev = false;
     var homepage = <></>;
-    var user = new User();
+    var user = new User({}, isdev);
     var route;
 
     var hookcount = 0;
-    if (!_isLoaded) {
-        Api.data.getlodingdata().then(res => {
-            _load(res);
-        })
-    }
+
 
     var _load = (val) => {
         item = [];
@@ -42,12 +38,12 @@ var Core = (function () {
         /////////////////////////////////////
 
         val.listings.forEach(element => {
-            var x = new Listing(element, true);
+            var x = new Listing(element, isdev);
             list.push(x);
         });
 
         val.items.forEach(element => {
-            var x = new Item(element, true);
+            var x = new Item(element, isdev);
 
             item.push(x);
         });
@@ -66,13 +62,16 @@ var Core = (function () {
             Homepage: { path: '', name: 'Spiffo-Slist', page: <Itemgrid /> },
             Accountpage: { path: 'account', name: 'Account', page: <Accountpage /> },
             Mappage: { path: 'map', name: 'Api_Test', page: <Testpage /> },
-            Chatpage: { path: 'chat', name: 'Chat', page: <Newchat /> },
+            Chatpage: { path: 'chat', name: 'Chat', page: isdev ? <Newchat /> : <></> },
             Signup: { path: 'sigup', name: 'Signup', page: <></> },
         }
 
         _isLoaded = true;
         homepage = <Newhome />;
         proseecHook();
+    }
+    if (!_isLoaded) {
+        Api.data.getlodingdata(_load)
     }
 
     /////////////////////////////////////

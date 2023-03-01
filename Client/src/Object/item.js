@@ -1,7 +1,7 @@
 import Api from './../Components/Api';
 
 export default class Item {
-    constructor(item, server) {
+    constructor(item, server=false) {
         this.Id = item.id || item.itid; //
         this.Name = item.name || item.itemname; //
         this.Item_main_photo = item.item_main_photo || item.image || item.src;  //

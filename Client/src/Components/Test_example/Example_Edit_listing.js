@@ -2,6 +2,7 @@ import { Card, Row, Col, Form, Button, InputGroup } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
 import Api from '../Api'
 import Listing from '../../Object/listing'
+import Core from './../Core';
 
 export default function ListingEdit(prop) {
     const [createmode, setcreatemode] = useState(true)
@@ -11,6 +12,7 @@ export default function ListingEdit(prop) {
     const [title, settitle] = useState('');
     const [description, setdescription] = useState('');
     const [location, setlocation] = useState('');
+    const [image, setimage] = useState('');
     const [lat, setlat] = useState('');
     const [lng, setlng] = useState('')
 
@@ -28,7 +30,7 @@ export default function ListingEdit(prop) {
     }, [props])
     useEffect(() => {
         if (createmode) {
-            setdata(new Listing({ uid: props.owner }, true))
+            setdata(new Listing({ uid: props.owner }, Core.check_dev()))
         } else {
             setdata(props.data);
         }
@@ -42,6 +44,7 @@ export default function ListingEdit(prop) {
             setlocation(data.location || '')
             setlat(data.lat || '');
             setlng(data.lng || '');
+            setimage(data.image || '');
         }
     }, [data])
 
@@ -52,7 +55,8 @@ export default function ListingEdit(prop) {
         listing_location: useRef(null),
         listing_main_photo: useRef(null),
         listing_lat: useRef(null),
-        listing_lng: useRef(null)
+        listing_lng: useRef(null),
+        listing_image: useRef(null)
     }
     var edit_listing = (event) => {
         event.preventDefault();
@@ -111,6 +115,10 @@ export default function ListingEdit(prop) {
                 data.lat = event.target.value
                 setlat(data.lat);
                 break;
+            case 'image':
+                data.image = event.target.files[0]
+                setimage(event.target.value);
+                break;
             default:
         }
     }
@@ -148,6 +156,14 @@ export default function ListingEdit(prop) {
                         <Form.Group className="mb-3" controlId="create_listing_description">
                             <Form.Label>description</Form.Label>
                             <Form.Control onChange={(e) => onchange(e, 'description')} value={description} required={true} ref={inputs.listing_description} type="input" placeholder="Enter description" />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="create_listing_image">
+                            <Form.Label>description</Form.Label>
+                            <Form.Control onChange={(e) => onchange(e, 'image')} value={image} required={true} ref={inputs.image} type="file" placeholder="Select image" />
                         </Form.Group>
                     </Col>
                 </Row>

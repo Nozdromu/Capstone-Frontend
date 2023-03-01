@@ -48,24 +48,26 @@ function TestApp() {
       Api.listing.getbyowner((res) => {
         var list = []
         res.data.list.forEach(element => {
-          list.push(new Listing(element, true))
+          list.push(new Listing(element, Core.check_dev()))
         });
+        console.log(list)
         setlistdata(list)
         setcurrentlist(currentlist || res.data.list[0])
       })
     }
   }
+
   var updateitemtable = () => {
-    if (currentlist) {
-      Api.item.bylisting(currentlist.json, (res) => {
-        var items = [];
-        res.data.items.forEach(element => {
-          items.push(new Item(element, true))
-        })
-        setitemdata(items);
-        setcurrentitem(items.length > 0 ? (currentitem || res.data[0]) : new Item({ uid: userpk, gsid: currentlist.id }, true));
-      })
-    }
+    // if (currentlist) {
+    //   Api.item.bylisting(currentlist.json, (res) => {
+    //     var items = [];
+    //     res.data.items.forEach(element => {
+    //       items.push(new Item(element, Core.check_dev()))
+    //     })
+    //     setitemdata(items);
+    //     setcurrentitem(items.length > 0 ? (currentitem || res.data[0]) : new Item({ uid: userpk, gsid: currentlist.id }, true));
+    //   })
+    // }
   }
 
   var updateuser = () => {
@@ -114,8 +116,9 @@ function TestApp() {
       Api.listing.getbyowner((res) => {
         var list = []
         res.data.list.forEach(element => {
-          list.push(new Listing(element, true))
+          list.push(new Listing(element, Core.check_dev()))
         });
+        console.log(list)
         setlistdata(list)
       })
       setlogin(true)

@@ -1,10 +1,19 @@
 import axios from "axios";
+import Core from './Core';
 
 var Api = (function Api() {
     var axiosApi = axios;
     axiosApi.defaults.xsrfCookieName = 'csrftoken';
     axiosApi.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    var test_server = true;
+    var test_server = false;
+
+    var data = async (callback) => {
+        return axiosApi.get('/data/').then(res => {
+            if (callback) {
+                callback(res.data)
+            }
+        })
+    }
 
     /**
      * @param {data type of data} param name - description of param.
@@ -37,6 +46,7 @@ var Api = (function Api() {
     ////////////////////////////////////////////////////
     // listings
     var listings_create = async (data, callback) => {
+        console.log(data)
         return axiosApi.post('/listings/create/', data).then(res => { callback(res) })
     }
 
@@ -49,18 +59,24 @@ var Api = (function Api() {
         return axiosApi.put('/listings/' + data.id + '/update/', data).then(res => callback(res))
     }
 
-    var listings_read = async (_owner, callback) => {
-        var data = {
-            owner: _owner
-        }
-        return axiosApi.post('/listings/owner/', data).then(res => callback(res));
+    var listings_read = async ( callback) => {
+        console.log(Core.getUser().pk);
+
+        return axiosApi.get('/listings/profile/' + Core.getUser().pk + '/').then(res => {
+            var data = {};
+            data.data={}
+            data.data.list = res.data;
+            console.log(res);
+            if (callback)
+                callback(data)
+        });
     }
 
 
     ////////////////////////////////////////////////////
     // item
     var item_read = async (listPK, itemPK) => {
-
+        // return axiosApi.post('/listings/' + listingspk + '/createitem', _item).then(res => callback(res))
     }
 
     var item_create = async (_item, listingspk, callback) => {
@@ -213,7 +229,7 @@ var Api = (function Api() {
         //     checklogin: test_server ? _checklogin
         // },
         data: {
-            getlodingdata: getdata,
+            getlodingdata: test_server ? getdata : data,
         },
         map: {
             getgeo: getgeo

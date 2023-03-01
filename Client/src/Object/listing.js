@@ -2,16 +2,16 @@
 import Api from './../Components/Api';
 
 export default class Listing {
-    constructor(listing, server) {
+    constructor(listing, server = false) {
         this.Id = listing.id || listing.gsid || 0;
         this.Title = listing.title || '';
         this.Description = listing.description || '';
         this.Location = listing.location || '';
         this.Date = listing.date || '';
-        this.Starttime = listing.starttime || '';
-        this.Endtime = listing.endtime || '';
+        this.Starttime = listing.starttime || (new Date()).toISOString();
+        this.Endtime = listing.endtime || (new Date()).toISOString();
         this.Zip_code = listing.zip_code || '';
-        this.Theme = listing.theme || '';
+        this.Theme = listing.theme || 'none';
         this.Owner = listing.owner || listing.uid || 0;
         this.Lat = listing.lat || 0
         this.Lng = listing.lng || 0;
@@ -21,11 +21,11 @@ export default class Listing {
     }
     update(callback) {
         console.log(this.json);
-        Api.listing.update(this.json, res => callback(res));
+        Api.listing.update(this.json, res => { if (callback) callback(res) });
     }
     create(callback) {
         console.log(this.json);
-        Api.listing.create(this.json, res => callback(res));
+        Api.listing.create(this.createjson, res => { if (callback) callback(res) });
     }
     delete(callback) {
         console.log(this.json);
@@ -57,6 +57,33 @@ export default class Listing {
                 "photo": this.Photo
             }
     }
+    get createjson() {
+        return this.Servertype ?
+            {
+                "gsid": this.Id,
+                "uid": this.Owner,
+                "title": this.Title,
+                "description": this.Description,
+                "location": this.Location,
+                "lat": this.Lat,
+                "lng": this.Lng,
+                "zip_code": this.Zip_code,
+                "starttime": Date.parse(this.Starttime),
+                "endtime": Date.parse(this.Endtime),
+                "isdelete": this.Isdelete,
+                "image": this.Photo
+            }
+            :
+            {
+
+                "title": this.Title,
+                "description": this.Description,
+                "location": this.Location,
+                "theme": this.Theme,
+                "start_time": this.Starttime,
+                "end_time": this.Endtime
+            }
+    }
     get json() {
         return this.Servertype ?
             {
@@ -85,7 +112,9 @@ export default class Listing {
                 "zip_code": this.Zip_code,
                 "date": this.Date,
                 "theme": this.Theme,
-                "listing_main_photo": this.Photo
+                "listing_main_photo": this.Photo,
+                "start_time": this.Starttime,
+                "end_time": this.endtime,
             }
     }
     ////////////////////////////////////

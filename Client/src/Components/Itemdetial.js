@@ -45,7 +45,7 @@ export default function Itemdetial(props) {
 
             </Modal.Body>
             <Modal.Footer>
-                {Core.getUser().islogin?<Button onClick={props.startchat}>chat</Button>:<></>}
+                {Core.check_dev()&&Core.getUser().islogin?<Button onClick={props.startchat}>chat</Button>:<></>}
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal>
