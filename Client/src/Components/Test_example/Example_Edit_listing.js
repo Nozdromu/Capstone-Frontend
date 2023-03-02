@@ -15,8 +15,10 @@ export default function ListingEdit(prop) {
     const [image, setimage] = useState('');
     const [lat, setlat] = useState('');
     const [lng, setlng] = useState('');
-    const [start, setstart] = useState('');
-    const [end, setend] = useState('');
+    const [startdate, setstartdate] = useState('');
+    const [enddate, setenddate] = useState('');
+    const [starttime, setstarttime] = useState('');
+    const [endtime, setendtime] = useState('');
 
     useEffect(() => {
         setprops(prop)
@@ -47,8 +49,10 @@ export default function ListingEdit(prop) {
             setlat(data.lat || '');
             setlng(data.lng || '');
             setimage(data.image || '');
-            setstart(data.starttime||'');
-            setend(data.endtime||'')
+            setstarttime(data.starttime || '');
+            setenddate(data.enddate || '');
+            setstartdate(data.startdate || '');
+            setendtime(data.endtime || '');
         }
     }, [data])
 
@@ -61,8 +65,10 @@ export default function ListingEdit(prop) {
         listing_lat: useRef(null),
         listing_lng: useRef(null),
         listing_image: useRef(null),
-        listing_start: useRef(null),
-        listing_end: useRef(null)
+        listing_startdate: useRef(null),
+        listing_enddate: useRef(null),
+        listing_starttime: useRef(null),
+        listing_endtime: useRef(null)
     }
     var edit_listing = (event) => {
         event.preventDefault();
@@ -126,12 +132,22 @@ export default function ListingEdit(prop) {
                 setimage(event.target.value);
                 break;
             case 'starttime':
-                data.starttime = event.target.value
-                setstart(data.starttime)
+                console.log(event.target.value);
+                data.starttime = event.target.value.toString()
+                setstarttime(data.starttime)
                 break;
             case 'endtime':
-                data.endtime = event.target.value
-                setend(data.endtime)
+                console.log(event.target.value);
+                data.endtime = event.target.value.toString()
+                setendtime(data.endtime)
+                break;
+            case 'startdate':
+                data.startdate = event.target.value.toString()
+                setstartdate(data.startdate)
+                break;
+            case 'enddate':
+                data.enddate = event.target.value.toString()
+                setenddate(data.enddate)
                 break;
             default:
         }
@@ -183,16 +199,42 @@ export default function ListingEdit(prop) {
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_start">
-                            <Form.Label>start</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'starttime')} value={start?new Date(start).toISOString().split('T')[0]:''} required={false} ref={inputs.listing_start} type="date" placeholder="pick a startdate" />
-                        </Form.Group>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_start_date">
+                                    <Form.Label>startdate</Form.Label>
+                                    <Form.Control onChange={(e) => onchange(e, 'startdate')} value={startdate} required={false} ref={inputs.listing_startdate} type="date" placeholder="pick a startdate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_start_time">
+                                    <Form.Label>starttime</Form.Label>
+                                    <Form.Control format= {'HH:mm'} onChange={(e) => onchange(e, 'starttime')} value={starttime} required={false} ref={inputs.listing_starttime} type="time" placeholder="pick a startdate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_end">
-                            <Form.Label>end</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'endtime')} value={start?new Date(end).toISOString().split('T')[0]:''} required={false} ref={inputs.listing_end} type="date" placeholder="pick a enddate" />
-                        </Form.Group>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_end_date">
+                                    <Form.Label>enddate</Form.Label>
+                                    <Form.Control onChange={(e) => onchange(e, 'enddate')} value={enddate} required={false} ref={inputs.listing_enddate} type="date" placeholder="pick a enddate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_end_time">
+                                    <Form.Label>endtime</Form.Label>
+                                    <Form.Control format= {'HH:mm'} onChange={(e) => onchange(e, 'endtime')} value={endtime} required={false} ref={inputs.listing_endtime} type="time" placeholder="pick a startdate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
                     </Col>
                 </Row>
                 {/* <Row>

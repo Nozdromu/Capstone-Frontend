@@ -8,8 +8,8 @@ export default class Listing {
         this.Description = listing.description || '';
         this.Location = listing.location || '';
         this.Date = listing.date || '';
-        this.Starttime = listing.starttime || (new Date()).toISOString();
-        this.Endtime = listing.endtime || (new Date()).toISOString();
+        this.Starttime = listing.starttime || listing.start_time || (new Date()).toISOString();
+        this.Endtime = listing.endtime || listing.end_time || (new Date()).toISOString();
         this.Zip_code = listing.zip_code || '';
         this.Theme = listing.theme || 'none';
         this.Owner = listing.owner || listing.uid || 0;
@@ -18,7 +18,15 @@ export default class Listing {
         this.Photo = listing.listing_main_photo || listing.image || '';
         this.Isdelete = listing.isdelete || 0;
         this.Servertype = server || false;
-        this.List = listing.list || []
+        this.List = listing.list || [];
+        var sdate = new Date(Date.parse(this.Starttime))
+        var edate = new Date(Date.parse(this.Endtime))
+        console.log(sdate);
+        console.log(edate)
+        this.Start_date = sdate.toISOString().split('T')[0]
+        this.Start_time = sdate.getHours();
+        this.End_date = edate.toISOString().split('T')[0]
+        this.End_time = edate.getHours();
     }
     update(callback) {
         console.log(this.json);
@@ -114,7 +122,7 @@ export default class Listing {
                 "date": this.Date,
                 "theme": this.Theme,
                 "start_time": this.Starttime,
-                "end_time": this.endtime,
+                "end_time": this.Endtime,
             }
     }
     ////////////////////////////////////
@@ -139,17 +147,46 @@ export default class Listing {
 
     ////////////////////////////////////
     // start end time
-
     get starttime() {
-        return this.Starttime;
+        return this.Start_time;
     }
-    set starttime(starttime) {
-        this.Starttime = starttime;
+    set starttime(val) {
+        this.Start_time = val;
+        this.Starttime = this.Start_date + 'T' + val+'Z'
     }
     get endtime() {
+        return this.End_time;
+    }
+    set endtime(val) {
+        this.End_time = val;
+        this.Endtime = this.End_date + 'T' + val+'Z'
+    }
+
+    get startdate() {
+        return this.Start_date;
+    }
+    set startdate(val) {
+        this.Start_date = val;
+        this.Starttime = val + 'T' + this.Start_time+'Z'
+    }
+    get enddate() {
+        return this.End_date;
+    }
+    set enddate(val) {
+        this.End_date = val;
+        this.Endtime = val + 'T' + this.End_time+'Z'
+    }
+
+    get start() {
+        return this.Starttime;
+    }
+    set start(starttime) {
+        this.Starttime = starttime;
+    }
+    get end() {
         return this.Endtime;
     }
-    set endtime(endtime) {
+    set end(endtime) {
         this.Endtime = endtime;
     }
 
