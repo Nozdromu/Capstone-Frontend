@@ -47,7 +47,6 @@ var Core = (function () {
 
         val.items.forEach(element => {
             var x = new Item(element, isdev);
-
             item.push(x);
         });
 

@@ -157,8 +157,8 @@ var Api = (function Api() {
         return axiosApi.post('/listings/create/', data).then(res => { console.log(res); if (callback) callback(res) })
     }
 
-    var listings_delete = async (listingsPK, callback) => {
-        return axiosApi.delete('/listings/' + listingsPK + '/delete').then(res => callback(res))
+    var listings_delete = async (data, callback) => {
+        return axiosApi.delete('/listings/' + data + '/delete').then(res => callback(res))
     }
 
     var listings_update = async (data, callback) => {

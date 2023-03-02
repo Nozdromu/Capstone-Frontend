@@ -65,26 +65,31 @@ export default function Map() {
             return <Marker position={markelocation} key={val.gsid} onClick={() => { handleShow(val) }}>{val.gsid}</Marker>
         })
         markerlist.push(<Marker position={center} key={'you'}>{'you'}</Marker>)
-        setMarkers(markerlist);
+        console.log(markerlist);
+        setMarkers(current => markerlist);
     }
 
     var getitem = (data) => {
-        Api.item.bylisting(data,(res) => { console.log(res) });
+        Api.item.bylisting(data, (res) => { console.log(res) });
     }
 
 
 
     const onLoad = useCallback(function callback(map) {
         setMap(map)
+        navigator.geolocation.getCurrentPosition(success);
     }, [])
 
     useEffect(() => {
-        if (map)
-            navigator.geolocation.getCurrentPosition(success);
-        updatemark()
+        if (map) {
+            // navigator.geolocation.getCurrentPosition(success);
+            // updatemark()
+        }
+
     }, [map])
 
     useEffect(() => {
+        updatemark()
         setZoom(12)
     }, [center])
 
@@ -125,13 +130,25 @@ export default function Map() {
                             </Col>
                         </Row>
                         <Row>
-                            <ListGroup>
-                                <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                                <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                                <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-                                <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-                                <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-                            </ListGroup>
+                            <Col>
+                                <ListGroup>
+                                    <ListGroup.Item>Cras justo odio</ListGroup.Item>
+                                    <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+                                    <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+                                    <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+                                    <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                                </ListGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            {/* <Col>
+                            <p>
+                            {'lat'+currentlisting!==undefined ? (currentlisting.lat===undefined?0:currentlisting.lat) : ''}
+                            </p>
+                            </Col>
+                            <Col>
+                            {'lbg'+currentlisting!==undefined ? (currentlisting.lng===undefined?0:currentlisting.lng) : ''}
+                            </Col> */}
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>

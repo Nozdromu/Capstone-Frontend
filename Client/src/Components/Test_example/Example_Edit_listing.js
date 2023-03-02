@@ -14,7 +14,9 @@ export default function ListingEdit(prop) {
     const [location, setlocation] = useState('');
     const [image, setimage] = useState('');
     const [lat, setlat] = useState('');
-    const [lng, setlng] = useState('')
+    const [lng, setlng] = useState('');
+    const [start, setstart] = useState('');
+    const [end, setend] = useState('');
 
     useEffect(() => {
         setprops(prop)
@@ -45,6 +47,8 @@ export default function ListingEdit(prop) {
             setlat(data.lat || '');
             setlng(data.lng || '');
             setimage(data.image || '');
+            setstart(data.starttime||'');
+            setend(data.endtime||'')
         }
     }, [data])
 
@@ -56,7 +60,9 @@ export default function ListingEdit(prop) {
         listing_main_photo: useRef(null),
         listing_lat: useRef(null),
         listing_lng: useRef(null),
-        listing_image: useRef(null)
+        listing_image: useRef(null),
+        listing_start: useRef(null),
+        listing_end: useRef(null)
     }
     var edit_listing = (event) => {
         event.preventDefault();
@@ -80,18 +86,18 @@ export default function ListingEdit(prop) {
     // get lat and lng from google api
     var req_address = 'https://maps.googleapis.com/maps/api/geocode/json'
     var key = 'AIzaSyA0DZnzUceQi8G8bH-4CFl4XD6jawq91Ws'
-    var get_lat_lng = () => {
-        var _data = {
-            address: inputs.listing_location.current.value,
-            key: key
-        }
-        Api.map.getgeo(req_address, _data, (res) => {
-            data.lat = res.data.results[0].geometry.location.lat;
-            data.lng = res.data.results[0].geometry.location.lng
-            setlat(data.lat);
-            setlng(data.lng);
-        })
-    }
+    // var get_lat_lng = () => {
+    //     var _data = {
+    //         address: inputs.listing_location.current.value,
+    //         key: key
+    //     }
+    //     Api.map.getgeo(req_address, _data, (res) => {
+    //         data.lat = res.data.results[0].geometry.location.lat;
+    //         data.lng = res.data.results[0].geometry.location.lng
+    //         setlat(data.lat);
+    //         setlng(data.lng);
+    //     })
+    // }
 
     var onchange = (event, keys) => {
         switch (keys) {
@@ -118,6 +124,14 @@ export default function ListingEdit(prop) {
             case 'image':
                 data.image = event.target.files[0]
                 setimage(event.target.value);
+                break;
+            case 'starttime':
+                data.starttime = event.target.value
+                setstart(data.starttime)
+                break;
+            case 'endtime':
+                data.endtime = event.target.value
+                setend(data.endtime)
                 break;
             default:
         }
@@ -163,7 +177,21 @@ export default function ListingEdit(prop) {
                     <Col>
                         <Form.Group className="mb-3" controlId="create_listing_image">
                             <Form.Label>image</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')} value={image} required={false} ref={inputs.image} type="file" placeholder="Select image" />
+                            <Form.Control onChange={(e) => onchange(e, 'image')} value={image} required={false} ref={inputs.listing_image} type="file" placeholder="Pick a image" />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="create_listing_start">
+                            <Form.Label>start</Form.Label>
+                            <Form.Control onChange={(e) => onchange(e, 'starttime')} value={start?new Date(start).toISOString().split('T')[0]:''} required={false} ref={inputs.listing_start} type="date" placeholder="pick a startdate" />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="create_listing_end">
+                            <Form.Label>end</Form.Label>
+                            <Form.Control onChange={(e) => onchange(e, 'endtime')} value={start?new Date(end).toISOString().split('T')[0]:''} required={false} ref={inputs.listing_end} type="date" placeholder="pick a enddate" />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -181,7 +209,7 @@ export default function ListingEdit(prop) {
                             <Form.Label>Location</Form.Label>
                             <InputGroup className="mb-3">
                                 <Form.Control onChange={(e) => onchange(e, 'location')} value={location} required={true} ref={inputs.listing_location} type="input" placeholder="Enter Location" />
-                                <Button onClick={get_lat_lng} variant="outline-secondary" id="button-addon2">
+                                <Button variant="outline-secondary" id="button-addon2">
                                     Get coordinate
                                 </Button>
                             </InputGroup>

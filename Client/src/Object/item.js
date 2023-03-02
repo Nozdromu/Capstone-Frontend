@@ -22,6 +22,7 @@ export default class Item {
         this.Mnumber = item.mnumber || 0;
         this.Detail = item.detail || '';
         this.Imagelist = item.list || [];
+        this.List=[];
         this.servertype = server;
     }
     get table() {
@@ -102,11 +103,17 @@ export default class Item {
     // }
     ////////////////////////////////////////////////////
     //
-
     get list() {
-        return this.Imagelist;
+        return this.List;
     }
     set list(val) {
+        this.List = val
+    }
+
+    get imagelist() {
+        return this.Imagelist;
+    }
+    set imagelist(val) {
         this.Imagelist = val
     }
 
