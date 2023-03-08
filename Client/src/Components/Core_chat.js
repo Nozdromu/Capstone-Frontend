@@ -54,15 +54,15 @@ export default function Core_chat(_history) {
     var new_message = (LR, chatname, message, roomid) => {
         var _room = rooms[roomid];
         var _style = LR ? 'right' : 'left';
-        var _classname = LR ? 'text-end' : ' text-start'
+        var _classname = LR ? 'text-end send' : ' text-start recive'
 
         _room.newmessage(
             <Row key={_room.gethistorycount()}>
-                <p style={{ 'textAlign': _style, float: _style }} className={_classname}>
+                <p className={_classname}>
                     {chatname}
                 </p>
                 <div>
-                    <p id="tooltip" role="tooltip" style={{ float: _style }}>
+                    <p id="tooltip" role="tooltip" className={_classname}>
                         {message}
                     </p>
                 </div>

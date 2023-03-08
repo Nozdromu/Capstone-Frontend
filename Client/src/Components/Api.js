@@ -1,6 +1,5 @@
 import axios from "axios";
 import Core from './Core';
-import { useCallback } from 'react';
 
 var Api = (function Api() {
     var axiosApi = axios;
@@ -182,9 +181,9 @@ var Api = (function Api() {
 
     ////////////////////////////////////////////////////
     // item
-    var item_read = async (listPK, itemPK) => {
-        // return axiosApi.post('/listings/' + listingspk + '/createitem', _item).then(res => callback(res))
-    }
+    // var item_read = async (listPK, itemPK) => {
+    //     // return axiosApi.post('/listings/' + listingspk + '/createitem', _item).then(res => callback(res))
+    // }
 
     var item_owner = async (data, callback) => {
         return axiosApi.get('/listings/sort/items/listing/' + data.id + '/').then(res => {
@@ -209,17 +208,17 @@ var Api = (function Api() {
 
     /////////////////////////////////////////////
 
-    var _getlist = async (callback) => {
-        return axiosApi.get('/data/listings').then(res => { callback(res) })
-    }
+    // var _getlist = async (callback) => {
+    //     return axiosApi.get('/data/listings').then(res => { callback(res) })
+    // }
 
-    var _getitems = (callback) => {
-        return axiosApi.get('/data/items').then(res => { callback(res) })
-    }
+    // var _getitems = (callback) => {
+    //     return axiosApi.get('/data/items').then(res => { callback(res) })
+    // }
 
-    var _getuser = (callback) => {
-        return axiosApi.get('/users/').then(res => callback(res))
-    }
+    // var _getuser = (callback) => {
+    //     return axiosApi.get('/users/').then(res => callback(res))
+    // }
 
     var _checklogin = (callback) => {
         return axiosApi.get('/users/authenticated/').then(res => {
@@ -233,25 +232,25 @@ var Api = (function Api() {
 
     ///////////////////////////////////////////////////////////////////////
     // test api
-    var getdata = async () => {
-        // var data = {
-        //     listings: [],
-        //     items: [],
-        //     user: {},
-        //     isdev: false,
-        //     islogin: false
-        // }
-        return axiosApi.get('/data').then(res => {
-            // data.listings = res.data.data.listings;
-            // data.items = res.data.data.items;
-            // if (res.data.server) {
-            //     data.isdev = true;
-            // }
-            // data.islogin = res.data.islogin;
-            // data.user = res.data.user
-            return res.data;
-        })
-    }
+    // var getdata = async () => {
+    //     // var data = {
+    //     //     listings: [],
+    //     //     items: [],
+    //     //     user: {},
+    //     //     isdev: false,
+    //     //     islogin: false
+    //     // }
+    //     return axiosApi.get('/data').then(res => {
+    //         // data.listings = res.data.data.listings;
+    //         // data.items = res.data.data.items;
+    //         // if (res.data.server) {
+    //         //     data.isdev = true;
+    //         // }
+    //         // data.islogin = res.data.islogin;
+    //         // data.user = res.data.user
+    //         return res.data;
+    //     })
+    // }
     // test user api
     var test_login = async (data, callback) => {
         return axiosApi.get('/user/login', { params: data }).then(res => callback(res))
@@ -279,9 +278,9 @@ var Api = (function Api() {
     var test_listing_delete = async (data, callback) => {
         return axiosApi.get('/listing/delete', { params: data }).then(res => callback(res))
     }
-    var test_listing_read = async (data, callback) => {
-        return axiosApi.get('/listing/read', { params: data }).then(res => callback(res))
-    }
+    // var test_listing_read = async (data, callback) => {
+    //     return axiosApi.get('/listing/read', { params: data }).then(res => callback(res))
+    // }
     var test_listing_owner = async (callback) => {
         return axiosApi.get('/listing/owner').then(res => callback(res))
     }
@@ -295,9 +294,9 @@ var Api = (function Api() {
     var test_item_delete = async (data, callback) => {
         return axiosApi.get('/item/delete', { params: data }).then(res => callback(res))
     }
-    var test_item_read = async (data, callback) => {
-        return axiosApi.get('/item/read', { params: data }).then(res => callback(res))
-    }
+    // var test_item_read = async (data, callback) => {
+    //     return axiosApi.get('/item/read', { params: data }).then(res => callback(res))
+    // }
     var test_item_list = async (data, callback) => {
         return axiosApi.get('/item/listing', { params: data }).then(res => callback(res))
     }
@@ -338,12 +337,6 @@ var Api = (function Api() {
             get: itemRead,
             bylisting: itemListing,
         },
-        // data: {
-        //     getlist: test_server ? _getlist,
-        //     getitems: test_server ? _getitems,
-        //     getuser: test_server ? _getuser,
-        //     checklogin: test_server ? _checklogin
-        // },
         data: {
             getlodingdata: data,
         },

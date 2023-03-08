@@ -145,3 +145,14 @@ img {
   padding: 4px 8px;
   border-radius: 4px;
 }
+
+
+.send{
+  float: right;
+  text-align: end;
+}
+
+.recive{
+  float: left;
+  text-align: start;
+}
