@@ -1,11 +1,11 @@
 import axios from "axios";
 import Core from './Core';
-import { useCallback } from 'react';
 
 var Api = (function Api() {
     var axiosApi = axios;
     axiosApi.defaults.xsrfCookieName = 'csrftoken';
     axiosApi.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axiosApi.defaults.headers.common["Content-Type"] = 'multipart/form-data'
     var test_server = false;
 
     var data = async (callback) => {
@@ -162,8 +162,16 @@ var Api = (function Api() {
     }
 
     var listings_update = async (data, callback) => {
-
-        return axiosApi.put('/listings/' + data.id + '/update/', data).then(res => callback(res))
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if (key !== 'listing_main_photo')
+                formData.append(key, data[key])
+        })
+        formData.append('listing_main_photo', data.listing_main_photo[0])
+        return axiosApi.post(
+            '/listings/' + data.id + '/update/',
+            formData
+        ).then(res => callback(res))
     }
 
     var listings_read = async (callback) => {
@@ -203,7 +211,17 @@ var Api = (function Api() {
         return axiosApi.delete('/listings/' + data.listing + '/' + data.id + '/delete').then(res => { if (callback) callback(res) })
     }
     var item_update = async (data, callback) => {
-        return axiosApi.put('/listings/' + data.listing + '/' + data.id + '/update/', data).then(res => { if (callback) callback(res) })
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if (key !== 'item_main_photo')
+                formData.append(key, data[key])
+        })
+        formData.append('item_main_photo', data.item_main_photo[0])
+        return axiosApi.post(
+            '/listings/' + data.listing + '/' + data.id + '/update/',
+            formData
+        ).then(res => callback(res))
+        // return axiosApi.put('/listings/' + data.listing + '/' + data.id + '/update/', data).then(res => { if (callback) callback(res) })
     }
 
 

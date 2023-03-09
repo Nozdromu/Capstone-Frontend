@@ -42,7 +42,6 @@ export default class Listing {
                 "lat": this.Lat,
                 "lng": this.Lng,
                 "zip_code": this.Zip_code,
-                "image": this.Photo
             }
             :
             {
@@ -54,7 +53,6 @@ export default class Listing {
                 "lat": this.Lat,
                 "lng": this.Lng,
                 "zip_code": this.Zip_code,
-                "photo": this.Photo
             }
     }
     get createjson() {
@@ -114,6 +112,7 @@ export default class Listing {
                 "theme": this.Theme,
                 "start_time": this.Starttime,
                 "end_time": this.endtime,
+                "listing_main_photo":this.image
             }
     }
     ////////////////////////////////////

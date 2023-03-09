@@ -16,6 +16,7 @@ export default function ItemEdit(prop) {
     const [quantity, setquantity] = useState('');
     const [price, setprice] = useState('');
     const [owner, setowner] = useState('');
+    const [image, setimage] = useState('')
 
     //update props when props change by parent component
     useEffect(() => {
@@ -56,6 +57,7 @@ export default function ItemEdit(prop) {
         Item_description: useRef(null),
         Item_quantity: useRef(null),
         Item_price: useRef(null),
+        Item_image: useRef(null)
     }
 
     // input onChange onchangehandler
@@ -85,6 +87,10 @@ export default function ItemEdit(prop) {
             case 'name':
                 data.name = event.target.value;
                 setname(data.name);
+                break;
+            case 'image':
+                data.image = event.target.files;
+                setimage(data.image);
                 break;
             default:
         }
@@ -167,6 +173,14 @@ export default function ItemEdit(prop) {
                         <Form.Group className="mb-3" controlId="item_description">
                             <Form.Label>Description</Form.Label>
                             <Form.Control onChange={(e) => onchange(e, 'description')} value={description} required={true} ref={inputs.Item_description} type="input" placeholder="Enter Description" />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="item_image">
+                            <Form.Label>Image</Form.Label>
+                            <Form.Control onChange={(e) => onchange(e, 'image')} ref={inputs.Item_image} type="file" placeholder="Select a image" />
                         </Form.Group>
                     </Col>
                 </Row>
