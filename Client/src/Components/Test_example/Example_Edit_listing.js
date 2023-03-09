@@ -128,7 +128,8 @@ export default function ListingEdit(prop) {
                 setlat(data.lat);
                 break;
             case 'image':
-                data.image = event.target.files[0]
+                data.image = event.target.files
+                console.log(event.target.files)
                 setimage(event.target.value);
                 break;
             case 'starttime':
@@ -193,7 +194,7 @@ export default function ListingEdit(prop) {
                     <Col>
                         <Form.Group className="mb-3" controlId="create_listing_image">
                             <Form.Label>image</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')} value={image} required={false} ref={inputs.listing_image} type="file" placeholder="Pick a image" />
+                            <Form.Control onChange={(e) => onchange(e, 'image')}  required={false} ref={inputs.image} type="file" placeholder="Select image" />
                         </Form.Group>
                     </Col>
                 </Row>
