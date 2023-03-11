@@ -101,6 +101,24 @@ export default class User {
         this.servertype = dev;
     }
 
+    load_from_form(formdata) {
+        var user = formdata
+        this.Username = user.username;
+        this.Id = user.id || user.uid;
+        this.First_name = user.first_name || user.firstname;
+        this.Last_name = user.last_name || user.lastname;
+        this.Phone_number = user.phone_number || user.phone;
+        this.Email = user.email || '';
+        this.Password = user.password || '';
+        this.Address_line_1 = user.address_line_1 || '';
+        this.Address_line_2 = user.address_line_2 || '';
+        this.City = user.city || '';
+        this.State = user.state || '';
+        this.Zip_code = user.zip_code || ''
+        this.Registertime = user.registertime || '';
+        this.Profilepicture = user.profilepicture || '';
+    }
+
     load(user, callback) {
         this.Username = user.username;
         this.Id = user.id || user.uid;
