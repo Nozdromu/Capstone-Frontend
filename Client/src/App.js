@@ -2,6 +2,8 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import Home from './Components/Newhome'
 import Core from './Components/Core';
+import MyComponent from './Components/Test_example/Google_map_example';
+import Map from './Components/UpdatedMap';
 
 
 
@@ -23,7 +25,10 @@ function App() {
       setpage(Core.gethomepage())
   }, [load])
 
-  return (page)
+  return (
+    <Map/>
+    
+    )
 }
 
 export default App;
