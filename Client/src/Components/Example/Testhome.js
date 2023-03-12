@@ -11,9 +11,9 @@ import ItemTable from './Example_itemtable';
 import ItemEdit from './Example_Edit_item';
 
 import ListingEdit from './Example_Edit_listing';
-import Listing from './../../Object/listing';
-import Item from './../../Object/item';
-import Core from './../Core';
+import Listing from '../../Object/listing';
+import Item from '../../Object/item';
+import Core from '../Core';
 function TestApp() {
 
   const [islogin, setlogin] = useState(false)

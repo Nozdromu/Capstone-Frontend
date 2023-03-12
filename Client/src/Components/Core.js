@@ -3,7 +3,7 @@ import Itemgrid from './Itemgrid';
 import Signup from "./Signin";
 import Api from './Api';
 import Newchat from './Newchat'
-import Testpage from './Test_example/Testhome'
+import Testpage from './Example/Testhome'
 import Listing from "../Object/listing";
 import Item from './../Object/item';
 import User from "../Object/user";

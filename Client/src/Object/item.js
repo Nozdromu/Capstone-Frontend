@@ -64,6 +64,7 @@ export default class Item {
             gsid: this.Listing,
             posttime: this.Date,
             imageid: this.Imageid,
+            image:this.Item_main_photo,
             uid: this.Owner,
             display: this.Display,
             isdelete: this.Isdelete

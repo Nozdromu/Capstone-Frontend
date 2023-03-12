@@ -308,7 +308,13 @@ var Api = (function Api() {
         return axiosApi.get('/item/create', { params: data }).then(res => callback(res))
     }
     var test_item_update = async (data, callback) => {
-        return axiosApi.get('/item/edit', { params: data }).then(res => callback(res))
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if (key !== 'image')
+                formData.append(key, data[key])
+        })
+        formData.append('image', data.item_main_photo[0])
+        return axiosApi.get('/item/edit', { params: formData }).then(res => callback(res))
     }
     var test_item_delete = async (data, callback) => {
         return axiosApi.get('/item/delete', { params: data }).then(res => callback(res))
