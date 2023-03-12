@@ -11,6 +11,7 @@ export default function AccountEdit(prop) {
     const [phone, setphone] = useState('');
     const [firstname, setfirstname] = useState('');
     const [lastname, setlastname] = useState('');
+    const [imageurl, setimageurl] = useState('')
     const [login, setlogin] = useState(false)
 
     useEffect(() => {
@@ -99,18 +100,36 @@ export default function AccountEdit(prop) {
                 <fieldset disabled={login}>
                     <Row>
                         <Col>
-                            <Form.Group className="mb-3" controlId="edit_user_uid">
-                                <Form.Label>UID</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'uid')} value={uid} required={true} ref={inputs.user_uid} type="input" disabled={true} />
-                            </Form.Group>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="edit_user_uid">
+                                        <Form.Label>UID</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'uid')} value={uid} required={true} ref={inputs.user_uid} type="input" disabled={true} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="edit_user_username">
+                                        <Form.Label>username</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'username')} value={username} required={true} ref={inputs.user_username} type="input" placeholder="Enter username" />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </Col>
                         <Col>
-                            <Form.Group className="mb-3" controlId="edit_user_username">
-                                <Form.Label>username</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'username')} value={username} required={true} ref={inputs.user_username} type="input" placeholder="Enter username" />
-                            </Form.Group>
+                            <Card style={{ height: '100%' }} onClick={() => {
+
+                            }}>
+                                <Button>
+                                    <image src={imageurl}></image>
+                                    <Form.Control  type='file'></Form.Control>
+                                </Button>
+
+                            </Card>
                         </Col>
                     </Row>
+
                     <Row>
                         <Col>
                             <Form.Group className="mb-3" controlId="edit_user_email">

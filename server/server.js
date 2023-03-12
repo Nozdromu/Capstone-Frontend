@@ -12,6 +12,8 @@ const session = require('express-session')
 const sqlconfig = require('./sqlconfig.json');
 const Usystem = require('./Usystem')
 const fileUpload = require('express-fileupload');
+const bodyParser= require('body-parser')
+
 // requires end
 ////////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +58,8 @@ var staticPath = path.join(__dirname, './');
 app.use(cors())
 app.use(sessionMiddleware)
 app.use(fileUpload())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(staticPath));
 app.set('port', process.env.PORT || 8000);
 

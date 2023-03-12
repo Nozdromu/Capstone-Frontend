@@ -23,6 +23,7 @@ export default class User {
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
         this.Profilepicture = user.profilepicture || '';
+        this.Changedimage = '';
         this.Islogin = false;
         this.Chathistory = user.chathistory || [];
         this.Socket = {};
@@ -99,6 +100,14 @@ export default class User {
 
     setdev(dev) {
         this.servertype = dev;
+    }
+
+    form_data(json) {
+        var formdata = new FormData();
+        Object.keys(json).forEach(key => {
+            formdata.append(key, json[key])
+        })
+        return formdata;
     }
 
     load_from_form(formdata) {
@@ -287,6 +296,27 @@ export default class User {
     }
     set registertime(val) {
         this.Registertime = val;
+    }
+
+    get image() {
+        return this.Changedimage
+    }
+    set image(val) {
+        this.Changedimage = val;
+    }
+
+    get src() {
+        return this.Profilepicture
+    }
+    set src(val) {
+        this.Profilepicture = val;
+    }
+
+    get imageurl() {
+        return this.Profilepicture
+    }
+    set imageurl(val) {
+        this.Profilepicture = val;
     }
 
     get profilepicture() {

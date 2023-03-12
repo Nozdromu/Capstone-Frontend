@@ -1,7 +1,7 @@
 import Api from './../Components/Api';
 
 export default class Item {
-    constructor(item, server=false) {
+    constructor(item, server = false) {
         this.Id = item.id || item.itid; //
         this.Name = item.name || item.itemname; //
         this.Item_main_photo = item.item_main_photo || item.image || item.src;  //
@@ -22,7 +22,7 @@ export default class Item {
         this.Mnumber = item.mnumber || 0;
         this.Detail = item.detail || '';
         this.Imagelist = item.list || [];
-        this.List=[];
+        this.List = [];
         this.servertype = server;
     }
     get table() {
@@ -64,7 +64,7 @@ export default class Item {
             gsid: this.Listing,
             posttime: this.Date,
             imageid: this.Imageid,
-            image:this.Item_main_photo,
+            image: this.Item_main_photo,
             uid: this.Owner,
             display: this.Display,
             isdelete: this.Isdelete
@@ -93,9 +93,11 @@ export default class Item {
         Api.item.create(this.json, res => callback(res));
     }
     delete(callback) {
-        console.log(this.json);
         Api.item.delete(this.json, res => callback(res));
     }
+
+
+
     // get() {
     //     return this.
     // }

@@ -89,7 +89,7 @@ export default function ItemEdit(prop) {
                 setname(data.name);
                 break;
             case 'image':
-                data.image = event.target.files;
+                data.image = event.target.files[0];
                 setimage(data.image);
                 break;
             default:

@@ -8,6 +8,14 @@ var Api = (function Api() {
     axiosApi.defaults.headers.common["Content-Type"] = 'multipart/form-data'
     var test_server = false;
 
+    var form_data = (json) => {
+        var formdata = new FormData();
+        Object.keys(json).forEach(key => {
+            formdata.append(key, json[key])
+        })
+        return formdata;
+    }
+
     var data = async (callback) => {
         return axiosApi.get('/data/').then(res => {
             if (callback) {
@@ -162,15 +170,10 @@ var Api = (function Api() {
     }
 
     var listings_update = async (data, callback) => {
-        const formData = new FormData();
-        Object.keys(data).forEach(key => {
-            if (key !== 'listing_main_photo')
-                formData.append(key, data[key])
-        })
-        formData.append('listing_main_photo', data.listing_main_photo[0])
+
         return axiosApi.post(
             '/listings/' + data.id + '/update/',
-            formData
+            form_data(data)
         ).then(res => callback(res))
     }
 
@@ -211,15 +214,15 @@ var Api = (function Api() {
         return axiosApi.delete('/listings/' + data.listing + '/' + data.id + '/delete').then(res => { if (callback) callback(res) })
     }
     var item_update = async (data, callback) => {
-        const formData = new FormData();
-        Object.keys(data).forEach(key => {
-            if (key !== 'item_main_photo')
-                formData.append(key, data[key])
-        })
-        formData.append('item_main_photo', data.item_main_photo[0])
+        // const formData = new FormData();
+        // Object.keys(data).forEach(key => {
+        //     if (key !== 'item_main_photo')
+        //         formData.append(key, data[key])
+        // })
+        // formData.append('item_main_photo', data.item_main_photo[0])
         return axiosApi.post(
             '/listings/' + data.listing + '/' + data.id + '/update/',
-            formData
+            form_data(data)
         ).then(res => callback(res))
         // return axiosApi.put('/listings/' + data.listing + '/' + data.id + '/update/', data).then(res => { if (callback) callback(res) })
     }

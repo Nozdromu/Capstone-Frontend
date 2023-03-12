@@ -40,6 +40,9 @@ export default class Listing {
         console.log(this.json);
         Api.listing.delete(this.Id, res => callback(res));
     }
+
+
+    
     get table() {
         return this.Servertype ?
             {

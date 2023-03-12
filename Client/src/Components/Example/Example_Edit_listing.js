@@ -128,7 +128,7 @@ export default function ListingEdit(prop) {
                 setlat(data.lat);
                 break;
             case 'image':
-                data.image = event.target.files
+                data.image = event.target.files[0]
                 console.log(event.target.files)
                 setimage(event.target.value);
                 break;
