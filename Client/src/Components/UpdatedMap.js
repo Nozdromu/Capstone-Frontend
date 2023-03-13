@@ -27,7 +27,7 @@ export default function Map(){
     []);
     const options = useMemo(() =>({
         //mapId: "95ce05a31ef920c8",
-        disableDefaultUI: true,
+        disableDefaultUI: false,
         clickableIcons: false,
     }),
     []);
@@ -50,6 +50,8 @@ export default function Map(){
         });
     };
 
+
+    // Display events
     const Display = ({name, address}) => {
         if(!name) return <div/>;
         return (
@@ -128,19 +130,24 @@ export default function Map(){
                     mapContainerClassName="map-container"
                     options={options}
                     onLoad={onLoad}
-                >
+                >   
+                    
                     <Marker
                         position={center}
                     />
-                    {<DirectionsRenderer 
-                        directions={directions} 
-                        options={{
-                            zIndex:50
-                        }}
-                    />}
-                    
-                    
-                    
+                    {addressData.map((trialData) => {
+                        <Marker
+                            key={trialData.name}
+                            name={trialData.name}
+                            position={{
+                                lat: trialData.lat,
+                                lng: trialData.lng
+                            }}
+                            onClick={() => {
+                                fetchDirections(trialData);
+                            }}
+                        />
+                    })}
                     
                     {houses.map((house) => (
                         <Marker 
@@ -150,7 +157,20 @@ export default function Map(){
                             fetchDirections(house);
                         }} 
                         />))}
-
+                      
+                    {<DirectionsRenderer 
+                        directions={directions} 
+                        options={{
+                            polylineOptions:{
+                                zIndex:50,
+                                strokeColor: "#1976D2",
+                                strokeWeight: 5,
+                            }
+                        }}
+                    />}
+                    
+                    
+                    
                     
                     
                     
