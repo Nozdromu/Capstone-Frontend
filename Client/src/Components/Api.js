@@ -5,7 +5,7 @@ var Api = (function Api() {
     var axiosApi = axios;
     axiosApi.defaults.xsrfCookieName = 'csrftoken';
     axiosApi.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axiosApi.defaults.headers.common["Content-Type"] = 'multipart/form-data'
+    axiosApi.defaults.headers.post['Content-Type'] = 'multipart/form-data'
     var test_server = false;
 
     var form_data = (json) => {
@@ -138,9 +138,18 @@ var Api = (function Api() {
             username: data.email,
             password: data.password
         };
-        return axiosApi.post('/users/login/', json).then(res => {
+
+        return axiosApi.post('/users/login/', json, {
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            }
+
+        }).then(res => {
             if (res.data.status === "success")
-                axiosApi.get('/users/' + res.data.user.id + '/').then(res => { callback(res) })
+                axiosApi.get('/users/' + res.data.user.id + '/').then(res => {
+                    console.log(res)
+                    callback(res)
+                })
         })
     }
     var user_logout = async (callback) => {

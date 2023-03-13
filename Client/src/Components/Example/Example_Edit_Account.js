@@ -12,6 +12,8 @@ export default function AccountEdit(prop) {
     const [firstname, setfirstname] = useState('');
     const [lastname, setlastname] = useState('');
     const [imageurl, setimageurl] = useState('')
+    const [image, setimage] = useState({})
+    const [imagepre, setimagepre] = useState([])
     const [login, setlogin] = useState(false)
 
     useEffect(() => {
@@ -119,12 +121,28 @@ export default function AccountEdit(prop) {
                         </Col>
                         <Col>
                             <Card style={{ height: '100%' }} onClick={() => {
+                                document.getElementById('user_image').click()
 
                             }}>
-                                <Button>
-                                    <image src={imageurl}></image>
-                                    <Form.Control  type='file'></Form.Control>
-                                </Button>
+
+                                {imagepre}
+                                <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
+
+                                    if (event.target.files && event.target.files[0]) {
+                                        let reader = new FileReader();
+                                        reader.onloadend = function () {
+                                            console.log(imagepre)
+                                            let a=imagepre;
+                                            a.push(<image src={reader.result}></image>) 
+                                            setimagepre(a)
+                                            console.log(a)
+                                        }
+                                        reader.readAsDataURL(event.target.files[0]);
+                                    }
+                                    // data.image = e.target.files[0];
+                                    // let reader = new FileReader();
+                                    // setimageurl(e.target.value)
+                                }}></Form.Control>
 
                             </Card>
                         </Col>
