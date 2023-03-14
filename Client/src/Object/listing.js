@@ -21,8 +21,6 @@ export default class Listing {
         this.List = listing.list || [];
         var sdate = new Date(Date.parse(this.Starttime))
         var edate = new Date(Date.parse(this.Endtime))
-        console.log(sdate);
-        console.log(edate)
         this.Start_date = sdate.toISOString().split('T')[0]
         this.Start_time = sdate.getHours();
         this.End_date = edate.toISOString().split('T')[0]

@@ -20,6 +20,7 @@ var Core = (function () {
     var isdev = false;
     var homepage = <></>;
     var user;
+    var current_item;
     var route;
 
     var hookcount = 0;
@@ -50,7 +51,13 @@ var Core = (function () {
             item.push(x);
         });
 
-
+        item.forEach((_item, index) => {
+            list.forEach((_list, i) => {
+                if (_item.listing === _list.id)
+                    list[i].list.push(item[index])
+            })
+        })
+        console.log(list)
         ////////////////////////////////////
 
         if (val.islogin) {
@@ -121,6 +128,14 @@ var Core = (function () {
         },
         gethomepage: () => {
             return homepage;
+        },
+        setitem: (item, callback) => {
+            current_item = item;
+            if (callback)
+                callback()
+        },
+        getitem: () => {
+            return current_item
         }
     };
 })()

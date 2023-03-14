@@ -158,8 +158,10 @@ var Api = (function Api() {
     /**
      * @param {data type of data} param User-.
      */
-    var user_change = async (USer) => {
-        return axiosApi.put('/users/', {})
+    var user_change = async (data, callback) => {
+        var req = form_data(data)
+        console.log(req)
+        return axiosApi.post('/users/' + data.id, req).then((res) => { callback(res) })
     }
 
     var user_read = async (callback, pk) => {

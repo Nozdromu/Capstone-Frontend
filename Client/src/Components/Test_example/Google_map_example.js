@@ -30,6 +30,7 @@ export default function Map() {
     // };
     const handleShow = (data) => {
         setlisting(data);
+        setShow(true)
     };
 
 
@@ -37,7 +38,6 @@ export default function Map() {
     useEffect(() => {
         if (currentlisting) {
             getitem(currentlisting);
-            setShow(true)
         }
 
     }, [currentlisting])
@@ -101,47 +101,45 @@ export default function Map() {
 
 
     return isLoaded ? (
-        <Container ref={ref} style={{ width: '100%', height: '100%' }}>
-            <GoogleMap
+        <GoogleMap
 
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={zoom}
-                clickableIcons={false}
-                onLoad={onLoad}
-                onUnmount={onUnmount}
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={zoom}
+            clickableIcons={false}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
 
-            >
-                {markers}
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{currentlisting ? currentlisting.title : ''}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Row>
-                            <Col>
-                                {currentlisting ? currentlisting.description : ''}
-                            </Col>
+        >
+            {markers}
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{currentlisting ? currentlisting.title : ''}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row>
+                        <Col>
+                            {currentlisting ? currentlisting.description : ''}
+                        </Col>
 
-                        </Row>
-                        <Row>
-                            <Col>
-                                {currentlisting ? currentlisting.location : ''}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <ListGroup>
-                                    <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                                    <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                                    <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-                                    <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-                                    <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-                                </ListGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            {/* <Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            {currentlisting ? currentlisting.location : ''}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <ListGroup>
+                                {currentlisting ? currentlisting.list.map(val => {
+                                    return <ListGroup.Item key={val.id}>{val.name}</ListGroup.Item>
+                                }) : 'nothing here'}
+
+                            </ListGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        {/* <Col>
                             <p>
                             {'lat'+currentlisting!==undefined ? (currentlisting.lat===undefined?0:currentlisting.lat) : ''}
                             </p>
@@ -149,23 +147,23 @@ export default function Map() {
                             <Col>
                             {'lbg'+currentlisting!==undefined ? (currentlisting.lng===undefined?0:currentlisting.lng) : ''}
                             </Col> */}
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={() => {
-                            window.open("https://www.google.com/maps/search/?api=1&query=" + currentlisting.location)
-                        }}>
-                            go google map
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-                <></>
-            </GoogleMap>
+                    </Row>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={() => {
+                        window.open("https://www.google.com/maps/search/?api=1&query=" + currentlisting.location)
+                    }}>
+                        go google map
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <></>
+        </GoogleMap>
 
-        </ Container>
+
 
     ) : <></>
 }

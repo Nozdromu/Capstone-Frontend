@@ -9,7 +9,7 @@ export default function Itemdetial(props) {
     // var go=()=>{
     //     window.open("https://www.google.com/maps/search/?api=1&query=" + currentlisting.location)
     // }
-console.log(props)
+    console.log(props)
     return (
 
         <Modal
@@ -25,9 +25,9 @@ console.log(props)
             </Modal.Header>
             <Modal.Body>
                 <Row>
-                    <Col>
+                    <Col xs='auto'>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            <Carousel>
+                            {/* <Carousel>
                                 {props.data.list.map((val, index) => {
                                     return (
                                         <Carousel.Item key={index + val.itid}>
@@ -35,10 +35,11 @@ console.log(props)
                                         </Carousel.Item>
                                     )
                                 })}
-                            </Carousel>
+                            </Carousel> */}
+                            <img src={props.data.image} ></img>
                         </Modal.Title>
                     </Col>
-                    <Col>
+                    <Col >
                         <Row>
                             <h4>{props.data.itemname}</h4>
                         </Row>
@@ -50,12 +51,12 @@ console.log(props)
                             </Col>
                         </Row>
                         <Row>
-                            <Col>
-                                {'left: ' + props.data.qty}
+                            <Col className='send'>
+                                {'Qty: ' + props.data.qty}
                             </Col>
                         </Row>
                         <Row>
-                            <Col>
+                            <Col className='send'>
                                 {'$' + props.data.price}
                             </Col>
                         </Row>
@@ -66,12 +67,12 @@ console.log(props)
             </Modal.Body>
             <Modal.Footer>
                 <Col>
-                <Button >send me there</Button>
+                    <Button >send me there</Button>
                 </Col>
-                <Col>
+                <Col className='send'>
                     <Button onClick={props.onHide}>Close</Button>
                 </Col>
-                {Core.check_dev() && Core.getUser().islogin ? <Button onClick={props.startchat}>chat</Button> : <></>}
+                {/* {Core.check_dev() && Core.getUser().islogin ? <Button onClick={props.startchat}>chat</Button> : <></>} */}
 
             </Modal.Footer>
         </Modal>

@@ -1,14 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import Signincont from '../App'
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Signin from './Signin'
+import Itemdetial from './Itemdetial';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Core from './Core';
 
 function MyNavbar(props) {
     // const [load, setload] = useState(false);
+    console.log(useContext(Signincont))
     const [username, setusername] = useState(Core.getUser().username)
     const [login, setlogin] = useState(Core.getUser().islogin);
+    const [modalShow, setmodalShow] = useState(false)
+    const [item, setitem] = useState({});
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
@@ -83,6 +88,8 @@ function MyNavbar(props) {
             </Container>
         </Navbar>
         <Signin show={show} onHide={handleClose} signin={handleSignin}></Signin>
+        <Itemdetial show={modalShow} onHide={() => setmodalShow(false)} data={item}></Itemdetial>
+
     </>
     );
 }

@@ -50,7 +50,6 @@ export default function AccountEdit(prop) {
     var edit_user = (event) => {
         event.preventDefault();
         data.update(props.update());
-        window.location.reload();
     }
     var delete_user = () => {
         // Api.user.delete({ uid: uid }, (res) => {
@@ -118,6 +117,14 @@ export default function AccountEdit(prop) {
                                     </Form.Group>
                                 </Col>
                             </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="edit_user_phone">
+                                        <Form.Label>phone</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'phone')} value={phone} required={true} ref={inputs.user_phone} type="input" placeholder="Enter phone" />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </Col>
                         <Col>
                             <Card style={{ height: '100%' }} onClick={() => {
@@ -125,23 +132,14 @@ export default function AccountEdit(prop) {
 
                             }}>
 
-                                {imagepre}
+                                <img alt='img' style={{width:'100%',height:'100%'}} src={imagepre}></img>
                                 <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
 
                                     if (event.target.files && event.target.files[0]) {
-                                        let reader = new FileReader();
-                                        reader.onloadend = function () {
-                                            console.log(imagepre)
-                                            let a=imagepre;
-                                            a.push(<image src={reader.result}></image>) 
-                                            setimagepre(a)
-                                            console.log(a)
-                                        }
-                                        reader.readAsDataURL(event.target.files[0]);
+                                        setimagepre(URL.createObjectURL(event.target.files[0]))
+                                        data.imagepreview=event.target.files[0];
                                     }
-                                    // data.image = e.target.files[0];
-                                    // let reader = new FileReader();
-                                    // setimageurl(e.target.value)
+
                                 }}></Form.Control>
 
                             </Card>
@@ -153,14 +151,6 @@ export default function AccountEdit(prop) {
                             <Form.Group className="mb-3" controlId="edit_user_email">
                                 <Form.Label>email</Form.Label>
                                 <Form.Control onChange={(e) => onchange(e, 'email')} value={email} required={true} ref={inputs.user_email} type="input" placeholder="Enter email" />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-3" controlId="edit_user_phone">
-                                <Form.Label>phone</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'phone')} value={phone} required={true} ref={inputs.user_phone} type="input" placeholder="Enter phone" />
                             </Form.Group>
                         </Col>
                     </Row>

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Itemdetial from './Itemdetial';
 import axios from 'axios';
 import S_chat from './Test_example/S_chat'
+import Core from './Core';
 
 
 export default function Itemcard(props) {
@@ -20,8 +21,9 @@ export default function Itemcard(props) {
     return (
         <>
             <Card onClick={() => {
-                setmodalShow(true)
-                console.log('done')
+                // setmodalShow(true)
+                // console.log('done')
+                Core.setitem(props.data)
             }
             }>
                 <div className="rect-img-container">

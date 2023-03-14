@@ -23,6 +23,7 @@ export default class User {
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
         this.Profilepicture = user.profilepicture || '';
+        this.Imagepreview = '';
         this.Changedimage = '';
         this.Islogin = false;
         this.Chathistory = user.chathistory || [];
@@ -170,7 +171,7 @@ export default class User {
     }
 
     get json() {
-        return this.servertype ? {
+        var json = this.servertype ? {
             uid: this.Id,
             firstname: this.First_name,
             lastname: this.Last_name,
@@ -196,6 +197,10 @@ export default class User {
             phone_number: this.Phone_number,
             re_password: this.Re_password
         }
+        if (this.Imagepreview !== '') {
+            json['profile_picture'] = this.Imagepreview
+        }
+        return json
     }
 
 
@@ -214,6 +219,13 @@ export default class User {
 
     ////////////////////////////////////////////////////
     //
+    get imagepreview() {
+        return this.Imagepreview
+    }
+    set imagepreview(val) {
+        this.Imagepreview = val;
+    }
+
     get rooms() {
         return this.Rooms
     }
