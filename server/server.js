@@ -12,7 +12,7 @@ const session = require('express-session')
 const sqlconfig = require('./sqlconfig.json');
 const Usystem = require('./Usystem')
 const fileUpload = require('express-fileupload');
-const bodyParser= require('body-parser')
+const bodyParser = require('body-parser')
 
 // requires end
 ////////////////////////////////////////////////////////////////////////////
@@ -53,15 +53,17 @@ global.sessionMiddleware = session({
 
 var app = express();
 var server = http.createServer(app);
-var staticPath = path.join(__dirname, './');
+var staticPath = path.join(__dirname, '../Client/build');
 
 app.use(cors())
 app.use(sessionMiddleware)
 app.use(fileUpload())
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(staticPath));
-app.set('port', process.env.PORT || 8000);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('Client/build'));
+app.set('port', process.env.PORT || 3001);
+
+
 
 //  server setting end
 /////////////////////////////////////////////////////////////////////////////
@@ -90,6 +92,10 @@ require('./Apis/item')(app)
 require('./Apis/listing')(app)
 require('./Apis/chat')(app)
 require('./Apis/other')(app)
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(staticPath, "index.html"));
+});
 
 // end
 ////////////////////////////////////////////////////////////////////////////

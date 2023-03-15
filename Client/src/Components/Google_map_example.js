@@ -1,8 +1,9 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
-import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
-import Core from '../Core';
-import { Container, Overlay, Popover, Modal, Button, Row, Col, ListGroup } from 'react-bootstrap';
-import Api from './../Api';
+import { useState, useCallback, useRef, useEffect, useContext } from 'react'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import Core from './Core';
+import { Modal, Button, Row, Col, ListGroup } from 'react-bootstrap';
+import Api from './Api';
+import { itemdetial, itemshow } from '../App'
 
 
 const containerStyle = {
@@ -17,6 +18,8 @@ export default function Map() {
     const [zoom, setZoom] = useState(15);
     const [show, setShow] = useState(false);
     const [currentlisting, setlisting] = useState();
+    const { item, setitem } = useContext(itemdetial)
+    const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
 
     const handleClose = () => setShow(false);
 
@@ -132,7 +135,11 @@ export default function Map() {
                         <Col>
                             <ListGroup>
                                 {currentlisting ? currentlisting.list.map(val => {
-                                    return <ListGroup.Item key={val.id}>{val.name}</ListGroup.Item>
+                                    return <ListGroup.Item key={val.id} onClick={() => {
+                                        Core.setitem(val)
+                                        setitem(val);
+                                        setitemdetialshow(true)
+                                    }}>{val.name} </ListGroup.Item>
                                 }) : 'nothing here'}
 
                             </ListGroup>

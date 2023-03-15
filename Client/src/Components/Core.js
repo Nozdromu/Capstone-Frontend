@@ -8,7 +8,7 @@ import Listing from "../Object/listing";
 import Item from './../Object/item';
 import User from "../Object/user";
 import Newhome from './Newhome';
-import Map from './Test_example/Google_map_example';
+import Map from './Google_map_example';
 
 
 var Core = (function () {
