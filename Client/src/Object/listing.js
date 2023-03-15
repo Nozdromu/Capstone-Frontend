@@ -121,7 +121,7 @@ export default class Listing {
                 "date": this.Date,
                 "theme": this.Theme,
                 "start_time": this.Starttime,
-                "end_time": this.endtime,
+                "end_time": this.Endtime,
                 "listing_main_photo":this.image
             }
     }

@@ -6,6 +6,7 @@ var Api = (function Api() {
     axiosApi.defaults.xsrfCookieName = 'csrftoken';
     axiosApi.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axiosApi.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+    axiosApi.defaults.headers.put['Content-Type'] = 'multipart/form-data'
     var test_server = false;
 
     var form_data = (json) => {
@@ -18,6 +19,7 @@ var Api = (function Api() {
 
     var data = async (callback) => {
         return axiosApi.get('/data/').then(res => {
+            console.log(res)
             if (callback) {
                 callback(res.data)
             }
@@ -160,8 +162,9 @@ var Api = (function Api() {
      */
     var user_change = async (data, callback) => {
         var req = form_data(data)
+        console.log(data)
         console.log(req)
-        return axiosApi.post('/users/' + data.id, req).then((res) => { callback(res) })
+        return axiosApi.put('/users/' + data.id + '/', data).then((res) => { callback(res) })
     }
 
     var user_read = async (callback, pk) => {
@@ -173,7 +176,8 @@ var Api = (function Api() {
     // listings
     var listings_create = async (data, callback) => {
         console.log(data)
-        return axiosApi.post('/listings/create/', data).then(res => { console.log(res); if (callback) callback(res) })
+        var postdata=form_data(data)
+        return axiosApi.post('/listings/create/', postdata).then(res => { console.log(res); if (callback) callback(res) })
     }
 
     var listings_delete = async (data, callback) => {
@@ -218,7 +222,7 @@ var Api = (function Api() {
     }
 
     var item_create = async (data, callback) => {
-        return axiosApi.post('/listings/' + data.listing + '/createitem/', data).then(res => callback(res))
+        return axiosApi.post('/listings/' + data.listing + '/createitem/', form_data(data)).then(res => callback(res))
     }
 
     var item_delete = async (data, callback) => {

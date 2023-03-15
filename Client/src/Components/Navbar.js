@@ -4,26 +4,27 @@ import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstr
 import Signin from './Signin'
 import Itemdetial from './Itemdetial';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { itemdetial, itemshow } from '../App'
+import S_chat from './New_s_chat'
+import axios from 'axios';
 
 import Core from './Core';
 
 function MyNavbar(props) {
     // const [load, setload] = useState(false);
-    console.log(useContext(Signincont))
+    const { item, setitem } = useContext(itemdetial)
+    const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
+
+
     const [username, setusername] = useState(Core.getUser().username)
     const [login, setlogin] = useState(Core.getUser().islogin);
-    const [modalShow, setmodalShow] = useState(false)
-    const [item, setitem] = useState({});
+
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
-    // var startload=()=>{
-    //     setload(true)
-    // }
+    const [chatshow, setchatshow] = useState(true);
+    const [schat, setschat] = useState(<></>);
 
-    // useEffect(()=>{
-    //     Core.addhook(startload)
-    // })
 
     useEffect(() => {
         if (login) {
@@ -50,6 +51,19 @@ function MyNavbar(props) {
                 console.log('something wrong')
             }
         })
+    }
+
+    var hidechat = () => {
+        setchatshow(!chatshow);
+    }
+
+    var startchat = (data) => {
+        axios.get('/create_room', { params: { uid: item.uid } }).then(res => {
+            var data = res.data;
+            setschat(<S_chat setshow={hidechat} roomid={data.email} chatname={data.chatname} />)
+            setchatshow(true);
+        })
+
     }
 
     return (<>
@@ -88,8 +102,8 @@ function MyNavbar(props) {
             </Container>
         </Navbar>
         <Signin show={show} onHide={handleClose} signin={handleSignin}></Signin>
-        <Itemdetial show={modalShow} onHide={() => setmodalShow(false)} data={item}></Itemdetial>
-
+        <Itemdetial show={itemdetialshow} onHide={() => setitemdetialshow(false)} data={item} startchat={startchat}></Itemdetial>
+        {chatshow ? schat : <></>}
     </>
     );
 }

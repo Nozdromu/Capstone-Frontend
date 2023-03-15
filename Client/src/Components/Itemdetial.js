@@ -67,12 +67,14 @@ export default function Itemdetial(props) {
             </Modal.Body>
             <Modal.Footer>
                 <Col>
-                    <Button >send me there</Button>
+                    <Button onClick={() => {
+                        window.open("https://www.google.com/maps/search/?api=1&query=" + props.data.listing_info.location)
+                    }}>send me there</Button>
                 </Col>
                 <Col className='send'>
                     <Button onClick={props.onHide}>Close</Button>
                 </Col>
-                {/* {Core.check_dev() && Core.getUser().islogin ? <Button onClick={props.startchat}>chat</Button> : <></>} */}
+                {Core.check_dev() && Core.getUser().islogin ? <Button onClick={props.startchat}>chat</Button> : <></>}
 
             </Modal.Footer>
         </Modal>

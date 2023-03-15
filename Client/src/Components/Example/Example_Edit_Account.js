@@ -15,6 +15,8 @@ export default function AccountEdit(prop) {
     const [image, setimage] = useState({})
     const [imagepre, setimagepre] = useState([])
     const [login, setlogin] = useState(false)
+    const [states, setstates] = useState('')
+    const [zip, setzip] = useState('')
 
     useEffect(() => {
         setprops(prop)
@@ -37,6 +39,8 @@ export default function AccountEdit(prop) {
             setphone(data.phone || '');
             setfirstname(data.firstname || '')
             setlastname(data.lastname || '');
+            setstates(data.state || '')
+            setzip(data.zip_code || '')
         }
     }, [data])
     var inputs = {
@@ -45,7 +49,9 @@ export default function AccountEdit(prop) {
         user_email: useRef(null),
         user_phone: useRef(null),
         user_firstname: useRef(null),
-        user_lastname: useRef(null)
+        user_lastname: useRef(null),
+        user_zip: useRef(null),
+        user_state: useRef(null)
     }
     var edit_user = (event) => {
         event.preventDefault();
@@ -81,6 +87,14 @@ export default function AccountEdit(prop) {
             case 'phone':
                 data.phone = event.target.value
                 setphone(data.phone);
+                break;
+            case 'zip_code':
+                data.zip_code = event.target.value
+                setzip(data.zip_code);
+                break;
+            case 'state':
+                data.state = event.target.value
+                setstates(data.state);
                 break;
             default:
         }
@@ -132,12 +146,12 @@ export default function AccountEdit(prop) {
 
                             }}>
 
-                                <img alt='img' style={{width:'100%',height:'100%'}} src={imagepre}></img>
+                                <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre ? imagepre : data.src}></img>
                                 <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
 
                                     if (event.target.files && event.target.files[0]) {
                                         setimagepre(URL.createObjectURL(event.target.files[0]))
-                                        data.imagepreview=event.target.files[0];
+                                        data.imagepreview = event.target.files[0];
                                     }
 
                                 }}></Form.Control>
@@ -166,6 +180,20 @@ export default function AccountEdit(prop) {
                             <Form.Group className="mb-3" controlId="edit_user_lastname">
                                 <Form.Label>lastname</Form.Label>
                                 <Form.Control onChange={(e) => onchange(e, 'lastname')} required={true} value={lastname} ref={inputs.user_lastname} type="input" placeholder="enter lastname" />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="edit_user_zip_code">
+                                <Form.Label>zip_code</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'zip_code')} required={true} value={zip} ref={inputs.user_zip} type="input" placeholder="enter zip" />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="edit_user_state">
+                                <Form.Label>state</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'state')} required={true} value={states} ref={inputs.user_state} type="input" placeholder="enter state" />
                             </Form.Group>
                         </Col>
                     </Row>

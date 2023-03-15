@@ -4,14 +4,14 @@ import Home from './Components/Newhome'
 import Core from './Components/Core';
 import { createContext } from 'react';
 
-const itemdetial = createContext(false);
-const Signincont = createContext(false);
+export const itemdetial = createContext(null);
+export const itemshow = createContext(null);
 
 function App() {
   // state that control page show
   const [load, setLoad] = useState(false)
   const [page, setpage] = useState(<></>);
-  const [signinshow, setsigninshow] = useState(false);
+  const [item, setitem] = useState('');
   const [itemdetialshow, setitemdetialshow] = useState(false)
   var set = () => {
     setLoad(true);
@@ -28,10 +28,10 @@ function App() {
   }, [load])
 
   return (
-    <itemdetial.Provider value={{signinshow, setsigninshow}}>
-      <Signincont.Provider value={{itemdetialshow, setitemdetialshow}}>
+    <itemdetial.Provider value={{ item, setitem }}>
+      <itemshow.Provider value={{ itemdetialshow, setitemdetialshow }}>
         {page}
-      </Signincont.Provider>
+      </itemshow.Provider>
     </itemdetial.Provider>
 
   )

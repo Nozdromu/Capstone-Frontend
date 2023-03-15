@@ -2,14 +2,14 @@ module.exports = function (app) {
 
     app.get('/create_room', (req, res) => {
         console.log(req.query);
-        var user = USys.getuser(req.query.user.email);
+        var user = USys.getuserlist('uid')[req.query.uid];
         var result = { status: 0, reciver_id: user.uid, roomid: '' }
-        if (user.checklogin()) {
-            result.status = 1;
-            result.roomid = user.socket().id;
-            result.chatname = user.firstname;
-            result.email = user.email;
-        }
+
+        result.status = 1;
+        result.roomid = user.socket().id;
+        result.chatname = user.info().firstname;
+        result.email = user.info().email;
+
         console.log(result);
         res.send(result);
     })

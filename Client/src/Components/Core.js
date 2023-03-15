@@ -53,8 +53,11 @@ var Core = (function () {
 
         item.forEach((_item, index) => {
             list.forEach((_list, i) => {
-                if (_item.listing === _list.id)
+                if (_item.listing === _list.id) {
+                    item[index].listing_info = list[i]
                     list[i].list.push(item[index])
+                }
+
             })
         })
         console.log(list)

@@ -1,10 +1,10 @@
 import Card from 'react-bootstrap/Card';
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Itemdetial from './Itemdetial';
 import axios from 'axios';
 import S_chat from './Test_example/S_chat'
 import Core from './Core';
-
+import { itemdetial, itemshow } from '../App'
 
 export default function Itemcard(props) {
     const [modalShow, setmodalShow] = useState(false)
@@ -18,12 +18,19 @@ export default function Itemcard(props) {
         })
     }
 
+
+    const { item, setitem } = useContext(itemdetial)
+    const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
+
     return (
         <>
             <Card onClick={() => {
                 // setmodalShow(true)
                 // console.log('done')
                 Core.setitem(props.data)
+                console.log(props.data)
+                setitem(props.data);
+                setitemdetialshow(true)
             }
             }>
                 <div className="rect-img-container">
@@ -39,7 +46,7 @@ export default function Itemcard(props) {
                     </Card.Text>
                 </Card.Body>
             </Card>
-            <Itemdetial show={modalShow} chatshow={setchatshow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial>
+            {/* <Itemdetial show={modalShow} chatshow={setchatshow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial> */}
         </>
     )
 }

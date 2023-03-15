@@ -22,7 +22,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || '';
+        this.Profilepicture = user.profilepicture || user.profile_picture || '';
         this.Imagepreview = '';
         this.Changedimage = '';
         this.Islogin = false;
@@ -143,7 +143,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || '';
+        this.Profilepicture = user.profilepicture || user.profile_picture || '';
         this.Chathistory = user.chathistory || [];
         this.Islogin = true;
         if (this.servertype) {

@@ -23,6 +23,7 @@ export default class Item {
         this.Detail = item.detail || '';
         this.Imagelist = item.list || [];
         this.List = [];
+        this.Listing_info={};
         this.servertype = server;
     }
     get table() {
@@ -106,6 +107,13 @@ export default class Item {
     // }
     ////////////////////////////////////////////////////
     //
+    get listing_info() {
+        return this.Listing_info;
+    }
+    set listing_info(val) {
+        this.Listing_info = val
+    }
+
     get list() {
         return this.List;
     }
