@@ -11,9 +11,8 @@ export default function AccountEdit(prop) {
     const [phone, setphone] = useState('');
     const [firstname, setfirstname] = useState('');
     const [lastname, setlastname] = useState('');
-    const [imageurl, setimageurl] = useState('')
     const [image, setimage] = useState({})
-    const [imagepre, setimagepre] = useState([])
+    const [imagepre, setimagepre] = useState('')
     const [login, setlogin] = useState(false)
     const [states, setstates] = useState('')
     const [zip, setzip] = useState('')
@@ -41,6 +40,7 @@ export default function AccountEdit(prop) {
             setlastname(data.lastname || '');
             setstates(data.state || '')
             setzip(data.zip_code || '')
+            setimage(data.src||'')
         }
     }, [data])
     var inputs = {
@@ -146,7 +146,7 @@ export default function AccountEdit(prop) {
 
                             }}>
 
-                                <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre ? imagepre : data.src}></img>
+                                <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre!==''?imagepre:image}></img>
                                 <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
 
                                     if (event.target.files && event.target.files[0]) {

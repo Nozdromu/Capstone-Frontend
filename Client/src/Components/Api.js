@@ -176,7 +176,7 @@ var Api = (function Api() {
     // listings
     var listings_create = async (data, callback) => {
         console.log(data)
-        var postdata=form_data(data)
+        var postdata = form_data(data)
         return axiosApi.post('/listings/create/', postdata).then(res => { console.log(res); if (callback) callback(res) })
     }
 
@@ -229,17 +229,15 @@ var Api = (function Api() {
         return axiosApi.delete('/listings/' + data.listing + '/' + data.id + '/delete').then(res => { if (callback) callback(res) })
     }
     var item_update = async (data, callback) => {
-        // const formData = new FormData();
-        // Object.keys(data).forEach(key => {
-        //     if (key !== 'item_main_photo')
-        //         formData.append(key, data[key])
-        // })
-        // formData.append('item_main_photo', data.item_main_photo[0])
+        console.log(data)
         return axiosApi.post(
             '/listings/' + data.listing + '/' + data.id + '/update/',
             form_data(data)
-        ).then(res => callback(res))
-        // return axiosApi.put('/listings/' + data.listing + '/' + data.id + '/update/', data).then(res => { if (callback) callback(res) })
+        ).then(res => {
+            console.log(res)
+            if (callback)
+                callback(res)
+        })
     }
 
 

@@ -13,6 +13,7 @@ export default function ListingEdit(prop) {
     const [description, setdescription] = useState('');
     const [location, setlocation] = useState('');
     const [image, setimage] = useState('');
+    const [imagepre, setimagepre] = useState('')
     const [lat, setlat] = useState('');
     const [lng, setlng] = useState('');
     const [startdate, setstartdate] = useState('');
@@ -170,18 +171,39 @@ export default function ListingEdit(prop) {
             <Form id='edit_listing' onSubmit={createmode ? create_listing : edit_listing}>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_id">
-                            <Form.Label>ID</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'id')} value={listid} required={true} ref={inputs.listing_id} type="input" disabled={true} />
-                        </Form.Group>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="create_listing_id">
+                                <Form.Label>ID</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'id')} value={listid} required={true} ref={inputs.listing_id} type="input" disabled={true} />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="create_listing_title">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'title')} value={title} required={true} ref={inputs.listing_title} type="input" placeholder="Enter Title" />
+                            </Form.Group>
+                        </Col>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_title">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'title')} value={title} required={true} ref={inputs.listing_title} type="input" placeholder="Enter Title" />
-                        </Form.Group>
+                        <Row style={{ width: '100%' }}>
+                            <Col style={{ width: '100%' }} onClick={() => {
+                                document.getElementById('listing_image').click()
+
+                            }}>
+                                <img style={{ width: '100%' }} src={imagepre ? imagepre : image}></img>
+                                <Form.Control style={{ display: 'none' }} id='listing_image' onChange={(event) => {
+
+                                    if (event.target.files && event.target.files[0]) {
+                                        setimagepre(URL.createObjectURL(event.target.files[0]))
+                                        data.imagepreview = event.target.files[0];
+                                    }
+
+                                }} required={false} ref={inputs.image} type="file" placeholder="Select image" />
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
+
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="create_listing_description">
@@ -190,14 +212,7 @@ export default function ListingEdit(prop) {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_image">
-                            <Form.Label>image</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')}  required={false} ref={inputs.image} type="file" placeholder="Select image" />
-                        </Form.Group>
-                    </Col>
-                </Row>
+
                 <Row>
                     <Col>
                         <Row>
@@ -212,7 +227,7 @@ export default function ListingEdit(prop) {
                             <Col>
                                 <Form.Group className="mb-3" controlId="create_listing_start_time">
                                     <Form.Label>starttime</Form.Label>
-                                    <Form.Control format= {'HH:mm'} onChange={(e) => onchange(e, 'starttime')} value={starttime} required={false} ref={inputs.listing_starttime} type="time" placeholder="pick a startdate" />
+                                    <Form.Control format={'HH:mm'} onChange={(e) => onchange(e, 'starttime')} value={starttime} required={false} ref={inputs.listing_starttime} type="time" placeholder="pick a startdate" />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -231,7 +246,7 @@ export default function ListingEdit(prop) {
                             <Col>
                                 <Form.Group className="mb-3" controlId="create_listing_end_time">
                                     <Form.Label>endtime</Form.Label>
-                                    <Form.Control format= {'HH:mm'} onChange={(e) => onchange(e, 'endtime')} value={endtime} required={false} ref={inputs.listing_endtime} type="time" placeholder="pick a startdate" />
+                                    <Form.Control format={'HH:mm'} onChange={(e) => onchange(e, 'endtime')} value={endtime} required={false} ref={inputs.listing_endtime} type="time" placeholder="pick a startdate" />
                                 </Form.Group>
                             </Col>
                         </Row>

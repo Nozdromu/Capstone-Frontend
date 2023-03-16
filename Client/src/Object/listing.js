@@ -25,6 +25,7 @@ export default class Listing {
         this.Start_time = sdate.getHours();
         this.End_date = edate.toISOString().split('T')[0]
         this.End_time = edate.getHours();
+        this.Imagepreview = ''
     }
     update(callback) {
         console.log(this.json);
@@ -40,7 +41,7 @@ export default class Listing {
     }
 
 
-    
+
     get table() {
         return this.Servertype ?
             {
@@ -93,7 +94,7 @@ export default class Listing {
             }
     }
     get json() {
-        return this.Servertype ?
+        var json = this.Servertype ?
             {
                 "gsid": this.Id,
                 "uid": this.Owner,
@@ -122,9 +123,21 @@ export default class Listing {
                 "theme": this.Theme,
                 "start_time": this.Starttime,
                 "end_time": this.Endtime,
-                "listing_main_photo":this.image
+                "listing_main_photo": this.image
             }
+        if (this.Imagepreview !== '') {
+            json.listing_main_photo = this.Imagepreview
+        }
+        return json
     }
+
+    get imagepreview() {
+        return this.Imagepreview;
+    }
+    set imagepreview(val) {
+        this.Imagepreview = val;
+    }
+
     ////////////////////////////////////
     // list
     get list() {
@@ -152,14 +165,14 @@ export default class Listing {
     }
     set starttime(val) {
         this.Start_time = val;
-        this.Starttime = this.Start_date + 'T' + val+'Z'
+        this.Starttime = this.Start_date + 'T' + val + 'Z'
     }
     get endtime() {
         return this.End_time;
     }
     set endtime(val) {
         this.End_time = val;
-        this.Endtime = this.End_date + 'T' + val+'Z'
+        this.Endtime = this.End_date + 'T' + val + 'Z'
     }
 
     get startdate() {
@@ -167,14 +180,14 @@ export default class Listing {
     }
     set startdate(val) {
         this.Start_date = val;
-        this.Starttime = val + 'T' + this.Start_time+'Z'
+        this.Starttime = val + 'T' + this.Start_time + 'Z'
     }
     get enddate() {
         return this.End_date;
     }
     set enddate(val) {
         this.End_date = val;
-        this.Endtime = val + 'T' + this.End_time+'Z'
+        this.Endtime = val + 'T' + this.End_time + 'Z'
     }
 
     get start() {
@@ -206,6 +219,13 @@ export default class Listing {
 
     ////////////////////////////////////
     // photo
+
+    get src() {
+        return this.Photo
+    }
+    set src(val) {
+        this.Photo = val;
+    }
 
     get image() {
         return this.Photo;

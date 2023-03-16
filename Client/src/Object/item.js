@@ -23,7 +23,8 @@ export default class Item {
         this.Detail = item.detail || '';
         this.Imagelist = item.list || [];
         this.List = [];
-        this.Listing_info={};
+        this.Listing_info = {};
+        this.Imagepreview = '';
         this.servertype = server;
     }
     get table() {
@@ -53,7 +54,7 @@ export default class Item {
         }
     }
     get json() {
-        return this.servertype ? {
+        var json = this.servertype ? {
             itid: this.Id,
             itemname: this.Name,
             brand: this.Brand,
@@ -83,6 +84,11 @@ export default class Item {
             lng: this.Lng,
             date: this.Date
         }
+        if (this.Imagepreview !== '') {
+            json.item_main_photo = this.Imagepreview
+        }
+
+        return json
     }
 
     update(callback) {
@@ -119,6 +125,13 @@ export default class Item {
     }
     set list(val) {
         this.List = val
+    }
+
+    get imagepreview() {
+        return this.Imagepreview;
+    }
+    set imagepreview(val) {
+        this.Imagepreview = val
     }
 
     get imagelist() {

@@ -22,7 +22,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || user.profile_picture || '';
+        this.Profilepicture = user.profilepicture || user.profile_picture ||user.image_url|| '';
         this.Imagepreview = '';
         this.Changedimage = '';
         this.Islogin = false;
@@ -80,7 +80,7 @@ export default class User {
                 this.State = user.state || '';
                 this.Zip_code = user.zip_code || ''
                 this.Registertime = user.registertime || '';
-                this.Profilepicture = user.profilepicture || '';
+                this.Profilepicture = user.profilepicture ||user.image_url|| '';
                 this.Chathistory = user.chathistory || [];
             } else {
                 console.log(res);
@@ -126,7 +126,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || '';
+        this.Profilepicture = user.profilepicture ||user.image_url|| '';
     }
 
     load(user, callback) {
@@ -143,7 +143,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || user.profile_picture || '';
+        this.Profilepicture = user.profilepicture || user.profile_picture ||user.image_url|| '';
         this.Chathistory = user.chathistory || [];
         this.Islogin = true;
         if (this.servertype) {
@@ -198,7 +198,7 @@ export default class User {
             re_password: this.Re_password
         }
         if (this.Imagepreview !== '') {
-            json['profile_picture'] = this.Imagepreview
+            json['image_url'] = this.Imagepreview
         }
         return json
     }
