@@ -11,7 +11,11 @@ export default function AccountEdit(prop) {
     const [phone, setphone] = useState('');
     const [firstname, setfirstname] = useState('');
     const [lastname, setlastname] = useState('');
+    const [image, setimage] = useState({})
+    const [imagepre, setimagepre] = useState('')
     const [login, setlogin] = useState(false)
+    const [states, setstates] = useState('')
+    const [zip, setzip] = useState('')
 
     useEffect(() => {
         setprops(prop)
@@ -34,6 +38,9 @@ export default function AccountEdit(prop) {
             setphone(data.phone || '');
             setfirstname(data.firstname || '')
             setlastname(data.lastname || '');
+            setstates(data.state || '')
+            setzip(data.zip_code || '')
+            setimage(data.src||'')
         }
     }, [data])
     var inputs = {
@@ -42,12 +49,13 @@ export default function AccountEdit(prop) {
         user_email: useRef(null),
         user_phone: useRef(null),
         user_firstname: useRef(null),
-        user_lastname: useRef(null)
+        user_lastname: useRef(null),
+        user_zip: useRef(null),
+        user_state: useRef(null)
     }
     var edit_user = (event) => {
         event.preventDefault();
         data.update(props.update());
-        window.location.reload();
     }
     var delete_user = () => {
         // Api.user.delete({ uid: uid }, (res) => {
@@ -80,6 +88,14 @@ export default function AccountEdit(prop) {
                 data.phone = event.target.value
                 setphone(data.phone);
                 break;
+            case 'zip_code':
+                data.zip_code = event.target.value
+                setzip(data.zip_code);
+                break;
+            case 'state':
+                data.state = event.target.value
+                setstates(data.state);
+                break;
             default:
         }
     }
@@ -99,31 +115,56 @@ export default function AccountEdit(prop) {
                 <fieldset disabled={login}>
                     <Row>
                         <Col>
-                            <Form.Group className="mb-3" controlId="edit_user_uid">
-                                <Form.Label>UID</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'uid')} value={uid} required={true} ref={inputs.user_uid} type="input" disabled={true} />
-                            </Form.Group>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="edit_user_uid">
+                                        <Form.Label>UID</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'uid')} value={uid} required={true} ref={inputs.user_uid} type="input" disabled={true} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="edit_user_username">
+                                        <Form.Label>username</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'username')} value={username} required={true} ref={inputs.user_username} type="input" placeholder="Enter username" />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="edit_user_phone">
+                                        <Form.Label>phone</Form.Label>
+                                        <Form.Control onChange={(e) => onchange(e, 'phone')} value={phone} required={true} ref={inputs.user_phone} type="input" placeholder="Enter phone" />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </Col>
                         <Col>
-                            <Form.Group className="mb-3" controlId="edit_user_username">
-                                <Form.Label>username</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'username')} value={username} required={true} ref={inputs.user_username} type="input" placeholder="Enter username" />
-                            </Form.Group>
+                            <Card style={{ height: '100%' }} onClick={() => {
+                                document.getElementById('user_image').click()
+
+                            }}>
+
+                                <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre!==''?imagepre:image}></img>
+                                <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
+
+                                    if (event.target.files && event.target.files[0]) {
+                                        setimagepre(URL.createObjectURL(event.target.files[0]))
+                                        data.imagepreview = event.target.files[0];
+                                    }
+
+                                }}></Form.Control>
+
+                            </Card>
                         </Col>
                     </Row>
+
                     <Row>
                         <Col>
                             <Form.Group className="mb-3" controlId="edit_user_email">
                                 <Form.Label>email</Form.Label>
                                 <Form.Control onChange={(e) => onchange(e, 'email')} value={email} required={true} ref={inputs.user_email} type="input" placeholder="Enter email" />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-3" controlId="edit_user_phone">
-                                <Form.Label>phone</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'phone')} value={phone} required={true} ref={inputs.user_phone} type="input" placeholder="Enter phone" />
                             </Form.Group>
                         </Col>
                     </Row>
@@ -139,6 +180,20 @@ export default function AccountEdit(prop) {
                             <Form.Group className="mb-3" controlId="edit_user_lastname">
                                 <Form.Label>lastname</Form.Label>
                                 <Form.Control onChange={(e) => onchange(e, 'lastname')} required={true} value={lastname} ref={inputs.user_lastname} type="input" placeholder="enter lastname" />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="edit_user_zip_code">
+                                <Form.Label>zip_code</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'zip_code')} required={true} value={zip} ref={inputs.user_zip} type="input" placeholder="enter zip" />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="edit_user_state">
+                                <Form.Label>state</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'state')} required={true} value={states} ref={inputs.user_state} type="input" placeholder="enter state" />
                             </Form.Group>
                         </Col>
                     </Row>

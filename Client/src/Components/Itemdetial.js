@@ -6,7 +6,10 @@ import Core from './Core';
 
 
 export default function Itemdetial(props) {
-
+    // var go=()=>{
+    //     window.open("https://www.google.com/maps/search/?api=1&query=" + currentlisting.location)
+    // }
+    console.log(props)
     return (
 
         <Modal
@@ -18,13 +21,13 @@ export default function Itemdetial(props) {
             enforceFocus={false}
         >
             <Modal.Header closeButton>
-                <h4>{props.data.itid+':'+props.data.uid}</h4>
+                <h4>{props.data.itid + ':' + props.data.uid}</h4>
             </Modal.Header>
             <Modal.Body>
                 <Row>
-                    <Col>
+                    <Col xs='auto'>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            <Carousel>
+                            {/* <Carousel>
                                 {props.data.list.map((val, index) => {
                                     return (
                                         <Carousel.Item key={index + val.itid}>
@@ -32,21 +35,47 @@ export default function Itemdetial(props) {
                                         </Carousel.Item>
                                     )
                                 })}
-                            </Carousel>
+                            </Carousel> */}
+                            <img src={props.data.image} ></img>
                         </Modal.Title>
                     </Col>
-                    <Col>
-                        <h4>{props.data.itemname}</h4>
-                        <p>
-                            {props.data.description}
-                        </p>
+                    <Col >
+                        <Row>
+                            <h4>{props.data.itemname}</h4>
+                        </Row>
+
+
+                        <Row>
+                            <Col>
+                                {'description' + props.data.description}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className='send'>
+                                {'Qty: ' + props.data.qty}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className='send'>
+                                {'$' + props.data.price}
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
 
+
             </Modal.Body>
             <Modal.Footer>
-                {Core.check_dev()&&Core.getUser().islogin?<Button onClick={props.startchat}>chat</Button>:<></>}
-                <Button onClick={props.onHide}>Close</Button>
+                <Col>
+                    <Button onClick={() => {
+                        window.open("https://www.google.com/maps/search/?api=1&query=" + props.data.listing_info.location)
+                    }}>send me there</Button>
+                </Col>
+                <Col className='send'>
+                    <Button onClick={props.onHide}>Close</Button>
+                </Col>
+                {Core.check_dev() && Core.getUser().islogin ? <Button onClick={props.startchat}>chat</Button> : <></>}
+
             </Modal.Footer>
         </Modal>
 

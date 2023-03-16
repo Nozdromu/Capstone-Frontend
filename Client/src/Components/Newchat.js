@@ -79,7 +79,7 @@ export default function Newchat() {
                             </Col>
                             <Col xs md lg="4">
                                 <Button onClick={handleRightchat}>submit</Button>
-                                <Button onClick={p}>update</Button>
+                                {/* <Button onClick={p}>update</Button> */}
                             </Col>
                         </Row>
                     </FormGroup>

@@ -13,8 +13,13 @@ export default function ListingEdit(prop) {
     const [description, setdescription] = useState('');
     const [location, setlocation] = useState('');
     const [image, setimage] = useState('');
+    const [imagepre, setimagepre] = useState('')
     const [lat, setlat] = useState('');
-    const [lng, setlng] = useState('')
+    const [lng, setlng] = useState('');
+    const [startdate, setstartdate] = useState('');
+    const [enddate, setenddate] = useState('');
+    const [starttime, setstarttime] = useState('');
+    const [endtime, setendtime] = useState('');
 
     useEffect(() => {
         setprops(prop)
@@ -45,6 +50,10 @@ export default function ListingEdit(prop) {
             setlat(data.lat || '');
             setlng(data.lng || '');
             setimage(data.image || '');
+            setstarttime(data.starttime || '');
+            setenddate(data.enddate || '');
+            setstartdate(data.startdate || '');
+            setendtime(data.endtime || '');
         }
     }, [data])
 
@@ -56,7 +65,11 @@ export default function ListingEdit(prop) {
         listing_main_photo: useRef(null),
         listing_lat: useRef(null),
         listing_lng: useRef(null),
-        listing_image: useRef(null)
+        listing_image: useRef(null),
+        listing_startdate: useRef(null),
+        listing_enddate: useRef(null),
+        listing_starttime: useRef(null),
+        listing_endtime: useRef(null)
     }
     var edit_listing = (event) => {
         event.preventDefault();
@@ -80,18 +93,18 @@ export default function ListingEdit(prop) {
     // get lat and lng from google api
     var req_address = 'https://maps.googleapis.com/maps/api/geocode/json'
     var key = 'AIzaSyA0DZnzUceQi8G8bH-4CFl4XD6jawq91Ws'
-    var get_lat_lng = () => {
-        var _data = {
-            address: inputs.listing_location.current.value,
-            key: key
-        }
-        Api.map.getgeo(req_address, _data, (res) => {
-            data.lat = res.data.results[0].geometry.location.lat;
-            data.lng = res.data.results[0].geometry.location.lng
-            setlat(data.lat);
-            setlng(data.lng);
-        })
-    }
+    // var get_lat_lng = () => {
+    //     var _data = {
+    //         address: inputs.listing_location.current.value,
+    //         key: key
+    //     }
+    //     Api.map.getgeo(req_address, _data, (res) => {
+    //         data.lat = res.data.results[0].geometry.location.lat;
+    //         data.lng = res.data.results[0].geometry.location.lng
+    //         setlat(data.lat);
+    //         setlng(data.lng);
+    //     })
+    // }
 
     var onchange = (event, keys) => {
         switch (keys) {
@@ -116,9 +129,27 @@ export default function ListingEdit(prop) {
                 setlat(data.lat);
                 break;
             case 'image':
-                data.image = event.target.files
+                data.image = event.target.files[0]
                 console.log(event.target.files)
                 setimage(event.target.value);
+                break;
+            case 'starttime':
+                console.log(event.target.value);
+                data.starttime = event.target.value.toString()
+                setstarttime(data.starttime)
+                break;
+            case 'endtime':
+                console.log(event.target.value);
+                data.endtime = event.target.value.toString()
+                setendtime(data.endtime)
+                break;
+            case 'startdate':
+                data.startdate = event.target.value.toString()
+                setstartdate(data.startdate)
+                break;
+            case 'enddate':
+                data.enddate = event.target.value.toString()
+                setenddate(data.enddate)
                 break;
             default:
         }
@@ -140,18 +171,39 @@ export default function ListingEdit(prop) {
             <Form id='edit_listing' onSubmit={createmode ? create_listing : edit_listing}>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_id">
-                            <Form.Label>ID</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'id')} value={listid} required={true} ref={inputs.listing_id} type="input" disabled={true} />
-                        </Form.Group>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="create_listing_id">
+                                <Form.Label>ID</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'id')} value={listid} required={true} ref={inputs.listing_id} type="input" disabled={true} />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="create_listing_title">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control onChange={(e) => onchange(e, 'title')} value={title} required={true} ref={inputs.listing_title} type="input" placeholder="Enter Title" />
+                            </Form.Group>
+                        </Col>
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_title">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'title')} value={title} required={true} ref={inputs.listing_title} type="input" placeholder="Enter Title" />
-                        </Form.Group>
+                        <Row style={{ width: '100%' }}>
+                            <Col style={{ width: '100%' }} onClick={() => {
+                                document.getElementById('listing_image').click()
+
+                            }}>
+                                <img style={{ width: '100%' }} src={imagepre ? imagepre : image}></img>
+                                <Form.Control style={{ display: 'none' }} id='listing_image' onChange={(event) => {
+
+                                    if (event.target.files && event.target.files[0]) {
+                                        setimagepre(URL.createObjectURL(event.target.files[0]))
+                                        data.imagepreview = event.target.files[0];
+                                    }
+
+                                }} required={false} ref={inputs.image} type="file" placeholder="Select image" />
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
+
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="create_listing_description">
@@ -160,12 +212,45 @@ export default function ListingEdit(prop) {
                         </Form.Group>
                     </Col>
                 </Row>
+
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="create_listing_image">
-                            <Form.Label>image</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')}  required={false} ref={inputs.image} type="file" placeholder="Select image" />
-                        </Form.Group>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_start_date">
+                                    <Form.Label>startdate</Form.Label>
+                                    <Form.Control onChange={(e) => onchange(e, 'startdate')} value={startdate} required={false} ref={inputs.listing_startdate} type="date" placeholder="pick a startdate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_start_time">
+                                    <Form.Label>starttime</Form.Label>
+                                    <Form.Control format={'HH:mm'} onChange={(e) => onchange(e, 'starttime')} value={starttime} required={false} ref={inputs.listing_starttime} type="time" placeholder="pick a startdate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
+                    </Col>
+                    <Col>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_end_date">
+                                    <Form.Label>enddate</Form.Label>
+                                    <Form.Control onChange={(e) => onchange(e, 'enddate')} value={enddate} required={false} ref={inputs.listing_enddate} type="date" placeholder="pick a enddate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="create_listing_end_time">
+                                    <Form.Label>endtime</Form.Label>
+                                    <Form.Control format={'HH:mm'} onChange={(e) => onchange(e, 'endtime')} value={endtime} required={false} ref={inputs.listing_endtime} type="time" placeholder="pick a startdate" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
                     </Col>
                 </Row>
                 {/* <Row>
@@ -182,7 +267,7 @@ export default function ListingEdit(prop) {
                             <Form.Label>Location</Form.Label>
                             <InputGroup className="mb-3">
                                 <Form.Control onChange={(e) => onchange(e, 'location')} value={location} required={true} ref={inputs.listing_location} type="input" placeholder="Enter Location" />
-                                <Button onClick={get_lat_lng} variant="outline-secondary" id="button-addon2">
+                                <Button variant="outline-secondary" id="button-addon2">
                                     Get coordinate
                                 </Button>
                             </InputGroup>

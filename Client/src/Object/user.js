@@ -22,7 +22,9 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || '';
+        this.Profilepicture = user.profilepicture || user.profile_picture || user.image_url || '';
+        this.Imagepreview = '';
+        this.Changedimage = '';
         this.Islogin = false;
         this.Chathistory = user.chathistory || [];
         this.Socket = {};
@@ -47,16 +49,27 @@ export default class User {
         };
 
         Api.user.sign_in(json, (res) => {
-            if (res.data.result) {
-                this.load(res.data.user)
-                callback(res)
+            if (Core.check_dev()) {
+                if (res.data.result) {
+                    this.load(res.data.user)
+                    callback(res)
+                }
+            }
+            else {
+                if (res.data) {
+                    this.load(res.data)
+                    if (callback)
+                        callback(res)
+                }
             }
         })
     }
 
     logout(callback) {
         Api.user.sign_out((res) => {
-            this.Socket.disconnect();
+            if (Core.check_dev())
+                this.Socket.disconnect();
+            this.Islogin = false
             callback(res)
         });
     }
@@ -78,7 +91,7 @@ export default class User {
                 this.State = user.state || '';
                 this.Zip_code = user.zip_code || ''
                 this.Registertime = user.registertime || '';
-                this.Profilepicture = user.profilepicture || '';
+                this.Profilepicture = user.profilepicture || user.image_url || '';
                 this.Chathistory = user.chathistory || [];
             } else {
                 console.log(res);
@@ -101,6 +114,32 @@ export default class User {
         this.servertype = dev;
     }
 
+    form_data(json) {
+        var formdata = new FormData();
+        Object.keys(json).forEach(key => {
+            formdata.append(key, json[key])
+        })
+        return formdata;
+    }
+
+    load_from_form(formdata) {
+        var user = formdata
+        this.Username = user.username;
+        this.Id = user.id || user.uid;
+        this.First_name = user.first_name || user.firstname;
+        this.Last_name = user.last_name || user.lastname;
+        this.Phone_number = user.phone_number || user.phone;
+        this.Email = user.email || '';
+        this.Password = user.password || '';
+        this.Address_line_1 = user.address_line_1 || '';
+        this.Address_line_2 = user.address_line_2 || '';
+        this.City = user.city || '';
+        this.State = user.state || '';
+        this.Zip_code = user.zip_code || ''
+        this.Registertime = user.registertime || '';
+        this.Profilepicture = user.profilepicture || user.image_url || '';
+    }
+
     load(user, callback) {
         this.Username = user.username;
         this.Id = user.id || user.uid;
@@ -115,7 +154,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || '';
+        this.Profilepicture = user.profilepicture || user.profile_picture || user.image_url || '';
         this.Chathistory = user.chathistory || [];
         this.Islogin = true;
         if (this.servertype) {
@@ -143,7 +182,7 @@ export default class User {
     }
 
     get json() {
-        return this.servertype ? {
+        var json = this.servertype ? {
             uid: this.Id,
             firstname: this.First_name,
             lastname: this.Last_name,
@@ -169,6 +208,10 @@ export default class User {
             phone_number: this.Phone_number,
             re_password: this.Re_password
         }
+        if (this.Imagepreview !== '') {
+            json['image_url'] = this.Imagepreview
+        }
+        return json
     }
 
 
@@ -187,6 +230,13 @@ export default class User {
 
     ////////////////////////////////////////////////////
     //
+    get imagepreview() {
+        return this.Imagepreview
+    }
+    set imagepreview(val) {
+        this.Imagepreview = val;
+    }
+
     get rooms() {
         return this.Rooms
     }
@@ -269,6 +319,27 @@ export default class User {
     }
     set registertime(val) {
         this.Registertime = val;
+    }
+
+    get image() {
+        return this.Changedimage
+    }
+    set image(val) {
+        this.Changedimage = val;
+    }
+
+    get src() {
+        return this.Profilepicture
+    }
+    set src(val) {
+        this.Profilepicture = val;
+    }
+
+    get imageurl() {
+        return this.Profilepicture
+    }
+    set imageurl(val) {
+        this.Profilepicture = val;
     }
 
     get profilepicture() {

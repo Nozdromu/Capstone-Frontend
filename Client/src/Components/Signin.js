@@ -17,13 +17,22 @@ function Signup(props) {
     //   email: emailInput.current.value,
     //   password: psdInput.current.value
     // }
-    User.login(emailInput.current.value,psdInput.current.value, res => {
+    User.login(emailInput.current.value, psdInput.current.value, res => {
       console.log(res.data);
-      if (res.data.result) {
-        sign_in_success()
+      if (Core.check_dev()) {
+        if (res.data.result) {
+          sign_in_success()
+        } else {
+          sign_in_error()
+        }
       } else {
-        sign_in_error()
+        if (res.data) {
+          sign_in_success()
+        } else {
+          sign_in_error()
+        }
       }
+
     })
   }
 

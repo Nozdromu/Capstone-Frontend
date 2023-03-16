@@ -1,6 +1,5 @@
 import { Card, Row, Col, Form, Button, InputGroup } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
-import Api from '../Api'
 import Item from '../../Object/item'
 import Core from './../Core';
 
@@ -16,8 +15,8 @@ export default function ItemEdit(prop) {
     const [quantity, setquantity] = useState('');
     const [price, setprice] = useState('');
     const [owner, setowner] = useState('');
-    const [image, setimage] = useState('')
-
+    const [image, setimage] = useState({})
+    const [imagepre, setimagepre] = useState('')
     //update props when props change by parent component
     useEffect(() => {
         setprops(prop)
@@ -45,7 +44,8 @@ export default function ItemEdit(prop) {
             setquantity(data.qty || '')
             setprice(data.price || '')
             setitemid(data.itid || '');
-            setowner(data.uid || '')
+            setowner(data.uid || '');
+            setimage(data.src||'')
         }
     }, [data])
 
@@ -89,7 +89,7 @@ export default function ItemEdit(prop) {
                 setname(data.name);
                 break;
             case 'image':
-                data.image = event.target.files;
+                data.image = event.target.files[0];
                 setimage(data.image);
                 break;
             default:
@@ -143,12 +143,16 @@ export default function ItemEdit(prop) {
                                     <Form.Control onChange={(e) => onchange(e, 'listid')} value={listid} required={true} ref={inputs.Listing_ID} type="input" disabled={true} />
                                 </Form.Group>
                             </Col>
+                        </Row>
+                        <Row>
                             <Col>
                                 <Form.Group className="mb-3" controlId="item_id">
                                     <Form.Label>ID</Form.Label>
                                     <Form.Control onChange={(e) => onchange(e, 'itemid')} value={itemid} required={true} ref={inputs.Item_pk} type="input" disabled={true} />
                                 </Form.Group>
                             </Col>
+                        </Row>
+                        <Row>
                             <Col>
                                 <Form.Group className="mb-3" controlId="item_owner">
                                     <Form.Label>owner</Form.Label>
@@ -156,7 +160,24 @@ export default function ItemEdit(prop) {
                                 </Form.Group>
                             </Col>
                         </Row>
+                    </Col>
+                    <Col>
+                        <Card style={{ height: '100%' }} onClick={() => {
+                            document.getElementById('item_image').click()
 
+                        }}>
+
+                            <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre !== '' ? imagepre : image}></img>
+                            <Form.Control style={{ display: 'none' }} id='item_image' type='file' onChange={(event) => {
+
+                                if (event.target.files && event.target.files[0]) {
+                                    setimagepre(URL.createObjectURL(event.target.files[0]))
+                                    data.imagepreview = event.target.files[0];
+                                }
+
+                            }}></Form.Control>
+
+                        </Card>
                     </Col>
                     <Row>
                         <Col>
@@ -176,14 +197,7 @@ export default function ItemEdit(prop) {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Form.Group className="mb-3" controlId="item_image">
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')} ref={inputs.Item_image} type="file" placeholder="Select a image" />
-                        </Form.Group>
-                    </Col>
-                </Row>
+
                 {/* <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="listing_main_photo">

@@ -3,11 +3,12 @@ import Itemgrid from './Itemgrid';
 import Signup from "./Signin";
 import Api from './Api';
 import Newchat from './Newchat'
-import Testpage from './Test_example/Testhome'
+import Testpage from './Example/Testhome'
 import Listing from "../Object/listing";
 import Item from './../Object/item';
 import User from "../Object/user";
 import Newhome from './Newhome';
+import Map from './Google_map_example';
 
 
 var Core = (function () {
@@ -19,6 +20,7 @@ var Core = (function () {
     var isdev = false;
     var homepage = <></>;
     var user;
+    var current_item;
     var route;
 
     var hookcount = 0;
@@ -46,11 +48,19 @@ var Core = (function () {
 
         val.items.forEach(element => {
             var x = new Item(element, isdev);
-
             item.push(x);
         });
 
+        item.forEach((_item, index) => {
+            list.forEach((_list, i) => {
+                if (_item.listing === _list.id) {
+                    item[index].listing_info = list[i]
+                    list[i].list.push(item[index])
+                }
 
+            })
+        })
+        console.log(list)
         ////////////////////////////////////
 
         if (val.islogin) {
@@ -63,9 +73,10 @@ var Core = (function () {
         route = {
             Homepage: { path: '', name: 'Spiffo-Slist', page: <Itemgrid /> },
             Accountpage: { path: 'account', name: 'Account', page: <Accountpage /> },
-            Mappage: { path: 'map', name: 'Api_Test', page: <Testpage /> },
+            Mappage: { path: 'map', name: 'Map', page: <Map /> },
             Chatpage: { path: 'chat', name: 'Chat', page: isdev ? <Newchat /> : <></> },
             Signup: { path: 'sigup', name: 'Signup', page: <></> },
+            TestAPI: { path: 'api', name: 'TestAPI', page: <Testpage /> }
         }
 
         _isLoaded = true;
@@ -120,6 +131,14 @@ var Core = (function () {
         },
         gethomepage: () => {
             return homepage;
+        },
+        setitem: (item, callback) => {
+            current_item = item;
+            if (callback)
+                callback()
+        },
+        getitem: () => {
+            return current_item
         }
     };
 })()

@@ -14,176 +14,208 @@ import Core from "./Core"
 import User from "../Object/user";
 import Api from "./Api";
 
-// Because bootstrap inputs are super verbose, extracted the repetitive portions into custom components
-function TextField({ value, onChange, required = false, placeholder, ...rest }) {
+
+
+var ListInfo = (props) => {
   return (
-    <Form.Control
-      onChange={(e) => onChange(e.target.value)}
-      required={required}
-      value={value}
-      type="input"
-      placeholder={placeholder}
-      {...rest}
-    />
-  );
-}
-function LabelledTextField({ label, ...rest }) {
-  return (
-    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-      <Row className="d-flex justify-content-between">
-        <Col>
-          <Form.Label>{label}</Form.Label>
-        </Col>
-      </Row>
-      <TextField {...rest} />
-    </Form.Group>
-  );
-}
+      <Accordion.Item eventKey={props.data.gsid}>
+          <Accordion.Header>{'#' + props.data.gsid}</Accordion.Header>
+          <Accordion.Body>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Row className='d-flex justify-content-between'>
+                      <Col>
+                          <Form.Label >Street</Form.Label>
+                      </Col>
+                      <Col>
+                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
+                      </Col>
+                  </Row>
+                  <Form.Control type="input" placeholder="Enter Street" value={props.data.street} disabled />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Row className='d-flex justify-content-between'>
+                      <Col>
+                          <Form.Label >City</Form.Label>
+                      </Col>
+                      <Col>
+                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
+                      </Col>
+                  </Row>
+                  <Form.Control type="input" placeholder="Enter City" value={props.data.city} disabled />
+              </Form.Group>
 
-// Then, since the whole form is kind of one unit (operates on a user), extracted that into a component as well
-// You can kind of think of it as an input field, just that it takes more complex data (an entire user) instead of just a string or number
-function UserForm({user, setUser}) {
-  const onChange = (key) => (e) => {
-    console.log(key);
-    setUser(current => ({...current, [key]: e}))//e.target.value creasheD?
-  }
-  return (
-    <>
-      <LabelledTextField
-        label="First name"
-        onChange={onChange('firstname')}
-        value={user.firstname}
-        required
-        placeholder="Enter First Name"
-      />
-      <LabelledTextField
-        label="Last name"
-        value={user.lastname}
-        onChange={onChange('lastname')}
-        required
-        placeholder="Enter Last Name"
-      />
-      <LabelledTextField
-        label="Email"
-        value={user.email}
-        onChange={onChange('email')}
-        required
-        placeholder="Enter Email"
-      />
-      <LabelledTextField
-        label="Address Line 1"
-        value={user.address1}
-        onChange={onChange('address1')}
-        required
-        placeholder="Address line 1"
-      />
-      <LabelledTextField
-        label="Address line 2"
-        value={user.address2}
-        onChange={onChange('address2')}
-        required
-        placeholder="Address line 2"
-      />
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Row className='d-flex justify-content-between'>
+                      <Col>
+                          <Form.Label >State</Form.Label>
+                      </Col>
+                      <Col>
+                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
+                      </Col>
+                  </Row>
+                  <Form.Control type="input" placeholder="Enter State" value={props.data.states} disabled />
+              </Form.Group>
 
-      <Form.Group
-        className="mb-3"
-        controlId="exampleForm.ControlInput1"
-      >
-        <Row className="d-flex justify-content-between">
-          <Form.Label>City</Form.Label>
-          <TextField placeholder="City" value={user.city} onChange={onChange('city')}/>
-
-          <Form.Label>State</Form.Label>
-          <TextField placeholder="State" value={user.state} onChange={onChange('state')}/>
-
-          <Form.Label>Zip</Form.Label>
-          <TextField placeholder="Zip Code" value={user.zip} onChange={onChange('zip')}/>
-        </Row>
-      </Form.Group>
-
-      <LabelledTextField
-        label="Phone number"
-        value={user.phone}
-        onChange={onChange('Phone')}
-        required
-        placeholder="City"
-      />
-    </>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Row className='d-flex justify-content-between'>
+                      <Col>
+                          <Form.Label >Zip Code</Form.Label>
+                      </Col>
+                      <Col>
+                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
+                      </Col>
+                  </Row>
+                  <Form.Control type="input" placeholder="Enter Zip Code" value={props.data.zip} disabled />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Button style={{ width: '100%' }}>Remove List</Button>
+              </Form.Group>
+          </Accordion.Body>
+      </Accordion.Item>
   )
 }
 
-// assume that the only prop passed in to the page is the user ID
-function Accountpage(prop) {
-
-  const [savedUser, setSavedUser] = useState(null); // User data fetched from / saved to the server (updates only when saved)
-  const [user, setUser] = useState(null); // Current user data in the frontend application (updates in real time, controls input fields)
-
-  const [load, setLoad] = useState(false)
-  var set = () => {
-    setLoad(true);
-  }
-  
-  useEffect(() => {
-    Core.addhook(set);
-    // So I will use that ID to fetch the rest of the user data
-    //     New react has a 'use' hook and suspense, but I'm not familiar with that tech yet
-
-    var temp = Core.getUser();
-      //setSavedUser(temp);
-      setUser(temp);
-    
-},[])
-
-  const saveUser = () => {
-    setSavedUser(user);
-    new User(user).update();
-  }
-
-  const list = [];
 
 
-  return load ? (
-    <>
-      <Container>
-        <Row className="align-items-center justify-content-center">
-          <Card style={{ width: "50em" }}>
-            <Card.Header>
-              <div className="rect-img-container">
-              <Card.Img className='rect-img' variant="top" src={user.img} />
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <Tabs
-                defaultActiveKey="profile"
-                id="justify-tab-example"
-                className="mb-3"
-                justify
-              >
-                <Tab eventKey="profile" title="Profile">
-                  {/* Here we can nearly use the entire form just as if it was a basic input field */}
-                  <UserForm user={user} setUser={setUser} />
-                  <Button onClick={saveUser} disabled={user === savedUser}>Save</Button>
-                  <Button onClick={Core.getUser.logout}>log out</Button>
-                </Tab>
+  function Accountpage() {
+    var ismount = false;
+    var user = Core.getUser();
+    const [list, setList] = useState([]);
+    useEffect(() => {
 
-                
-                <Tab eventKey="list" title="List">
-                  <Row className="gy-2">
-                    <Col className="col-12">
-                      <Accordion>{list}</Accordion>
-                    </Col>
-                    <Col className="col-12">
-                      <Button style={{ width: "100%" }}>Add new listing</Button>
-                    </Col>
-                  </Row>
-                </Tab>
-              </Tabs>
-            </Card.Body>
-          </Card>
-        </Row>
-      </Container>
-    </>
-  ) : (<></>);
+        /*if (!ismount) {
+            ismount = true;
+            var _list = user.list.map(val => {
+                return <ListInfo data={val} key={val.gsid}></ListInfo>
+            });
+            setList(_list)
+        }*/
+    }, []);
+
+
+    return (
+        <>
+            {/* {} */}
+            < Container >
+                <Row className="align-items-center justify-content-center">
+                    <Card style={{ width: '25em' }}>
+                        <Card.Header>
+                            <div className="rect-img-container" >
+                                <Card.Img className='rect-img' variant="top" src={user.img} />
+                            </div>
+
+                        </Card.Header>
+                        <Card.Body>
+                            <Tabs
+                                defaultActiveKey="profile"
+                                id="justify-tab-example"
+                                className="mb-3"
+                                justify
+                            >
+                                <Tab eventKey="profile" title="Profile">
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Frist name </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control type="input" placeholder="Enter Frist name" value={user.firstname} disabled />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Last name </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control type="input" placeholder="Enter Last name" value={user.lastname} disabled />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Email </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control type="input" placeholder="Enter email" value={user.email} disabled />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Phone number </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control type="input" placeholder="Enter Phone number" value={user.phone} disabled />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Addres Line 1 </Form.Label>
+                                            </Col>
+                                        </Row>
+                                        <Form.Control type="input" placeholder="Enter Address Line 1" value={user.address_line_1} disabled />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Addres Line 2 </Form.Label>
+                                            </Col>
+                                        </Row>
+                                    <Form.Control type="input" placeholder="Enter Address Line 2" value={user.address_line_2} disabled />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >City </Form.Label>
+                                            </Col>
+                                        </Row>
+                                    <Form.Control type="input" placeholder="Enter City" value={user.city} disabled />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >State </Form.Label>
+                                            </Col>
+                                        </Row>
+                                    <Form.Control type="input" placeholder="Enter State" value={user.state} disabled />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Row className='d-flex justify-content-between'>
+                                            <Col>
+                                                <Form.Label >Zip </Form.Label>
+                                            </Col>
+                                        </Row>
+                                    <Form.Control type="input" placeholder="Enter Zip Code" value={user.Zip_code} disabled />
+                                    </Form.Group>
+                                    <Button type="submit">Save</Button>
+                                    <Button>log out</Button>
+                                </Tab>
+                                <Tab eventKey="list" title="List">
+
+                                    <Row className='gy-2' >
+                                        <Col className='col-12'>
+                                            <Accordion>
+                                                {list}
+                                            </Accordion>
+                                        </Col>
+                                        <Col className='col-12'>
+                                            <Button style={{ width: '100%' }}>Add new list</Button>
+                                        </Col>
+                                    </Row>
+                                </Tab>
+
+                            </Tabs>
+
+
+                        </Card.Body>
+
+                    </Card>
+                </Row>
+
+            </Container ></>
+
+    )
 }
+
 
 export default Accountpage;

@@ -1,28 +1,35 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import Signin from './Signin'
+import Itemdetial from './Itemdetial';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { itemdetial, itemshow, islogin } from '../App'
+import S_chat from './New_s_chat'
+import axios from 'axios';
 
 import Core from './Core';
 
 function MyNavbar(props) {
     // const [load, setload] = useState(false);
+    const { item, setitem } = useContext(itemdetial)
+    const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
+    const { login, setlogin } = useContext(islogin)
+    setlogin(Core.getUser().islogin);
     const [username, setusername] = useState(Core.getUser().username)
-    const [login, setlogin] = useState(Core.getUser().islogin);
+    // const [login, setlogin] = useState(Core.getUser().islogin);
+
     const [show, setShow] = useState(false);
     const ref = useRef(null);
 
-    // var startload=()=>{
-    //     setload(true)
-    // }
+    const [chatshow, setchatshow] = useState(true);
+    const [schat, setschat] = useState(<></>);
 
-    // useEffect(()=>{
-    //     Core.addhook(startload)
-    // })
 
     useEffect(() => {
         if (login) {
             setusername(Core.getUser().username)
+        } else {
+            setusername('')
         }
     }, [login])
 
@@ -38,13 +45,34 @@ function MyNavbar(props) {
         console.log('start logout');
         Core.getUser().logout((data) => {
             console.log(data)
-            if (data.data.result) {
-                setlogin(false);
-                props.router_login(false);
+            if (Core.check_dev()) {
+                if (data.data.result) {
+                    setlogin(false);
+                    props.router_login(false);
+                } else {
+                    console.log('something wrong')
+                }
             } else {
-                console.log('something wrong')
+                if (data.data.success) {
+                    setlogin(false);
+                    props.router_login(false);
+                }
             }
+
         })
+    }
+
+    var hidechat = () => {
+        setchatshow(!chatshow);
+    }
+
+    var startchat = (data) => {
+        axios.get('/create_room', { params: { uid: item.uid } }).then(res => {
+            var data = res.data;
+            setschat(<S_chat setshow={hidechat} roomid={data.email} chatname={data.chatname} />)
+            setchatshow(true);
+        })
+
     }
 
     return (<>
@@ -56,6 +84,7 @@ function MyNavbar(props) {
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+                        {props.routes.TestAPI.navlink}
                         {props.routes.Mappage.navlink}
                         {props.routes.Signup.navlink}
                         {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + username} id="navbarScrollingDropdown">
@@ -82,6 +111,8 @@ function MyNavbar(props) {
             </Container>
         </Navbar>
         <Signin show={show} onHide={handleClose} signin={handleSignin}></Signin>
+        <Itemdetial show={itemdetialshow} onHide={() => setitemdetialshow(false)} data={item} startchat={startchat}></Itemdetial>
+        {chatshow ? schat : <></>}
     </>
     );
 }

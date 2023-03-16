@@ -1,28 +1,27 @@
 
 import Api from '../Api'
 import { Col, Container, Tab, Tabs, Row, Stack } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { itemdetial, itemshow, islogin } from '../../App'
+
 import Register from './Example_register';
 import Signin from './Example_Signin';
 import AccountEdit from './Example_Edit_Account';
 import ListingTable from './Example_Listingtable';
-
 import ItemTable from './Example_itemtable';
 import ItemEdit from './Example_Edit_item';
-
 import ListingEdit from './Example_Edit_listing';
-import Listing from './../../Object/listing';
-import Item from './../../Object/item';
-import Core from './../Core';
+import Listing from '../../Object/listing';
+import Item from '../../Object/item';
+import Core from '../Core';
+import User from '../../Object/user';
+
 function TestApp() {
 
-  const [islogin, setlogin] = useState(false)
+  const { login, setlogin } = useContext(islogin)
   const [userpk, setuserpk] = useState(0)
-  const [userdata, setuserdata] = useState(Core.getUser())
-  // var userdata = Core.getUser();
-  // const [usertable, setusetable] = useState(<></>)
-  // const [itemtable, setitemtable] = useState(<></>)
-  // const [table, settable] = useState(<></>);
+  const [currentuser, setcurrentuser] = useState('no login');
+  const [userdata, setuserdata] = useState(new User({}, Core.check_dev()))
 
 
   const [itemdata, setitemdata] = useState([])
@@ -38,7 +37,7 @@ function TestApp() {
   const [mount, setmount] = useState(false);
   // const [result, setresult] = useState('null')
 
-  const [currentuser, setcurrentuser] = useState('no login');
+
 
 
 
@@ -111,44 +110,52 @@ function TestApp() {
   //////////////////////////////////////////////////////////////////////////////////
   // user hook
 
+  // useEffect(() => {
+  //   if (userpk > 0) {
+  //     Api.listing.getbyowner((res) => {
+  //       var list = []
+  //       res.data.list.forEach(element => {
+  //         list.push(new Listing(element, Core.check_dev()))
+  //       });
+  //       console.log(list)
+  //       setlistdata(list)
+  //     })
+  //     setlogin(true)
+  //   } else {
+  //     setlogin(false)
+  //   }
+  // }, [userpk])
+
   useEffect(() => {
-    if (userpk > 0) {
+    if (login) {
+      setuserdata(Core.getUser());
+    } else {
+      setuserdata(new User({}, Core.check_dev()));
+    }
+  }, [login])
+
+  useEffect(() => {
+    if (userdata.islogin) {
+      setcurrentuser(userdata.username)
       Api.listing.getbyowner((res) => {
         var list = []
         res.data.list.forEach(element => {
           list.push(new Listing(element, Core.check_dev()))
         });
-        console.log(list)
         setlistdata(list)
       })
-      setlogin(true)
-    }
-    if (userpk === 0) {
-      setlogin(false)
-    }
-  }, [userpk])
-
-  useEffect(() => {
-    if (islogin) {
-      setuserdata(Core.getUser())
     } else {
       setcurrentuser('no login');
-    }
-  }, [islogin])
-
-  useEffect(() => {
-    if (userdata.islogin) {
-      setcurrentuser(userdata.username)
     }
   }, [userdata])
 
   var changeuser = (user) => {
-    console.log(user)
-    setuserpk(user.uid)
+    // setuserpk(user.uid)
+    setlogin(user.islogin);
   }
 
   var logout = () => {
-    setuserpk(0)
+    userdata.logout((res) => { setlogin(false) })
   }
 
   // end of user hook
@@ -167,12 +174,12 @@ function TestApp() {
                 <Register />
               </Col>
               <Col>
-                <Signin login={islogin} logout={logout} changeuser={changeuser} />
+                <Signin login={login} logout={logout} changeuser={changeuser} />
               </Col>
             </Row>
             <Row>
               <Col>
-                <AccountEdit login={islogin} data={userdata} update={updateuser} />
+                <AccountEdit login={login} data={userdata} update={updateuser} />
               </Col>
               <Col>
               </Col>
@@ -180,7 +187,7 @@ function TestApp() {
           </Stack>
 
         </Tab>
-        <Tab eventKey={'listings'} title={'Listings'} disabled={!islogin}>
+        <Tab eventKey={'listings'} title={'Listings'} disabled={!login}>
           <Row>
             <Col>
               <ListingTable setlisting={changelisting} data={listdata} />
