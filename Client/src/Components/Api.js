@@ -141,17 +141,16 @@ var Api = (function Api() {
             password: data.password
         };
 
-        return axiosApi.post('/users/login/', json, {
-            headers: {
-                "Content-Type": 'multipart/form-data'
+        return axiosApi.post('/users/login/', json,).then(res => {
+            // if (res.data.status === "success")
+            //     axiosApi.get('/users/' + res.data.user.id + '/').then(res => {
+            //         console.log(res)
+            //         callback(res)
+            //     })
+            console.log(res);
+            if (callback) {
+                callback(res)
             }
-
-        }).then(res => {
-            if (res.data.status === "success")
-                axiosApi.get('/users/' + res.data.user.id + '/').then(res => {
-                    console.log(res)
-                    callback(res)
-                })
         })
     }
     var user_logout = async (callback) => {

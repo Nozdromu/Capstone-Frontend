@@ -3,7 +3,7 @@ import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstr
 import Signin from './Signin'
 import Itemdetial from './Itemdetial';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { itemdetial, itemshow } from '../App'
+import { itemdetial, itemshow, islogin } from '../App'
 import S_chat from './New_s_chat'
 import axios from 'axios';
 
@@ -13,10 +13,10 @@ function MyNavbar(props) {
     // const [load, setload] = useState(false);
     const { item, setitem } = useContext(itemdetial)
     const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
-
-
+    const { login, setlogin } = useContext(islogin)
+    setlogin(Core.getUser().islogin);
     const [username, setusername] = useState(Core.getUser().username)
-    const [login, setlogin] = useState(Core.getUser().islogin);
+    // const [login, setlogin] = useState(Core.getUser().islogin);
 
     const [show, setShow] = useState(false);
     const ref = useRef(null);
@@ -28,6 +28,8 @@ function MyNavbar(props) {
     useEffect(() => {
         if (login) {
             setusername(Core.getUser().username)
+        } else {
+            setusername('')
         }
     }, [login])
 
@@ -43,12 +45,20 @@ function MyNavbar(props) {
         console.log('start logout');
         Core.getUser().logout((data) => {
             console.log(data)
-            if (data.data.result) {
-                setlogin(false);
-                props.router_login(false);
+            if (Core.check_dev()) {
+                if (data.data.result) {
+                    setlogin(false);
+                    props.router_login(false);
+                } else {
+                    console.log('something wrong')
+                }
             } else {
-                console.log('something wrong')
+                if (data.data.success) {
+                    setlogin(false);
+                    props.router_login(false);
+                }
             }
+
         })
     }
 

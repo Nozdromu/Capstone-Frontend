@@ -197,14 +197,7 @@ export default function ItemEdit(prop) {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Form.Group className="mb-3" controlId="item_image">
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'image')} ref={inputs.Item_image} type="file" placeholder="Select a image" />
-                        </Form.Group>
-                    </Col>
-                </Row>
+
                 {/* <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="listing_main_photo">

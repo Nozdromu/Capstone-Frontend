@@ -22,7 +22,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || user.profile_picture ||user.image_url|| '';
+        this.Profilepicture = user.profilepicture || user.profile_picture || user.image_url || '';
         this.Imagepreview = '';
         this.Changedimage = '';
         this.Islogin = false;
@@ -49,16 +49,27 @@ export default class User {
         };
 
         Api.user.sign_in(json, (res) => {
-            if (res.data.result) {
-                this.load(res.data.user)
-                callback(res)
+            if (Core.check_dev()) {
+                if (res.data.result) {
+                    this.load(res.data.user)
+                    callback(res)
+                }
+            }
+            else {
+                if (res.data) {
+                    this.load(res.data)
+                    if (callback)
+                        callback(res)
+                }
             }
         })
     }
 
     logout(callback) {
         Api.user.sign_out((res) => {
-            this.Socket.disconnect();
+            if (Core.check_dev())
+                this.Socket.disconnect();
+            this.Islogin = false
             callback(res)
         });
     }
@@ -80,7 +91,7 @@ export default class User {
                 this.State = user.state || '';
                 this.Zip_code = user.zip_code || ''
                 this.Registertime = user.registertime || '';
-                this.Profilepicture = user.profilepicture ||user.image_url|| '';
+                this.Profilepicture = user.profilepicture || user.image_url || '';
                 this.Chathistory = user.chathistory || [];
             } else {
                 console.log(res);
@@ -126,7 +137,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture ||user.image_url|| '';
+        this.Profilepicture = user.profilepicture || user.image_url || '';
     }
 
     load(user, callback) {
@@ -143,7 +154,7 @@ export default class User {
         this.State = user.state || '';
         this.Zip_code = user.zip_code || ''
         this.Registertime = user.registertime || '';
-        this.Profilepicture = user.profilepicture || user.profile_picture ||user.image_url|| '';
+        this.Profilepicture = user.profilepicture || user.profile_picture || user.image_url || '';
         this.Chathistory = user.chathistory || [];
         this.Islogin = true;
         if (this.servertype) {

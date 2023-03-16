@@ -1,6 +1,7 @@
 import { Card, Row, Col, Form, Button } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
 import Api from '../Api'
+import Core from './../Core';
 
 export default function Signin(props) {
     const [disabled, setdisabled] = useState(!props.login)
@@ -21,17 +22,22 @@ export default function Signin(props) {
         }
         Api.user.sign_in(data, (res) => {
             console.log(res);
-            if (res.data.result) {
-                props.changeuser(res.data.user);
+            if (Core.check_dev()) {
+                if (res.data.result) {
+                    props.changeuser(res.data.user);
+                }
+            }else{
+                if(res.data){
+                    Core.getUser().load(res.data)
+                    props.changeuser(Core.getUser());
+                }
             }
+
         })
     }
 
     var _signout = () => {
-        Api.user.sign_out((res) => {
-            console.log(res);
-            props.logout()
-        })
+        props.logout()
     }
 
     return (<Card>
