@@ -1,11 +1,10 @@
 import { Card, Row, Col, Form, Button } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
-import Api from '../Api'
 import Core from './../Core';
 
 export default function Signin(props) {
     const [disabled, setdisabled] = useState(!props.login)
-    const [user, setuser] = useState(Core.getUser())
+    const [user] = useState(Core.getUser())
     const [status, setstatus] = useState('')
 
     useEffect(() => {
