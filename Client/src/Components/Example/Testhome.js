@@ -1,8 +1,8 @@
 
 import Api from '../Api'
 import { Col, Container, Tab, Tabs, Row, Stack } from 'react-bootstrap';
-import { useEffect, useState, useContext } from 'react';
-import { itemdetial, itemshow, islogin } from '../../App'
+import { useEffect, useState, useContext, useCallback } from 'react';
+import { islogin } from '../../App'
 
 import Register from './Example_register';
 import Signin from './Example_Signin';
@@ -21,7 +21,7 @@ function TestApp() {
   const { login, setlogin } = useContext(islogin)
   const [userpk, setuserpk] = useState(0)
   const [currentuser, setcurrentuser] = useState('no login');
-  const [userdata, setuserdata] = useState(new User({}, Core.check_dev()))
+  const [userdata, setuserdata] = useState(Core.getUser())
 
 
   const [itemdata, setitemdata] = useState([])
@@ -31,11 +31,8 @@ function TestApp() {
   const [currentitem, setcurrentitem] = useState()
 
 
-  // const [itemediter, setitemediter] = useState(<></>)
-  // const [listediter, setlistediter] = useState(<></>)
-
   const [mount, setmount] = useState(false);
-  // const [result, setresult] = useState('null')
+
 
 
 
@@ -56,7 +53,7 @@ function TestApp() {
     }
   }
 
-  var updateitemtable = () => {
+  var updateitemtable = useCallback(() => {
     if (currentlist) {
       Api.item.bylisting(currentlist.json, (res) => {
         var items = [];
@@ -68,6 +65,7 @@ function TestApp() {
       })
     }
   }
+    , [currentlist, currentitem, userpk])
 
   var updateuser = () => {
     setcurrentuser(userdata.username)
@@ -79,7 +77,7 @@ function TestApp() {
       setuserpk(userdata.uid);
     }
     setmount(true)
-  })
+  }, [mount, userdata])
 
 
   //pass to ListingTable, use to update current list that clicked in list table.
@@ -92,7 +90,7 @@ function TestApp() {
     if (currentlist) {
       updateitemtable()
     }
-  }, [currentlist])
+  }, [currentlist, updateitemtable])
 
 
 
@@ -101,30 +99,10 @@ function TestApp() {
     setcurrentitem(data);
   }
 
-  // update item editer after current item has been change by click on the item table
-  // useEffect(() => {
-  //   if (currentitem !== undefined)
-  //     setitemediter(<ItemEdit data={currentitem} updatetable={updateitemtable} />)
-  // }, [currentitem])
 
   //////////////////////////////////////////////////////////////////////////////////
   // user hook
 
-  // useEffect(() => {
-  //   if (userpk > 0) {
-  //     Api.listing.getbyowner((res) => {
-  //       var list = []
-  //       res.data.list.forEach(element => {
-  //         list.push(new Listing(element, Core.check_dev()))
-  //       });
-  //       console.log(list)
-  //       setlistdata(list)
-  //     })
-  //     setlogin(true)
-  //   } else {
-  //     setlogin(false)
-  //   }
-  // }, [userpk])
 
   useEffect(() => {
     if (login) {
@@ -155,7 +133,7 @@ function TestApp() {
   }
 
   var logout = () => {
-    userdata.logout((res) => { setlogin(false) })
+    setlogin(false)
   }
 
   // end of user hook

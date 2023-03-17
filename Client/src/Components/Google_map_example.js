@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Core from './Core';
 import { Modal, Button, Row, Col, ListGroup } from 'react-bootstrap';
@@ -18,19 +18,11 @@ export default function Map() {
     const [zoom, setZoom] = useState(15);
     const [show, setShow] = useState(false);
     const [currentlisting, setlisting] = useState();
-    const { item, setitem } = useContext(itemdetial)
-    const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
+    const { setitem } = useContext(itemdetial)
+    const { setitemdetialshow } = useContext(itemshow)
 
     const handleClose = () => setShow(false);
 
-    const [target, setTarget] = useState(null);
-    const ref = useRef(null);
-    const [map, setMap] = useState(null)
-    // const handleClick = (event) => {
-    //     console.log(show)
-    //     setShow(!show);
-    //     setTarget(event.target);
-    // };
     const handleShow = (data) => {
         setlisting(data);
         setShow(true)
@@ -56,6 +48,8 @@ export default function Map() {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         }
+        updatemark()
+        setZoom(12)
         setCenter(currentPosition);
     };
 
@@ -76,31 +70,9 @@ export default function Map() {
         Api.item.bylisting(data, (res) => { console.log(res) });
     }
 
-
-
-    const onLoad = useCallback(function callback(map) {
-        setMap(map)
+    if (!isLoaded)
         navigator.geolocation.getCurrentPosition(success);
-    }, [])
 
-    useEffect(() => {
-        if (map) {
-            // navigator.geolocation.getCurrentPosition(success);
-            // updatemark()
-        }
-
-    }, [map])
-
-    useEffect(() => {
-        updatemark()
-        setZoom(12)
-    }, [center])
-
-
-
-    const onUnmount = useCallback(function callback(map) {
-        setMap(null)
-    }, [])
 
 
     return isLoaded ? (
@@ -110,8 +82,6 @@ export default function Map() {
             center={center}
             zoom={zoom}
             clickableIcons={false}
-            onLoad={onLoad}
-            onUnmount={onUnmount}
 
         >
             {markers}
@@ -145,16 +115,7 @@ export default function Map() {
                             </ListGroup>
                         </Col>
                     </Row>
-                    <Row>
-                        {/* <Col>
-                            <p>
-                            {'lat'+currentlisting!==undefined ? (currentlisting.lat===undefined?0:currentlisting.lat) : ''}
-                            </p>
-                            </Col>
-                            <Col>
-                            {'lbg'+currentlisting!==undefined ? (currentlisting.lng===undefined?0:currentlisting.lng) : ''}
-                            </Col> */}
-                    </Row>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

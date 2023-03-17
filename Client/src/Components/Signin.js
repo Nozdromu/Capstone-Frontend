@@ -1,9 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Core from './Core';
-import Api from './Api'
 
 function Signup(props) {
   const emailInput = useRef(null);
@@ -18,7 +17,7 @@ function Signup(props) {
     //   password: psdInput.current.value
     // }
     User.login(emailInput.current.value, psdInput.current.value, res => {
-      console.log(res.data);
+      console.log(res);
       if (Core.check_dev()) {
         if (res.data.result) {
           sign_in_success()
@@ -26,7 +25,7 @@ function Signup(props) {
           sign_in_error()
         }
       } else {
-        if (res.data) {
+        if (res.data.status === 'success') {
           sign_in_success()
         } else {
           sign_in_error()

@@ -52,16 +52,15 @@ export default class User {
             if (Core.check_dev()) {
                 if (res.data.result) {
                     this.load(res.data.user)
-                    callback(res)
                 }
             }
             else {
-                if (res.data) {
-                    this.load(res.data)
-                    if (callback)
-                        callback(res)
+                if (res.data.status === 'success') {
+                    this.load(res.data.data.users)
                 }
             }
+            if (callback)
+                callback(res)
         })
     }
 
@@ -70,7 +69,8 @@ export default class User {
             if (Core.check_dev())
                 this.Socket.disconnect();
             this.Islogin = false
-            callback(res)
+            if (callback)
+                callback(res)
         });
     }
 
