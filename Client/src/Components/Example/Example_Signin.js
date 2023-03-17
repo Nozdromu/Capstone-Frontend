@@ -5,6 +5,8 @@ import Core from './../Core';
 
 export default function Signin(props) {
     const [disabled, setdisabled] = useState(!props.login)
+    const [user, setuser] = useState(Core.getUser())
+    const [status, setstatus] = useState('')
 
     useEffect(() => {
         setdisabled(!props.login)
@@ -20,24 +22,29 @@ export default function Signin(props) {
             email: inputs.username.current.value,
             password: inputs.password.current.value
         }
-        Api.user.sign_in(data, (res) => {
+        user.login(data.email, data.password, (res) => {
             console.log(res);
             if (Core.check_dev()) {
                 if (res.data.result) {
                     props.changeuser(res.data.user);
                 }
-            }else{
-                if(res.data){
-                    Core.getUser().load(res.data)
+            } else {
+                if (res.data.status === 'success') {
                     props.changeuser(Core.getUser());
-                }
-            }
+                } else {
 
+                }
+                setstatus(res.data.status + '  :  ' + res.data.message)
+            }
         })
     }
 
     var _signout = () => {
-        props.logout()
+        user.logout(res => {
+            props.logout()
+            console.log(res)
+            setstatus(res.data.status + '  :  ' + res.data.message)
+        })
     }
 
     return (<Card>
@@ -63,6 +70,11 @@ export default function Signin(props) {
                             </Form.Group>
                         </Col>
 
+                    </Row>
+                    <Row>
+                        <Col>
+                            {status}
+                        </Col>
                     </Row>
                 </Form>
             </Row>

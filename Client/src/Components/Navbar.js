@@ -4,14 +4,14 @@ import Signin from './Signin'
 import Itemdetial from './Itemdetial';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { itemdetial, itemshow, islogin } from '../App'
-import S_chat from './New_s_chat'
+import Schat from './New_s_chat'
 import axios from 'axios';
 
 import Core from './Core';
 
 function MyNavbar(props) {
     // const [load, setload] = useState(false);
-    const { item, setitem } = useContext(itemdetial)
+    const { item} = useContext(itemdetial)
     const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
     const { login, setlogin } = useContext(islogin)
     setlogin(Core.getUser().islogin);
@@ -69,7 +69,7 @@ function MyNavbar(props) {
     var startchat = (data) => {
         axios.get('/create_room', { params: { uid: item.uid } }).then(res => {
             var data = res.data;
-            setschat(<S_chat setshow={hidechat} roomid={data.email} chatname={data.chatname} />)
+            setschat(<Schat setshow={hidechat} roomid={data.email} chatname={data.chatname} />)
             setchatshow(true);
         })
 
