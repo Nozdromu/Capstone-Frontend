@@ -2,6 +2,8 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import Home from './Components/Newhome'
 import Core from './Components/Core';
+import Map from './Components/UpdatedMap';
+import MyComponent from './Components/Test_example/Google_map_example';
 
 
 
@@ -17,6 +19,7 @@ function App() {
     Core.addhook(set);
   }
 
+      <Map/>
 
   useEffect(() => {
     if (load)
@@ -27,3 +30,5 @@ function App() {
 }
 
 export default App;
+
+// 
