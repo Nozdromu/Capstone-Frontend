@@ -4,7 +4,7 @@ import Signin from './Signin'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Core from './Core';
-
+import './styles/nav-bar.css';
 function MyNavbar(props) {
     // const [load, setload] = useState(false);
     const [username, setusername] = useState(Core.getUser().username)

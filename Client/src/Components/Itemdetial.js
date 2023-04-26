@@ -19,6 +19,7 @@ export default function Itemdetial(props) {
         >
             <Modal.Header closeButton>
                 <h4>{props.data.itid+':'+props.data.uid}</h4>
+                
             </Modal.Header>
             <Modal.Body>
                 <Row>

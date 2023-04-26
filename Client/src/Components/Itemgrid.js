@@ -32,6 +32,7 @@ export default function Itemgrid() {
 
 
   return (<Container style={{ height: '90vh' }}>
+    <h1>Hello</h1>
     <Row justify-content="space-evenly" >
       {list}
     </Row>

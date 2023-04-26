@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import { motion } from "framer-motion";
 import { StrictMode, useState, useEffect } from "react";
-import Navbar from './Navbar'
-import Core from './Core'
+import Navbar from './Navbar';
+import Core from './Core';
 import Navlink from './Navlink';
 
 
