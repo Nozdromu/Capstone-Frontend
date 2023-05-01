@@ -67,7 +67,7 @@ var Core = (function () {
             Accountpage: { path: 'account', name: 'Account', page: <Accountpage /> },
             Mappage: { path: 'map', name: 'Api_Test', page: <Testpage /> },
             Chatpage: { path: 'chat', name: 'Chat', page: isdev ? <Newchat /> : <></> },
-            Signup: { path: 'sigup', name: 'Signup', page: <></> },
+            Signup: { path: 'sigup', name: 'TestMap', page: <MyComponent/> },
             TestMap: {path: 'testmap', name:'Test_Map', page: <MyComponent/>},
 
         }

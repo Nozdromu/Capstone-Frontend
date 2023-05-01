@@ -48,7 +48,7 @@ function MyNavbar(props) {
     }
 
     return (<>
-        <Navbar bg="light" expand="lg" className='margin-bottom' sticky="top">
+        <Navbar bg="light" expand="lg" className='margin-bottom navbar-st' sticky="top">
             <Container>
                 <Navbar.Brand>
                     {props.routes.Homepage.navlink}

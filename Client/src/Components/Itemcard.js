@@ -4,6 +4,7 @@ import Itemdetial from './Itemdetial';
 import axios from 'axios';
 import S_chat from './Test_example/S_chat'
 import './styles/nav-bar.css';
+import { Image } from 'react-bootstrap';
 
 export default function Itemcard(props) {
     const [modalShow, setmodalShow] = useState(false)
@@ -25,16 +26,13 @@ export default function Itemcard(props) {
             }
             }>
                 <div className="rect-img-container">
-                    <Card.Img className='rect-img' variant="top" src={props.data.src} />
+                    <Card.Img as={Image} className='rect-img' variant="top" src={props.data.src} />
                 </div>
                 <Card.Body>
-                    <Card.Title className="text-over">{props.data.itemname}</Card.Title>
-                    <Card.Text>
-                        {'$' + props.data.price}
-                    </Card.Text>
-                    <Card.Text className="text-over">
-                        {props.data.description}
-                    </Card.Text>
+                    <Card.Title className='text-over card-title'>{props.data.itemname}</Card.Title>
+                    <Card.Text className='card-price'>{'$' + props.data.price}</Card.Text>
+                    <Card.Text className='card-price'>{'$' + props.data.src}</Card.Text>
+                    <Card.Text className="text-over card-text">{props.data.description}</Card.Text>
                 </Card.Body>
             </Card>
             <Itemdetial show={modalShow} chatshow={setchatshow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial>

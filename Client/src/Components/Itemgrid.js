@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Itemcard from './Itemcard';
 import Core from './Core';
 import S_chat from './New_s_chat'
+import './styles/nav-bar.css';
 
 export default function Itemgrid() {
   const [list, setlist] = useState();
@@ -32,7 +33,6 @@ export default function Itemgrid() {
 
 
   return (<Container style={{ height: '90vh' }}>
-    <h1>Hello</h1>
     <Row justify-content="space-evenly" >
       {list}
     </Row>

@@ -11,7 +11,7 @@ import { StrictMode, useState, useEffect } from "react";
 import Navbar from './Navbar';
 import Core from './Core';
 import Navlink from './Navlink';
-
+import './styles/nav-bar.css';
 
 
 
@@ -40,7 +40,8 @@ const pageTransition = {
 const AnimationLayout = () => {
     const { pathname } = useLocation();
     return (
-        <PageLayout>
+        <>
+        <PageLayout className="pagelayout">
             <motion.div
                 key={pathname}
                 initial="initial"
@@ -51,6 +52,8 @@ const AnimationLayout = () => {
                 <Outlet />
             </motion.div>
         </PageLayout>
+        <footer id="footer">This is the footer. It will contain contact information</footer>
+        </>
     );
 };
 

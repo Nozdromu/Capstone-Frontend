@@ -2,3 +2,54 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
+.whole{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.navbar-st {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+.search-bar {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 40px;
+}
+
+/*imbeeded css -> external file*/
+/*use existing css style\
+CSS Zen garden
+*/
+
+/* Card styling */
+.card-title {
+    font-weight: bold;
+}
+.card-price {
+    text-align: left;
+    font-weight: bold;
+    margin: auto;
+}
+.card-text{
+    font-size: medium;
+    margin: auto;
+}
+
+/* footer styling */
+#footer {
+    background-color: #808080;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+}
+
+/*Page layout*/
+#pagelayout{
+    background-color: #808080;
+}
+
+
+/* Modal footer */
+.modal-footer {
+    column-count: 2;
+    column-gap: normal;
+}
