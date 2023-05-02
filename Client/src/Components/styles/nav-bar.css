@@ -40,6 +40,9 @@ CSS Zen garden
     text-align: center;
     width: 100%;
     position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 /*Page layout*/

@@ -10,6 +10,7 @@ import User from "../Object/user";
 import Newhome from './Newhome';
 //import Testmap from './Test_example/maptest';
 import MyComponent from './Test_example/Google_map_example';
+import MarkedMap from './Test_example/Thomas_Map';
 
 
 var Core = (function () {
@@ -69,7 +70,7 @@ var Core = (function () {
             Chatpage: { path: 'chat', name: 'Chat', page: isdev ? <Newchat /> : <></> },
             Signup: { path: 'sigup', name: 'TestMap', page: <MyComponent/> },
             TestMap: {path: 'testmap', name:'Test_Map', page: <MyComponent/>},
-
+            ThomasMap: {path: 'thomasmap', name: 'Thomas_Map', page: <MarkedMap/>},
         }
 
         _isLoaded = true;
