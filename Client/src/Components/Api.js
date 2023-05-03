@@ -21,7 +21,7 @@ var Api = (function Api() {
         return axiosApi.get('/data/').then(res => {
             console.log(res)
             if (callback) {
-                callback(res.data)
+                callback(res.data.data)
             }
         })
     }
@@ -197,7 +197,7 @@ var Api = (function Api() {
         return axiosApi.get('/listings/profile/' + Core.getUser().pk + '/').then(res => {
             var data = {};
             data.data = {}
-            data.data.list = res.data;
+            data.data.list = res.data.data;
             console.log(res);
             if (callback)
                 callback(data)

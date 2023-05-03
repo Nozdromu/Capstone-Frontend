@@ -1,6 +1,6 @@
 
 import Api from '../Api'
-import { Col, Container, Tab, Tabs, Row, Stack } from 'react-bootstrap';
+import { Col, Container, Tab, Tabs, Row, Stack, Button } from 'react-bootstrap';
 import { useEffect, useState, useContext, useCallback } from 'react';
 import { islogin } from '../../App'
 
@@ -15,6 +15,7 @@ import Listing from '../../Object/listing';
 import Item from '../../Object/item';
 import Core from '../Core';
 import User from '../../Object/user';
+import address from '../../testFile/CreateAddressSheet'
 
 function TestApp() {
 
@@ -32,6 +33,8 @@ function TestApp() {
 
 
   const [mount, setmount] = useState(false);
+
+  const [addresslist, setaddress] = useState([]);
 
 
 
@@ -197,7 +200,23 @@ function TestApp() {
             </Col>
           </Row>
         </Tab>
-      </Tabs>
+        <Tab eventKey={'dummydata'} title={'dummydata'}>
+          <Row>
+            <Col>
+              <Button onClick={() => {
+                setaddress(address().map((e) => {
+                  return <Row>{e}</Row>
+                }))
+              }}>
+                create address list
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            {addresslist}
+          </Row>
+        </Tab>
+      </Tabs >
 
     </Container>
 
