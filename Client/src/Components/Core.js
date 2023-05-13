@@ -1,4 +1,4 @@
-import Accountpage from './Account'
+ import Accountpage from './Account'
 import Itemgrid from './Itemgrid';
 import Signup from "./Signin";
 import Api from './Api';

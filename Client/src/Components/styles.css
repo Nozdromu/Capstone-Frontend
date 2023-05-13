@@ -1,0 +1,27 @@
+.page-container{
+    column-rule: 1px solid rgb(75, 70, 74);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.listings-container{
+    font-family: 'Times New Roman', Times, serif;
+    background-color:beige;
+}
+
+.map-container {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.ul {
+    list-style-type: decimal;
+}
+
+.general-page {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.items-listed{
+    text-align: center;
+}

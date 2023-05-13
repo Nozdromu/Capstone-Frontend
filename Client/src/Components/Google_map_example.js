@@ -3,12 +3,13 @@ import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Core from './Core';
 import { Modal, Button, Row, Col, ListGroup } from 'react-bootstrap';
 import Api from './Api';
-import { itemdetial, itemshow } from '../App'
-
+import { itemdetial, itemshow } from '../App';
+import './styles.css';
 
 const containerStyle = {
     width: '100%',
-    height: '90vh'
+    height: '90vh',
+    
 };
 
 
@@ -76,29 +77,52 @@ export default function Map() {
 
 
     return isLoaded ? (
+        
+        <div class="page-container">
+        <div class="listings-container">
+        <h3>Below is a list of current listings:</h3>
+        
+        <p></p>
+        <ul class="ul">
+            <li>{currentlisting ? currentlisting.title : ''}</li>
+            <li>-</li>
+            <li>-</li>
+            <li>-</li>
+            <li>-</li>
+            <li>-</li>
+            
+        </ul>
+        </div>
+        <div class="map-container">
         <GoogleMap
 
             mapContainerStyle={containerStyle}
             center={center}
             zoom={zoom}
             clickableIcons={false}
+            
 
         >
             {markers}
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} className='general-page'>
                 <Modal.Header closeButton>
                     <Modal.Title>{currentlisting ? currentlisting.title : ''}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
                         <Col>
-                            {currentlisting ? currentlisting.description : ''}
+                            {currentlisting ? 'Description: ' + currentlisting.description : ''}
                         </Col>
 
                     </Row>
                     <Row>
                         <Col>
-                            {currentlisting ? currentlisting.location : ''}
+                            {currentlisting ? 'Location: ' + currentlisting.location : ''}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col class='items-listed'>
+                        Items:
                         </Col>
                     </Row>
                     <Row>
@@ -111,7 +135,6 @@ export default function Map() {
                                         setitemdetialshow(true)
                                     }}>{val.name} </ListGroup.Item>
                                 }) : 'nothing here'}
-
                             </ListGroup>
                         </Col>
                     </Row>
@@ -124,15 +147,24 @@ export default function Map() {
                     <Button variant="primary" onClick={() => {
                         window.open("https://www.google.com/maps/search/?api=1&query=" + currentlisting.location)
                     }}>
-                        go google map
+                        Find On Google Maps
                     </Button>
                 </Modal.Footer>
             </Modal>
             <></>
         </GoogleMap>
-
+        </div>
+        </div>
 
 
     ) : <></>
 }
 
+// IGNORE:
+/*{currentlisting.list.map(listing => {
+    return(
+        <li key={listing.id}>
+            {listing.name}
+        </li>
+    )
+})} */
