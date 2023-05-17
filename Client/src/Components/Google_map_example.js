@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Core from './Core';
-import { Modal, Button, Row, Col, ListGroup } from 'react-bootstrap';
+import { Modal, Button, Row, Col, ListGroup} from 'react-bootstrap';
 import Api from './Api';
 import { itemdetial, itemshow } from '../App';
 import './styles.css';
+import { MDBListGroup, MDBListGroupItem, MDBRipple } from 'mdb-react-ui-kit';
+
 
 const containerStyle = {
     width: '100%',
@@ -19,9 +21,9 @@ export default function Map() {
     const [zoom, setZoom] = useState(15);
     const [show, setShow] = useState(false);
     const [currentlisting, setlisting] = useState();
-    const { setitem } = useContext(itemdetial)
-    const { setitemdetialshow } = useContext(itemshow)
-
+    const { setitem } = useContext(itemdetial);
+    const { setitemdetialshow } = useContext(itemshow);
+    const {listings, setListings} = useState([]);
     const handleClose = () => setShow(false);
 
     const handleShow = (data) => {
@@ -54,6 +56,14 @@ export default function Map() {
         setCenter(currentPosition);
     };
 
+    var listedListing = () => {
+        var salelist = Core.list();
+        var itemname = {};
+        var shownlistings = salelist.map((val) => {
+            itemname = {name: val.name}
+            return <p>{val.name}</p>
+        })
+    }
 
     var updatemark = () => {
         var salelist = Core.list();
@@ -80,13 +90,15 @@ export default function Map() {
         
         <div class="page-container">
         <div class="listings-container">
-        <h3>Below is a list of current listings:</h3>
+        <br/><h3>Below is a list of current listings:</h3>
         
-        <p></p>
+        <p>Below is a list of current listings:</p>
         <ul class="ul">
             <li>{currentlisting ? currentlisting.title : ''}</li>
-            <li>-</li>
-            <li>-</li>
+            
+
+            
+            <li>{listedListing}</li>
             <li>-</li>
             <li>-</li>
             <li>-</li>
@@ -113,7 +125,6 @@ export default function Map() {
                         <Col>
                             {currentlisting ? 'Description: ' + currentlisting.description : ''}
                         </Col>
-
                     </Row>
                     <Row>
                         <Col>
@@ -121,19 +132,23 @@ export default function Map() {
                         </Col>
                     </Row>
                     <Row>
-                        <Col class='items-listed'>
+                        <Col >
                         Items:
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col class='items-listed'>
                             <ListGroup>
                                 {currentlisting ? currentlisting.list.map(val => {
                                     return <ListGroup.Item key={val.id} onClick={() => {
                                         Core.setitem(val)
                                         setitem(val);
                                         setitemdetialshow(true)
-                                    }}>{val.name} </ListGroup.Item>
+                                    }}>
+                                        
+                                        <a href='#' class='list-group-item list-group-item-action'>{val.name}</a>
+                                        
+                                        </ListGroup.Item>
                                 }) : 'nothing here'}
                             </ListGroup>
                         </Col>

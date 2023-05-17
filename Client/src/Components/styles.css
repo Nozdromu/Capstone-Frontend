@@ -1,5 +1,5 @@
 .page-container{
-    column-rule: 1px solid rgb(75, 70, 74);
+    column-rule: 10px solid rgb(75, 70, 74);
     display: grid;
     grid-template-columns: 1fr 2fr;
     font-family: 'Times New Roman', Times, serif;
@@ -7,11 +7,13 @@
 
 .listings-container{
     font-family: 'Times New Roman', Times, serif;
-    background-color:beige;
+    background-color:rgb(72, 97, 180);
+    border-radius: 30px;
 }
 
 .map-container {
     font-family: 'Times New Roman', Times, serif;
+    border-radius: 30px;
 }
 
 .ul {
@@ -24,4 +26,13 @@
 
 .items-listed{
     text-align: center;
+}
+
+.modal-item-listed{
+    align-items: center;
+    font-weight: bold;
+}
+
+.item-details-info{
+    align-self: center;
 }

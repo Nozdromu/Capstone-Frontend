@@ -27,5 +27,8 @@ export default function Itemgrid() {
     <Row justify-content="space-evenly" >
       {list}
     </Row>
+    
+      <h1>Hello</h1>
+    
   </Container>) 
 }

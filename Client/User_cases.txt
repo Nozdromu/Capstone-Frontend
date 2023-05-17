@@ -1,0 +1,94 @@
+User cases
+1.	Map page
+a)	Pop up
+A pop-up that can show listing information.
+i.	Listing title label ----------------------------------------------- done 
+ii.	Listing description context ----------------------------------------------- done 
+iii.	List of items in the listing ----------------------------------------------- done 
+1.	Show item images and other information.----------------------------------------------- done 
+2.	Click to show item detail.----------------------------------------------- pending 
+iv.	A button for closing this popup.----------------------------------------------- done
+v.	A button for starting navigation to the location----------------------------------------------- done
+b)	Sidebar
+Sidebar is to show all the listing on side, user can click to see the detail about this listing 
+i.	Sidebar container
+To display the list of listing content----------------------------------------------- pending
+ii.	Listing content----------------------------------------------- pending
+Show listing basic information, click it will popup listing detail, mouse moving on content will highlight the marker on the map.
+c)	Map
+i.	Marker
+Marker will show on the map based on the location of the listing. Click marker will have a pop up window. ----------------------------------------------- done
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+1.	Account page
+a)	Information 
+Display user information and allow users to edit. All information input is read only by default.
+
+b)	Listing management.
+A component that let user create reviews edit all of listings.
+
+i.	Listing list.
+A list that show all the listings created by this user.
+
+ii.	Create listing button.
+A button that allow user create new listing. A new listing form will show up
+iii.	Create listing.
+1.	New listing form
+a)	Required input
+i.	Title
+ii.	Description
+iii.	Location
+iv.	Starttime
+v.	endtime
+2.	submit button
+submit create form information to server and handle the respond.
+
+iv.	review/edit listing information
+display all information about this listing, all input is read only unless user wants to change it.
+1.	Information inputs
+Handle all information
+2.	Edit button.
+A button that make all input writeable.
+3.	Submit button
+Upload changed listing information.
+4.	Delete button
+Use to delete this listing.
+
+v.	Item management
+User is able to create review edit and delete a item under the listing.
+				
+i.	Item list.
+A list that show all the items created by this user under this listing.
+
+ii.	Create item button.
+A button that allow user create new item under listing. A new item form will show
+iii.	Create item.
+1.	New item form
+Required input
+a)	name
+b)	item_main_photo
+c)	description:
+d)	quantity:
+e)	price:
+2.	submit button
+submit create form information to server and handle the respond.
+
+iv.	review/edit item information
+display all information about this item, all input is read only unless user wants to change it.
+3.	Information inputs
+Handle all information
+4.	Edit button.
+A button that make all input writeable.
+5.	Submit button
+Upload changed item information.
+6.	Delete button
+Use to delete this item.
+
+

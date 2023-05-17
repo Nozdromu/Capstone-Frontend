@@ -44,7 +44,7 @@ export default class Item {
             owner: this.Owner,
             listing: this.Listing,
             name: this.Name,
-            // photo: this.Item_main_photo,
+            photo: this.Item_main_photo,
             description: this.Description,
             quantity: this.Quantity,
             price: this.Price,

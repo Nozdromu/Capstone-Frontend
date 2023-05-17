@@ -19,8 +19,31 @@ export default function Itemcard(props) {
     }
 
 
-    const { item, setitem } = useContext(itemdetial)
-    const { itemdetialshow, setitemdetialshow } = useContext(itemshow)
+    const { item, setitem } = useContext(itemdetial);
+    const { itemdetialshow, setitemdetialshow } = useContext(itemshow);
+    const {searchTerm, setSearchTerm} = useState("");
+    const {favorite, setFavorite} = useState([]);
+
+    const addToFavorite = id => {
+        if (!favorite.includes(id)) setFavorite(favorite.concat(id));
+        console.log(id);
+    };
+    const removeFavorite = id => {
+        let index = favorite.indexOf(id);
+        console.log(index);
+        let temp = [...favorite.slice(0, index), ...favorite.slice(index+1)];
+        setFavorite(temp);
+    };
+
+    let findfavorite = props.filter(recipe => favorite.includes(props.data.id));
+
+    let filtered = props.filter(recipe => {
+        if (searchTerm === "") {
+            return recipe;
+        } else if (props.data.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+            return recipe;
+        }
+    });
 
     return (
         <>
@@ -34,12 +57,12 @@ export default function Itemcard(props) {
             }
             }>
                 <div className="rect-img-container">
-                    <Card.Img className='rect-img' variant="top" src={props.data.src} />
+                    <Card.Img className='rect-img' variant="top" src={props.data.item_main_photo} />
                 </div>
                 <Card.Body>
                     <Card.Title className="text-over">{props.data.itemname}</Card.Title>
                     <Card.Text>
-                        {'$' + props.data.price}
+                        {'Price: $' + props.data.price}
                     </Card.Text>
                     <Card.Text className="text-over">
                         {props.data.description}
@@ -47,6 +70,9 @@ export default function Itemcard(props) {
                 </Card.Body>
             </Card>
             {/* <Itemdetial show={modalShow} chatshow={setchatshow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial> */}
+            
+            
+        
         </>
     )
 }

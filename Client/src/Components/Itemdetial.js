@@ -19,9 +19,12 @@ export default function Itemdetial(props) {
             show={props.show}
             autoFocus={false}
             enforceFocus={false}
+            className="general-page"
         >
             <Modal.Header closeButton>
-                <h4>{props.data.itid + ':' + props.data.uid}</h4>
+                {/*<h4>{props.data.itid + ':' + props.data.uid}</h4>*/}
+                
+                <button>Add to cart</button>
             </Modal.Header>
             <Modal.Body>
                 <Row>
@@ -36,28 +39,26 @@ export default function Itemdetial(props) {
                                     )
                                 })}
                             </Carousel> */}
-                            <img src={props.data.image} ></img>
+                            <img src={props.data.item_main_photo} ></img>
                         </Modal.Title>
                     </Col>
                     <Col >
                         <Row>
                             <h4>{props.data.itemname}</h4>
                         </Row>
-
-
                         <Row>
                             <Col>
-                                {'description' + props.data.description}
+                                {'Description: ' + props.data.description}
                             </Col>
                         </Row>
                         <Row>
-                            <Col className='send'>
+                            <Col >
                                 {'Qty: ' + props.data.qty}
                             </Col>
                         </Row>
                         <Row>
-                            <Col className='send'>
-                                {'$' + props.data.price}
+                            <Col class="item-details-info">
+                                {'Price: $' + props.data.price}
                             </Col>
                         </Row>
                     </Col>
