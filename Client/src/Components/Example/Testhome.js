@@ -120,7 +120,7 @@ function TestApp() {
       setcurrentuser(userdata.username)
       Api.listing.getbyowner((res) => {
         var list = []
-        res.data.list.forEach(element => {
+        res.data.list.Listings.forEach(element => {
           list.push(new Listing(element, Core.check_dev()))
         });
         setlistdata(list)

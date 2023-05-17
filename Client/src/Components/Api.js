@@ -21,10 +21,10 @@ var Api = (function Api() {
         return axiosApi.get('/data/').then(res => {
             console.log(res)
             if (callback) {
-                if (!res.data.data)
-                    callback(res.data)
+                if (res.data.data)
+                    callback(res.data.data.Both)
                 else
-                    callback(res.data.data)
+                    callback(res.data)
             }
         })
     }
@@ -215,7 +215,25 @@ var Api = (function Api() {
     // }
 
     var item_owner = async (data, callback) => {
-        return axiosApi.get('/listings/sort/items/listing/' + data.id + '/').then(res => {
+        // return axiosApi.get('/listings/sort/items/listing/' + data.id + '/').then(res => {
+        //     var data = { data: { items: res.data } }
+        //     if (callback)
+        //         callback(data)
+        // }
+        // )
+        var reqs = {
+            "Tag": "",
+            "Listing": data.id,
+            "Location": "",
+            "Date": ""
+        }
+        // return axiosApi.get('/data/sort/items/', reqs).then(res => {
+        //     var data = { data: { items: res.data } }
+        //     if (callback)
+        //         callback(data)
+        // }
+        // )
+        return axiosApi.get('/data/sort/items/?Tag='+reqs.Tag+'&Listing='+reqs.Listing+'&Location='+reqs.Location+'&Date='+reqs.Date).then(res => {
             var data = { data: { items: res.data } }
             if (callback)
                 callback(data)
