@@ -21,7 +21,10 @@ var Api = (function Api() {
         return axiosApi.get('/data/').then(res => {
             console.log(res)
             if (callback) {
-                callback(res.data.data)
+                if (!res.data.data)
+                    callback(res.data)
+                else
+                    callback(res.data.data)
             }
         })
     }

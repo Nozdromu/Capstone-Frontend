@@ -61,7 +61,7 @@ app.use(fileUpload())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('Client/build'));
-app.set('port', process.env.PORT || 3001);
+app.set('port', process.env.PORT || 8000);
 
 
 
