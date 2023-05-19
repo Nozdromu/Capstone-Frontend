@@ -1,3 +1,10 @@
+Homepage
+------> Carousel featuring the newest items
+------> Search pulling up results in main page
+
+
+
+//////////////////////////////////////////////////////////
 User cases
 1.	Map page
 a)	Pop up

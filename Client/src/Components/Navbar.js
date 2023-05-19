@@ -86,6 +86,7 @@ function MyNavbar(props) {
                     <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
                         {props.routes.TestAPI.navlink}
                         {props.routes.Mappage.navlink}
+                        {props.routes.MapSidebar.navlink}
                         {props.routes.Signup.navlink}
                         {!login ? <Nav.Link onClick={handleShow}>Login</Nav.Link> : <NavDropdown title={'Hi ' + username} id="navbarScrollingDropdown">
                             <NavDropdown.Item >

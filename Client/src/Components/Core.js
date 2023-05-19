@@ -9,6 +9,7 @@ import Item from './../Object/item';
 import User from "../Object/user";
 import Newhome from './Newhome';
 import Map from './Google_map_example';
+import SidebarMap from './Second_Map_With_Sidebar';
 
 
 var Core = (function () {
@@ -71,9 +72,10 @@ var Core = (function () {
 
         ////////////////////////////////////
         route = {
-            Homepage: { path: '', name: 'Spiffo-Slist', page: <Itemgrid /> },
+            Homepage: { path: '', name: 'Spiffo-Slist', page: <Itemgrid/> },
             Accountpage: { path: 'account', name: 'Account', page: <Accountpage /> },
             Mappage: { path: 'map', name: 'Map', page: <Map /> },
+            MapSidebar: {path: 'sidemap', name: 'SideMap', page: <SidebarMap/>},
             Chatpage: { path: 'chat', name: 'Chat', page: isdev ? <Newchat /> : <></> },
             Signup: { path: 'sigup', name: 'Signup', page: <></> },
             TestAPI: { path: 'api', name: 'TestAPI', page: <Testpage /> }

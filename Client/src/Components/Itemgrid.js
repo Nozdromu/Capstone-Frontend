@@ -28,7 +28,6 @@ export default function Itemgrid() {
       {list}
     </Row>
     
-      <h1>Hello</h1>
     
   </Container>) 
 }

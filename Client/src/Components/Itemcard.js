@@ -21,6 +21,7 @@ export default function Itemcard(props) {
 
     const { item, setitem } = useContext(itemdetial);
     const { itemdetialshow, setitemdetialshow } = useContext(itemshow);
+    {/*
     const {searchTerm, setSearchTerm} = useState("");
     const {favorite, setFavorite} = useState([]);
 
@@ -43,7 +44,7 @@ export default function Itemcard(props) {
         } else if (props.data.name.toLowerCase().includes(searchTerm.toLowerCase())) {
             return recipe;
         }
-    });
+    });*/}
 
     return (
         <>
@@ -69,10 +70,11 @@ export default function Itemcard(props) {
                     </Card.Text>
                 </Card.Body>
             </Card>
-            {/* <Itemdetial show={modalShow} chatshow={setchatshow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial> */}
+            
             
             
         
         </>
     )
 }
+//{/* <Itemdetial show={modalShow} chatshow={setchatshow} startchat={start} onHide={() => setmodalShow(false)} data={props.data}></Itemdetial> */}
