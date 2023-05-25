@@ -164,8 +164,8 @@ var Api = (function Api() {
      */
     var user_change = async (data, callback) => {
         var req = form_data(data)
-        console.log(data)
-        console.log(req)
+        // console.log(data)
+        // console.log(req)
         return axiosApi.put('/users/' + data.id + '/', data).then((res) => { callback(res) })
     }
 
@@ -409,7 +409,8 @@ var Api = (function Api() {
         },
         setdev: (isdev) => {
             test_server = isdev
-        }
+        },
+        request:axiosApi
     }
 
     return Api;

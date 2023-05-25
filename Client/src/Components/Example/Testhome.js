@@ -16,6 +16,7 @@ import Item from '../../Object/item';
 import Core from '../Core';
 import User from '../../Object/user';
 import address from '../../testFile/CreateAddressSheet'
+import TestButton from './Example_button'
 
 function TestApp() {
 
@@ -217,7 +218,7 @@ function TestApp() {
           </Row>
         </Tab>
       </Tabs >
-
+      <TestButton />
     </Container>
 
   );
