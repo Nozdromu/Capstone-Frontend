@@ -61,7 +61,7 @@ function TestApp() {
     if (currentlist) {
       Api.item.bylisting(currentlist.json, (res) => {
         var items = [];
-        res.data.items.forEach(element => {
+        res.data.Items.forEach(element => {
           items.push(new Item(element, Core.check_dev()))
         })
         setitemdata(items);

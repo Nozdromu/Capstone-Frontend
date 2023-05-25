@@ -17,6 +17,14 @@ var Api = (function Api() {
         return formdata;
     }
 
+    var upPack=(data)=>{
+        if(test_server){
+
+        }else{
+
+        }
+    }
+
     var data = async (callback) => {
         return axiosApi.get('/data/').then(res => {
             console.log(res)
@@ -234,9 +242,8 @@ var Api = (function Api() {
         // }
         // )
         return axiosApi.get('/data/sort/items/?Tag='+reqs.Tag+'&Listing='+reqs.Listing+'&Location='+reqs.Location+'&Date='+reqs.Date).then(res => {
-            var data = { data: { items: res.data } }
             if (callback)
-                callback(data)
+                callback(res.data)
         }
         )
     }

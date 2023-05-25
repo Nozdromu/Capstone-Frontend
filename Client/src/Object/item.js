@@ -25,6 +25,8 @@ export default class Item {
         this.List = [];
         this.Listing_info = {};
         this.Imagepreview = '';
+        this.Starttime = item.starttime || item.start_time || (new Date()).toISOString();
+        this.Endtime = item.endtime || item.end_time || (new Date()).toISOString();
         this.servertype = server;
     }
     get table() {
@@ -82,7 +84,8 @@ export default class Item {
             tags: this.Tags,
             lat: this.Lat,
             lng: this.Lng,
-            date: this.Date
+            starttime:this.Starttime,
+            endtime:this.Endtime
         }
         if (this.Imagepreview !== '') {
             json.item_main_photo = this.Imagepreview
@@ -113,6 +116,18 @@ export default class Item {
     // }
     ////////////////////////////////////////////////////
     //
+    get starttime() {
+        return this.Starttime;
+    }
+    set starttime(val) {
+        this.Starttime = val
+    }
+    get endtime() {
+        return this.Endtime;
+    }
+    set endtime(val) {
+        this.Endtime = val
+    }
     get listing_info() {
         return this.Listing_info;
     }
