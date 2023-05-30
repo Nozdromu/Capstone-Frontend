@@ -81,28 +81,42 @@ var ListInfo = (props) => {
     const [show, setshow] = useState('null')
     var user = Core.getUser()
 
-    var temp = user
-
     // display the data
     var display = (req) => {
         console.log(req)
-        setshow(req.data.data.User.username)
+        setshow(req.data.data.User.first_name)
+    }
+
+    var onchange=(event, param) => {
+        console.log(event.target.value)
+        switch(param)
+        {
+            case 0: user.first_name = event.target.value;break;
+            case 1: user.last_name = event.target.value;break;
+            case 2: user.email = event.target.value;break;
+            case 3: user.phone_number = event.target.value;break;
+            case 4: user.address_line_1 = event.target.value;break;
+            case 5: user.address_line_2 = event.target.value;break;
+            case 6: user.city = event.target.value;break;
+            case 7: user.state = event.target.value;break;
+            case 8: user.zip_code = event.target.value;break;
+        }
     }
 
     var click = () => {
         var update_data={
-            id: temp.id,
+            id: user.id,
             username: user.username,
-            first_name: temp.first_name,
-            last_name: temp.last_name,
-            email: temp.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
             password: user.password,
-            address_line_1: temp.address_line_1,
-            address_line_2: temp.address_line_2,
-            city: temp.city,
-            state: temp.state,
-            zip_code: temp.zip_code,
-            phone_number: temp.phone_number,
+            address_line_1: user.address_line_1,
+            address_line_2: user.address_line_2,
+            city: user.city,
+            state: user.state,
+            zip_code: user.zip_code,
+            phone_number: user.phone_number,
             re_password: user.re_password
         }
         Api.request.put('/users/' + update_data.id + '/', update_data).then((res) => { display(res) })
@@ -132,10 +146,10 @@ var ListInfo = (props) => {
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
                                             <Col>
-                                                <Form.Label >Frist name </Form.Label>
+                                                <Form.Label >First name </Form.Label>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Frist name" value={user.firstname} />
+                                        <Form.Control type="input" placeholder="Enter First name" onChange={(e) => onchange(e, 0)} value={user.firstname} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -143,7 +157,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >Last name </Form.Label>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Last name" value={user.lastname} />
+                                        <Form.Control type="input" placeholder="Enter Last name" onChange={(e) => onchange(e, 1)} value={user.lastname} />
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -152,7 +166,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >Email </Form.Label>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter email" value={user.email} />
+                                        <Form.Control type="input" placeholder="Enter email" onChange={(e) => onchange(e, 2)} value={user.email} />
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -161,7 +175,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >Phone number </Form.Label>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Phone number" value={user.phone} />
+                                        <Form.Control type="input" placeholder="Enter Phone number" onChange={(e) => onchange(e, 3)} value={user.phone} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -169,7 +183,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >Addres Line 1 </Form.Label>
                                             </Col>
                                         </Row>
-                                        <Form.Control type="input" placeholder="Enter Address Line 1" value={user.address_line_1} />
+                                        <Form.Control type="input" placeholder="Enter Address Line 1" onChange={(e) => onchange(e, 4)} value={user.address_line_1} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -177,7 +191,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >Addres Line 2 </Form.Label>
                                             </Col>
                                         </Row>
-                                    <Form.Control type="input" placeholder="Enter Address Line 2" value={user.address_line_2} />
+                                    <Form.Control type="input" placeholder="Enter Address Line 2" onChange={(e) => onchange(e, 5)} value={user.address_line_2} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -185,7 +199,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >City </Form.Label>
                                             </Col>
                                         </Row>
-                                    <Form.Control type="input" placeholder="Enter City" value={user.city} />
+                                    <Form.Control type="input" placeholder="Enter City" onChange={(e) => onchange(e, 6)} value={user.city} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -193,7 +207,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >State </Form.Label>
                                             </Col>
                                         </Row>
-                                    <Form.Control type="input" placeholder="Enter State" value={user.state} />
+                                    <Form.Control type="input" placeholder="Enter State" onChange={(e) => onchange(e, 0)} value={user.state} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -201,7 +215,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >Zip </Form.Label>
                                             </Col>
                                         </Row>
-                                    <Form.Control type="input" placeholder="Enter Zip Code" value={user.Zip_code} />
+                                    <Form.Control type="input" placeholder="Enter Zip Code" onChange={(e) => onchange(e, 0)} value={user.Zip_code} />
                                     </Form.Group>
                                         <div>{show}</div>
                                         <Button onClick={click}>
