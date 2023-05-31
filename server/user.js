@@ -9,7 +9,9 @@ function user(data) {
     var password = data.password
     var email = data.email;
     var phone = data.phone;
-    var pic = data.pic;
+    var profilepicture = data.profilepicture;
+    var zip=data.zip;
+    var state=data.state;
     var chathistory = {};
     var islogin = false;
     var Room = {};
@@ -66,10 +68,12 @@ function user(data) {
                 password: password,
                 email: email,
                 phone: phone,
-                pic: pic,
+                profilepicture: profilepicture,
                 chathistory: chathistory,
                 islogin: islogin,
                 Room: Room,
+                zip:zip,
+                state:state,
             }
         },
         updata: (val) => {
@@ -78,6 +82,8 @@ function user(data) {
             firstname = val.firstname;
             lastname = val.lastname;
             email = val.email
+            zip=val.zip;
+            state=val.state;
             return this
         },
         checklogin: _islogin,

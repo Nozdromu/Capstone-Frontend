@@ -192,7 +192,9 @@ export default class User {
             registertime: this.Registertime,
             username: this.Username,
             profilepicture: this.Profilepicture,
-            re_password: this.Re_password
+            re_password: this.Re_password,
+            zip:this.Zip_code,
+            state:this.State
         } : {
             id: this.Id,
             username: this.Username,

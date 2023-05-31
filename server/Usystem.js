@@ -70,7 +70,7 @@ function Usystem() {
 
     var getsocket = (key) => {
         var user = getuser(key);
-        return user.checklogin()?user.socket():undefined;
+        return user.checklogin() ? user.socket() : undefined;
     }
 
     return {

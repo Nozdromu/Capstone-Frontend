@@ -25,24 +25,24 @@ export default function TestButton(props) {
         // same as next
 
         //  3.  call directly
-        var update_data={
-            id: user.id,
-            username: 'abdccd',
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            password: user.password,
-            address_line_1: user.address_line_1,
-            address_line_2: user.address_line_2,
-            city: user.city,
-            state: user.state,
-            zip_code: user.zip_code,
-            phone_number: user.phone_number,
-            re_password: user.re_password
-        }
-        Api.request.put('/users/' + update_data.id + '/', update_data).then((res) => { display(res) })
+        // var update_data={
+        //     id: user.id,
+        //     username: 'abdccd',
+        //     first_name: user.first_name,
+        //     last_name: user.last_name,
+        //     email: user.email,
+        //     password: user.password,
+        //     address_line_1: user.address_line_1,
+        //     address_line_2: user.address_line_2,
+        //     city: user.city,
+        //     state: user.state,
+        //     zip_code: user.zip_code,
+        //     phone_number: user.phone_number,
+        //     re_password: user.re_password
+        // }
+        // Api.request.put('/users/' + update_data.id + '/', update_data).then((res) => { display(res) })
         // or
-        //Api.request.put('/users/' + user.id + '/', user.json).then((res) => { display(res) })
+        Api.request.get('/google_vision').then((res) => { display(res) })
     }
     return (
         <div>

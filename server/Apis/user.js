@@ -1,4 +1,8 @@
 const { response } = require("express");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const fs = require('fs');
+const axios = require('axios')
 
 module.exports = function (app) {  //receiving "app" instance
 
@@ -40,14 +44,25 @@ module.exports = function (app) {  //receiving "app" instance
 
     })
 
-    app.get('/user/edit', (req, res) => {
-        var user = req.query;
+    app.put('/user/edit', upload.single('image_url'), (req, res) => {
+        var user = req.body;
         var response = { result: false }
         if (req.session.user) {
             if (req.session.user.uid.toString() === user.uid) {
+                if (user.image_url) {
+                    axios.get(user.image_url, {
+                        responseType: "text",
+                        responseEncoding: "base64",
+                    })
+                        .then((resp) => {
+                            console.log(resp.data);
+                            fs.writeFileSync('./uploads/user_' + user.uid + '.jpg', resp.data, { encoding: "base64" });
+                        })
+                    user.profilepicture = './uploads/user_' + user.uid + '.jpg';
+                }
                 sql.query(
-                    'call user_update(?,?,?,?,?,?,?)',
-                    [user.uid, user.firstname, user.lastname, user.email, user.phone, user.username, user.profilepicture],
+                    'call user_update(?,?,?,?,?,?,?,?,?)',
+                    [user.uid, user.firstname, user.lastname, user.email, user.phone, user.username, user.profilepicture, user.zip, user.state],
                     (err, result, fields) => {
                         if (err) {
                             response.message = err
@@ -72,6 +87,13 @@ module.exports = function (app) {  //receiving "app" instance
             res.send(response)
         }
     })
+
+    async function download(url, uid) {
+        const response = await fetch(url);
+        const buffer = await response.buffer();
+        fs.writeFile('./uploads/user_' + uid + '.jpg', buffer, () =>
+            console.log('finished downloading!'));
+    }
 
     app.get('/user/delete', (req, res) => {
         var user = req.query.userinfo;

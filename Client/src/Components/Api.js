@@ -17,10 +17,10 @@ var Api = (function Api() {
         return formdata;
     }
 
-    var upPack=(data)=>{
-        if(test_server){
+    var upPack = (data) => {
+        if (test_server) {
 
-        }else{
+        } else {
 
         }
     }
@@ -35,6 +35,9 @@ var Api = (function Api() {
                     callback(res.data)
             }
         })
+    }
+    var chatgpt = async (data, callback) => {
+        return axiosApi.get('/gpt', { params: data }).then(res => { if (callback) callback(res) })
     }
     var userCheck = async (callback, data) => {
         if (test_server)
@@ -171,10 +174,10 @@ var Api = (function Api() {
      * @param {data type of data} param User-.
      */
     var user_change = async (data, callback) => {
-        var req = form_data(data)
+        var formdata = form_data(data)
         // console.log(data)
         // console.log(req)
-        return axiosApi.put('/users/' + data.id + '/', data).then((res) => { callback(res) })
+        return axiosApi.put('/users/' + data.id + '/', formdata).then((res) => { callback(res) })
     }
 
     var user_read = async (callback, pk) => {
@@ -241,7 +244,7 @@ var Api = (function Api() {
         //         callback(data)
         // }
         // )
-        return axiosApi.get('/data/sort/items/?Tag='+reqs.Tag+'&Listing='+reqs.Listing+'&Location='+reqs.Location+'&Date='+reqs.Date).then(res => {
+        return axiosApi.get('/data/sort/items/?Tag=' + reqs.Tag + '&Listing=' + reqs.Listing + '&Location=' + reqs.Location + '&Date=' + reqs.Date).then(res => {
             if (callback)
                 callback(res.data)
         }
@@ -324,7 +327,8 @@ var Api = (function Api() {
         return axiosApi.get('/user/register', { params: data }).then(res => callback(res))
     }
     var test_user_edit = async (data, callback) => {
-        return axiosApi.get('/user/edit', { params: data }).then(res => callback(res))
+        var formdata=form_data(data)
+        return axiosApi.put('/user/edit', formdata).then(res => callback(res))
     }
 
     var test_user_read = async (callback) => {
@@ -417,7 +421,8 @@ var Api = (function Api() {
         setdev: (isdev) => {
             test_server = isdev
         },
-        request:axiosApi
+        gpt: chatgpt,
+        request: axiosApi
     }
 
     return Api;

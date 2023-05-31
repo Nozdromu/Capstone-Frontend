@@ -1,6 +1,7 @@
-import { Card, Row, Col, Form, Button, InputGroup } from 'react-bootstrap'
+import { Card, Row, Col, Form, Button, Modal,Image } from 'react-bootstrap'
 import { useRef, useState, useEffect } from 'react'
 import Api from '../Api'
+import axios from 'axios'
 
 export default function AccountEdit(prop) {
     const [data, setdata] = useState({})
@@ -16,6 +17,9 @@ export default function AccountEdit(prop) {
     const [login, setlogin] = useState(false)
     const [states, setstates] = useState('')
     const [zip, setzip] = useState('')
+    const [gptimg, setgptimg] = useState('')
+
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         setprops(prop)
@@ -40,7 +44,7 @@ export default function AccountEdit(prop) {
             setlastname(data.lastname || '');
             setstates(data.state || '')
             setzip(data.zip_code || '')
-            setimage(data.src||'')
+            setimage(data.src || '')
         }
     }, [data])
     var inputs = {
@@ -51,7 +55,9 @@ export default function AccountEdit(prop) {
         user_firstname: useRef(null),
         user_lastname: useRef(null),
         user_zip: useRef(null),
-        user_state: useRef(null)
+        user_state: useRef(null),
+        gpt: useRef(null),
+        gpt_image:useRef(null)
     }
     var edit_user = (event) => {
         event.preventDefault();
@@ -63,7 +69,23 @@ export default function AccountEdit(prop) {
         //     //props.updatetable();
         // })
     }
-
+    var prompt = '';
+    var promptonchange = (event) => {
+        prompt = event.target.value
+    }
+    var gpt = () => {
+        console.log(prompt)
+        Api.gpt({ 'prompt': prompt }, (res) => {
+            console.log(res)
+            setgptimg(res.data.url);
+        })
+    }
+    var ac = () => {
+        data.image = gptimg;
+        console.log(gptimg)
+        data.imagepreview=gptimg
+        setimagepre(gptimg)
+    }
 
     var onchange = (event, keys) => {
 
@@ -141,20 +163,24 @@ export default function AccountEdit(prop) {
                             </Row>
                         </Col>
                         <Col>
-                            <Card style={{ height: '100%' }} onClick={() => {
-                                document.getElementById('user_image').click()
+                            <Card style={{ height: '100%' }} >
+                                <Card.Body onClick={() => {
+                                    document.getElementById('user_image').click()
 
-                            }}>
+                                }}>
+                                    <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre !== '' ? imagepre : image}></img>
+                                    <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
 
-                                <img alt='img' style={{ width: '100%', height: '100%' }} src={imagepre!==''?imagepre:image}></img>
-                                <Form.Control style={{ display: 'none' }} id='user_image' type='file' onChange={(event) => {
+                                        if (event.target.files && event.target.files[0]) {
+                                            setimagepre(URL.createObjectURL(event.target.files[0]))
+                                            data.imagepreview = event.target.files[0];
+                                        }
 
-                                    if (event.target.files && event.target.files[0]) {
-                                        setimagepre(URL.createObjectURL(event.target.files[0]))
-                                        data.imagepreview = event.target.files[0];
-                                    }
-
-                                }}></Form.Control>
+                                    }}></Form.Control>
+                                </Card.Body>
+                                <Card.Footer onClick={() => setModalShow(true)}>
+                                    get a img form chatgpt
+                                </Card.Footer>
 
                             </Card>
                         </Col>
@@ -212,5 +238,28 @@ export default function AccountEdit(prop) {
                 </Row>
             </fieldset>
         </Card.Footer>
+        <Modal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Modal heading
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <h4>enter script</h4>
+                <Image src={gptimg}></Image>
+                <Form.Control type="input" onChange={promptonchange} />
+                <Button onClick={gpt}>test</Button>
+                <Button onClick={ac}>accept</Button>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={() => setModalShow(false)}>Close</Button>
+            </Modal.Footer>
+        </Modal>
     </Card>)
 }
