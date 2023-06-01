@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -54,4 +54,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebar;*/

@@ -5,7 +5,7 @@ import { Modal, Button, Row, Col, ListGroup} from 'react-bootstrap';
 import Api from './Api';
 import { itemdetial, itemshow } from '../App';
 import './styles.css';
-import { MDBListGroup, MDBListGroupItem, MDBRipple } from 'mdb-react-ui-kit';
+//import { MDBListGroup, MDBListGroupItem, MDBRipple } from 'mdb-react-ui-kit';
 
 
 const containerStyle = {
