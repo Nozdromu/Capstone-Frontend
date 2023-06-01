@@ -14,7 +14,7 @@ const sqlconfig = require('./sqlconfig.json');
 const Usystem = require('./Usystem.js')
 const vision = require('@google-cloud/vision')
 const google = new vision.ImageAnnotatorClient({
-  key: 'AIzaSyA0DZnzUceQi8G8bH-4CFl4XD6jawq91Ws'
+  key: sqlconfig.googlekey
 })
 
 // const fileUpload = require('express-fileupload');
@@ -30,7 +30,7 @@ const google = new vision.ImageAnnotatorClient({
 ////////////////////////////////////////////////////////////////////////////
 //  global variable
 
-var chatgpt_key = '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'
+var chatgpt_key = sqlconfig.gptkey
 
 const configuration = new openai.Configuration({
   organization: "org-4HLwiB2vbmpxsEXTy3q3jxaE",
@@ -148,30 +148,13 @@ app.get('/google_vision', (req, res) => {
       image,
       features,
     };
-    // var re = {
-    //   "requests": [
-    //     {
-    //       "image": {
-    //         // 'source':{
-    //         //   "imageUri": 'https://m.media-amazon.com/images/I/71quPwED9UL._AC_SX679_.jpg'
-    //         // }
-    //         'content': data
-    //       },
-    //       "features": [
-    //         {
-    //           "type": 'OBJECT_LOCALIZATION',
-    //           "maxResults": '20',
-    //         }
-    //       ]
-    //     }
-    //   ]
 
-    // }
     console.log(image);
-    google.annotateImage(request).then((res) => {
-      console.log(res);
-
+    google.annotateImage(request).then((resa) => {
+      console.log(resa);
+      res.send({a:resa})
     })
+    
   })
 
   //req.query.src

@@ -35,6 +35,8 @@ var Core = (function () {
         if (val.server)
             isdev = true;
 
+        // new change
+
         Api.setdev(isdev)
         user = new User({}, isdev);
         /////////////////////////////////////
