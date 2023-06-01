@@ -7,6 +7,7 @@ import {
   Row,
   Tab,
   Tabs,
+  Modal,
 } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
@@ -16,90 +17,69 @@ import Api from "./Api";
 
 
 
-var ListInfo = (props) => {
-  return (
-      <Accordion.Item eventKey={props.data.gsid}>
-          <Accordion.Header>{'#' + props.data.gsid}</Accordion.Header>
-          <Accordion.Body>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Row className='d-flex justify-content-between'>
-                      <Col>
-                          <Form.Label >Street</Form.Label>
-                      </Col>
-                      <Col>
-                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                      </Col>
-                  </Row>
-                  <Form.Control type="input" placeholder="Enter Street" value={props.data.street} disabled />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Row className='d-flex justify-content-between'>
-                      <Col>
-                          <Form.Label >City</Form.Label>
-                      </Col>
-                      <Col>
-                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                      </Col>
-                  </Row>
-                  <Form.Control type="input" placeholder="Enter City" value={props.data.city} disabled />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Row className='d-flex justify-content-between'>
-                      <Col>
-                          <Form.Label >State</Form.Label>
-                      </Col>
-                      <Col>
-                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                      </Col>
-                  </Row>
-                  <Form.Control type="input" placeholder="Enter State" value={props.data.states} disabled />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Row className='d-flex justify-content-between'>
-                      <Col>
-                          <Form.Label >Zip Code</Form.Label>
-                      </Col>
-                      <Col>
-                          <a style={{ 'textAlign': 'right', float: 'right' }} className=' text-end'>edit</a>
-                      </Col>
-                  </Row>
-                  <Form.Control type="input" placeholder="Enter Zip Code" value={props.data.zip} disabled />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Button style={{ width: '100%' }}>Remove List</Button>
-              </Form.Group>
-          </Accordion.Body>
-      </Accordion.Item>
-  )
-}
-
-
 
   function Accountpage() {
-    const [show, setshow] = useState('null')
+    const [show, setshow] = useState(false)
+
+    const [fname, setfname] = useState('')
+    const [lname, setlname] = useState('')
+    const [email, setemail] = useState('')
+    const [phone, setphone] = useState('')
+    const [address1, setaddress1] = useState('')
+    const [address2, setaddress2] = useState('')
+    const [city, setcity] = useState('')
+    const [state, setstate] = useState('')
+    const [zip, setzip] = useState('')
+
+
     var user = Core.getUser()
+
+    const handleShow = () => setshow(true);
+    const handleClose = () => setshow(false);
+
+    useEffect (() => {
+        setfname(user.first_name)
+        setlname(user.last_name)
+        setemail(user.email)
+        setphone(user.phone_number)
+        setaddress1(user.address1)
+        setaddress2(user.address2)
+        setcity(user.city)
+        setstate(user.state)
+        setzip(user.zip_code)
+    })
 
     // display the data
     var display = (req) => {
-        console.log(req)
-        setshow(req.data.data.User.first_name)
+        //console.log(req)
+        //setshow(req.data.data.User.first_name)        
+
+        handleShow();
     }
 
     var onchange=(event, param) => {
         console.log(event.target.value)
         switch(param)
         {
-            case 0: user.first_name = event.target.value;break;
-            case 1: user.last_name = event.target.value;break;
-            case 2: user.email = event.target.value;break;
-            case 3: user.phone_number = event.target.value;break;
-            case 4: user.address_line_1 = event.target.value;break;
-            case 5: user.address_line_2 = event.target.value;break;
-            case 6: user.city = event.target.value;break;
-            case 7: user.state = event.target.value;break;
-            case 8: user.zip_code = event.target.value;break;
+            case 0: user.first_name = event.target.value;
+            setfname(event.target.value); break;
+            case 1: user.last_name = event.target.value;
+            setlname(event.target.value);break;
+            case 2: user.email = event.target.value;
+            setemail(event.target.value); break;
+            case 3: user.phone_number = event.target.value;
+            setphone(event.target.value); break;
+            case 4: user.address_line_1 = event.target.value;
+            setaddress1(event.target.value);break;
+            case 5: user.address_line_2 = event.target.value;
+            setaddress2(event.target.value);break;
+            case 6: user.city = event.target.value;
+            setcity(event.target.value); break;
+            case 7: user.state = event.target.value;
+            setstate(event.target.value);break;
+            case 8: user.zip_code = event.target.value;
+            setzip(event.target.value);break;
+            default: break;
         }
     }
 
@@ -207,7 +187,7 @@ var ListInfo = (props) => {
                                                 <Form.Label >State </Form.Label>
                                             </Col>
                                         </Row>
-                                    <Form.Control type="input" placeholder="Enter State" onChange={(e) => onchange(e, 0)} value={user.state} />
+                                    <Form.Control type="input" placeholder="Enter State" onChange={(e) => onchange(e, 7)} value={user.state} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Row className='d-flex justify-content-between'>
@@ -215,13 +195,25 @@ var ListInfo = (props) => {
                                                 <Form.Label >Zip </Form.Label>
                                             </Col>
                                         </Row>
-                                    <Form.Control type="input" placeholder="Enter Zip Code" onChange={(e) => onchange(e, 0)} value={user.Zip_code} />
+                                    <Form.Control type="input" placeholder="Enter Zip Code" onChange={(e) => onchange(e, 8)} value={user.Zip_code} />
                                     </Form.Group>
                                         <div>{show}</div>
                                         <Button onClick={click}>
                                             Save
                                         </Button>
                                     </Form>
+
+                                    <Modal show={show} onHide={handleClose}>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>Changes Saved</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Footer>
+                                        <Button variant="primary" onClick={handleClose}>
+                                            Close
+                                        </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+
                                 </Tab>
 
                             </Tabs>
