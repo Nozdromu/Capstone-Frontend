@@ -18,6 +18,7 @@ var Core = (function () {
     var list = {};
     var hook = [];
     var isdev = false;
+    var google = '';
     var homepage = <></>;
     var user;
     var current_item;
@@ -34,7 +35,8 @@ var Core = (function () {
 
         if (val.server)
             isdev = true;
-
+        else
+            google = val.googleapi
         // new change
 
         Api.setdev(isdev)
@@ -141,6 +143,9 @@ var Core = (function () {
         },
         getitem: () => {
             return current_item
+        },
+        getgoogle:()=>{
+            return google
         }
     };
 })()

@@ -13,6 +13,7 @@ const containerStyle = {
 
 
 export default function Map() {
+    const [clo, setclo] = useState(false)
     const [center, setCenter] = useState({ lat: 47.5976894, lng: -122.187628 });
     const [markers, setMarkers] = useState([]);
     const [zoom, setZoom] = useState(15);
@@ -27,7 +28,23 @@ export default function Map() {
         setlisting(data);
         setShow(true)
     };
-
+    useEffect(() => {
+        if (!clo) {
+            if (!isLoaded) {
+                updatemark()
+                setZoom(12)
+                setclo(true)
+                // if ("geolocation" in navigator) {
+                //     /* geolocation is available */
+                //     navigator.geolocation.getCurrentPosition(success, error);
+                //   } else {
+                //     /* geolocation IS NOT available */
+                //     console.log('error')
+                //   }
+                //navigator.geolocation.getCurrentPosition(success, error);
+            }
+        }
+    }, [clo])
 
 
     useEffect(() => {
@@ -39,7 +56,7 @@ export default function Map() {
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyA0DZnzUceQi8G8bH-4CFl4XD6jawq91Ws"
+        googleMapsApiKey: Core.getgoogle()
     })
 
 
@@ -48,11 +65,15 @@ export default function Map() {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         }
+        console.log(position)
         updatemark()
         setZoom(12)
         setCenter(currentPosition);
+        setclo(true)
     };
-
+    const error = (err) => {
+        console.log(err)
+    }
 
     var updatemark = () => {
         var salelist = Core.list();
@@ -70,8 +91,8 @@ export default function Map() {
         Api.item.bylisting(data, (res) => { console.log(res) });
     }
 
-    if (!isLoaded)
-        navigator.geolocation.getCurrentPosition(success);
+
+
 
 
 

@@ -17,6 +17,7 @@ export default function ItemEdit(prop) {
     const [owner, setowner] = useState('');
     const [image, setimage] = useState({})
     const [imagepre, setimagepre] = useState('')
+    const [tag, settag] = useState('')
     //update props when props change by parent component
     useEffect(() => {
         setprops(prop)
@@ -45,20 +46,21 @@ export default function ItemEdit(prop) {
             setprice(data.price || '')
             setitemid(data.itid || '');
             setowner(data.uid || '');
-            setimage(data.src||'')
+            setimage(data.src || '')
+            settag(data.tags || '')
         }
     }, [data])
 
-    // setup inputs
-    var inputs = {
-        Listing_ID: useRef(null),
-        Item_id: useRef(null),
-        Item_name: useRef(null),
-        Item_description: useRef(null),
-        Item_quantity: useRef(null),
-        Item_price: useRef(null),
-        Item_image: useRef(null)
-    }
+    // // setup inputs
+    // var inputs = {
+    //     Listing_ID: useRef(null),
+    //     Item_id: useRef(null),
+    //     Item_name: useRef(null),
+    //     Item_description: useRef(null),
+    //     Item_quantity: useRef(null),
+    //     Item_price: useRef(null),
+    //     Item_image: useRef(null)
+    // }
 
     // input onChange onchangehandler
     var onchange = (event, keys) => {
@@ -91,6 +93,10 @@ export default function ItemEdit(prop) {
             case 'image':
                 data.image = event.target.files[0];
                 setimage(data.image);
+                break;
+            case 'tag':
+                data.tags = event.target.value;
+                settag(data.tags);
                 break;
             default:
         }
@@ -140,7 +146,7 @@ export default function ItemEdit(prop) {
                             <Col>
                                 <Form.Group className="mb-3" controlId="list_id">
                                     <Form.Label>Listing ID</Form.Label>
-                                    <Form.Control onChange={(e) => onchange(e, 'listid')} value={listid} required={true} ref={inputs.Listing_ID} type="input" disabled={true} />
+                                    <Form.Control onChange={(e) => onchange(e, 'listid')} value={listid} required={true} type="input" disabled={true} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -148,7 +154,7 @@ export default function ItemEdit(prop) {
                             <Col>
                                 <Form.Group className="mb-3" controlId="item_id">
                                     <Form.Label>ID</Form.Label>
-                                    <Form.Control onChange={(e) => onchange(e, 'itemid')} value={itemid} required={true} ref={inputs.Item_pk} type="input" disabled={true} />
+                                    <Form.Control onChange={(e) => onchange(e, 'itemid')} value={itemid} required={true}  type="input" disabled={true} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -183,7 +189,7 @@ export default function ItemEdit(prop) {
                         <Col>
                             <Form.Group className="mb-3" controlId="item_name">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control onChange={(e) => onchange(e, 'name')} value={name} required={true} ref={inputs.Item_name} type="input" placeholder="Enter Name" />
+                                <Form.Control onChange={(e) => onchange(e, 'name')} value={name} required={true}  type="input" placeholder="Enter Name" />
                             </Form.Group>
                         </Col>
                     </Row>
@@ -193,7 +199,15 @@ export default function ItemEdit(prop) {
                     <Col>
                         <Form.Group className="mb-3" controlId="item_description">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'description')} value={description} required={true} ref={inputs.Item_description} type="input" placeholder="Enter Description" />
+                            <Form.Control onChange={(e) => onchange(e, 'description')} value={description} required={true}  type="input" placeholder="Enter Description" />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="item_tag">
+                            <Form.Label>Tag</Form.Label>
+                            <Form.Control onChange={(e) => onchange(e, 'tag')} value={tag} required={true} type="input" placeholder="Enter Tag" />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -210,7 +224,7 @@ export default function ItemEdit(prop) {
                     <Col>
                         <Form.Group className="mb-3" controlId="item_quantity">
                             <Form.Label>Quantity</Form.Label>
-                            <Form.Control onChange={(e) => onchange(e, 'quantity')} value={quantity} required={true} ref={inputs.Item_quantity} type="input" placeholder="Enter Quantity" />
+                            <Form.Control onChange={(e) => onchange(e, 'quantity')} value={quantity} required={true}  type="input" placeholder="Enter Quantity" />
 
                         </Form.Group>
                     </Col>
@@ -221,7 +235,7 @@ export default function ItemEdit(prop) {
                             <Form.Label>Price</Form.Label>
                             <InputGroup className="mb-3">
                                 <InputGroup.Text>$</InputGroup.Text>
-                                <Form.Control onChange={(e) => onchange(e, 'price')} required={true} value={price} ref={inputs.Item_price} type="input" placeholder="Enter Price" />
+                                <Form.Control onChange={(e) => onchange(e, 'price')} required={true} value={price}  type="input" placeholder="Enter Price" />
                             </InputGroup>
                         </Form.Group>
                     </Col>

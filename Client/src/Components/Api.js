@@ -232,19 +232,21 @@ var Api = (function Api() {
         //         callback(data)
         // }
         // )
-        var reqs = {
-            "Tag": "",
-            "Listing": data.id,
-            "Location": "",
-            "Date": ""
-        }
+        // var reqs = {
+        //     Tag: 'none',
+        //     Listing: data.id,//349
+        //     Location: 'none',
+        //     Date: 'none'
+        // }
         // return axiosApi.get('/data/sort/items/', reqs).then(res => {
         //     var data = { data: { items: res.data } }
         //     if (callback)
         //         callback(data)
         // }
         // )
-        return axiosApi.get('/data/sort/items/?Tag=' + reqs.Tag + '&Listing=' + reqs.Listing + '&Location=' + reqs.Location + '&Date=' + reqs.Date).then(res => {
+        //return axiosApi.get('/data/sort/items/?Tag=' + reqs.Tag + '&Listing=' + reqs.Listing + '&Location=' + reqs.Location + '&Date=' + reqs.Date,reqs).then(res => {
+        return axiosApi.get('/data/sort/items/', { params: data }).then(res => {
+
             if (callback)
                 callback(res.data)
         }
@@ -260,9 +262,18 @@ var Api = (function Api() {
     }
     var item_update = async (data, callback) => {
         console.log(data)
+        var u={
+            pk: data.pk,
+            name: data.name,
+            item_main_photo: data.item_main_photo,
+            description: data.description,
+            quantity: data.quantity,
+            price: data.price,
+            tags: data.tags,
+        }
         return axiosApi.post(
-            '/listings/' + data.listing + '/' + data.id + '/update/',
-            form_data(data)
+            '/listings/' + data.listing + '/' + u.pk + '/update/',
+            form_data(u)
         ).then(res => {
             console.log(res)
             if (callback)
@@ -327,7 +338,7 @@ var Api = (function Api() {
         return axiosApi.get('/user/register', { params: data }).then(res => callback(res))
     }
     var test_user_edit = async (data, callback) => {
-        var formdata=form_data(data)
+        var formdata = form_data(data)
         return axiosApi.put('/user/edit', formdata).then(res => callback(res))
     }
 

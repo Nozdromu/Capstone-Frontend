@@ -94,9 +94,43 @@ export default class Item {
         return json
     }
 
+    get Update_json() {
+        var json = this.servertype ? {
+            itid: this.Id,
+            itemname: this.Name,
+            brand: this.Brand,
+            mnumber: this.Mnumber,
+            description: this.Description,
+            price: this.Price,
+            qty: this.Quantity,
+            detail: this.Detail,
+            gsid: this.Listing,
+            posttime: this.Date,
+            imageid: this.Imageid,
+            image: this.Item_main_photo,
+            uid: this.Owner,
+            display: this.Display,
+            isdelete: this.Isdelete
+        } : {
+            pk: this.Id,
+            name: this.Name,
+            item_main_photo: this.Item_main_photo,
+            description: this.Description,
+            quantity: this.Quantity,
+            price: this.Price,
+            listing: this.Listing,
+            tags: this.Tags,
+        }
+        if (this.Imagepreview !== '') {
+            json.item_main_photo = this.Imagepreview
+        }
+
+        return json
+    }
+
     update(callback) {
-        console.log(this.json);
-        Api.item.update(this.json, res => callback(res));
+        console.log(this.Update_json);
+        Api.item.update(this.Update_json, res => callback(res));
     }
     create(callback) {
         console.log(this.json);

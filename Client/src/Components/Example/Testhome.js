@@ -59,7 +59,13 @@ function TestApp() {
 
   var updateitemtable = useCallback(() => {
     if (currentlist) {
-      Api.item.bylisting(currentlist.json, (res) => {
+      var reqs = {
+        Tag: 'none',
+        Listing: currentlist.id,//349
+        Location: 'none',
+        Date: 'none'
+    }
+      Api.item.bylisting(reqs, (res) => {
         var items = [];
         res.data.Items.forEach(element => {
           items.push(new Item(element, Core.check_dev()))
@@ -94,7 +100,7 @@ function TestApp() {
     if (currentlist) {
       updateitemtable()
     }
-  }, [currentlist, updateitemtable])
+  }, [currentlist])
 
 
 

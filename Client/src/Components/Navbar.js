@@ -53,7 +53,7 @@ function MyNavbar(props) {
                     console.log('something wrong')
                 }
             } else {
-                if (data.data.success) {
+                if (data.data.status==='success') {
                     setlogin(false);
                     props.router_login(false);
                 }
